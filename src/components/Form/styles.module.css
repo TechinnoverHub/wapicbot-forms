@@ -1,0 +1,50 @@
+.form {
+  width: 100%;
+  margin: 10px auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.inner label {
+  font-size: 16px;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+
+.inner input,
+.inner textarea {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.inner.error input,
+.inner.error textarea {
+  border: 1px solid red;
+}
+.inner.error span {
+  font-size: 10px;
+  margin: 0 5px;
+  color: red;
+}
+
+.form button {
+  padding: 10px;
+  margin: 20px 0;
+  cursor: pointer;
+  background: green;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  outline: none;
+}
+
+button:active {
+  transform: scale(1.05);
+}
