@@ -40,6 +40,26 @@ const FormBuilder = ({ data, action, title }) => {
     });
   };
   const formik = useCreateFormik(data, action);
+
+  const chooseInput = (type, name, list) => {
+    switch (type) {
+      case "textarea":
+        return <textarea id={name} {...formik.getFieldProps(name)} />;
+
+      case "select":
+        return (
+          <select id={name} {...formik.getFieldProps(name)}>
+            <option value="">select {name} </option>
+            {list.map((li) => (
+              <option value={li}>{li}</option>
+            ))}
+          </select>
+        );
+
+      default:
+        return <input id={name} type={type} {...formik.getFieldProps(name)} />;
+    }
+  };
   return (
     <form onSubmit={formik.handleSubmit} className={styles.form}>
       <h2>{title}</h2>
@@ -52,21 +72,11 @@ const FormBuilder = ({ data, action, title }) => {
               : ""
           }`}
         >
-          <label htmlFor={datum.name}>{datum.label}</label>
-          {datum.textarea ? (
-            <textarea
-              id={datum.name}
-              type={datum.type}
-              {...formik.getFieldProps(datum.name)}
-            />
-          ) : (
-            <input
-              id={datum.name}
-              type={datum.type}
-              {...formik.getFieldProps(datum.name)}
-            />
-          )}
-          {/* {...formik.getFieldProps(datum.name)} */}
+          <label htmlFor={datum.name}>
+            {datum.label}
+            {datum.validate && datum.validate.required ? "*" : ""}
+          </label>
+          {chooseInput(datum.type, datum.name, datum.list)}
           {formik.touched[datum.name] && formik.errors[datum.name] ? (
             <span>{formik.errors[datum.name]}</span>
           ) : null}
