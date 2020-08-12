@@ -5,8 +5,18 @@ const OptIn = () => {
   return (
     <Container>
       <FormBuilder
-        title="Fill Details"
+        title="Whatsapp Opt-in form"
         data={[
+          {
+            name: "customerType",
+            label: "what type of customer are you?",
+            validate: {
+              required: "required",
+            },
+            type: "select",
+            selectLabel: "select your type",
+            list: ["new customer", "existing customer"],
+          },
           {
             name: "firstName",
             label: "First Name",
@@ -15,6 +25,10 @@ const OptIn = () => {
               max: [15, "Must be 15 characters or less"],
             },
             type: "text",
+            dependent: {
+              key: "customerType",
+              value: "new customer",
+            },
           },
           {
             name: "lastName",
@@ -24,6 +38,10 @@ const OptIn = () => {
               max: [15, "Must be 15 characters or less"],
             },
             type: "text",
+            dependent: {
+              key: "customerType",
+              value: "new customer",
+            },
           },
           {
             name: "email",
@@ -41,19 +59,30 @@ const OptIn = () => {
               required: "required",
             },
             type: "number",
+            dependent: {
+              key: "customerType",
+              value: "existing customer",
+            },
           },
           {
-            name: "moreDetail",
-            label: "Gist us",
+            name: "wapicPolicy",
+            label: "I accept wapic policy, terms and conditions.",
             validate: {
-              // required: "required",
+              required: "required",
             },
-            type: "text",
-            textarea: true,
+            type: "checkbox",
+          },
+          {
+            name: "whatsappPolicy",
+            label: "I accept to receive messages on whatsapp",
+            validate: {
+              required: "required",
+            },
+            type: "checkbox",
           },
         ]}
         action={(values) => {
-          alert(JSON.stringify(values, null, 2));
+          alert("submitted data \n" + JSON.stringify(values, null, 2));
         }}
       />
     </Container>

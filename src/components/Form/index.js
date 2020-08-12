@@ -18,70 +18,137 @@ const FormBuilder = ({ data, action, title }) => {
         return obj;
     }
   };
-  const useCreateFormik = (data, action) => {
-    const initials = {};
+
+  const createYupObject = (data, condition = false) => {
     const validation = {};
+    const initials = {};
     data.forEach((dt) => {
-      initials[dt.name] = "";
-      validation[dt.name] = dt.type !== "number" ? Yup.string() : Yup.number();
-      Object.keys(dt.validate).forEach((ky) => {
-        validation[dt.name] = addYupMethod(
-          validation[dt.name],
-          ky,
-          dt.validate[ky]
-        );
-      });
+      if (
+        !condition ||
+        !dt.dependent ||
+        (dt.dependent && condition[dt.dependent.key] === dt.dependent.value)
+      ) {
+        initials[dt.name] = "";
+        validation[dt.name] =
+          dt.type !== "number" ? Yup.string() : Yup.number();
+        Object.keys(dt.validate).forEach((ky) => {
+          validation[dt.name] = addYupMethod(
+            validation[dt.name],
+            ky,
+            dt.validate[ky]
+          );
+        });
+      }
     });
+    return { validation, initials };
+  };
+  const useCreateFormik = (data, action) => {
+    const { initials } = createYupObject(data);
 
     return useFormik({
       initialValues: initials,
-      validationSchema: Yup.object(validation),
+      // validationSchema: Yup.object(validation),
+      validate: async (values) => {
+        const valuesToCheck = {};
+        data.forEach((datum) => {
+          (!datum.dependent ||
+            (datum.dependent &&
+              formik.values[datum.dependent.key] === datum.dependent.value)) &&
+            (valuesToCheck[datum.name] = values[datum.name]);
+        });
+        const { validation } = createYupObject(data, values);
+        const yupSchema = Yup.object(validation);
+        const isValid = await yupSchema.isValid(valuesToCheck);
+        if (!isValid) {
+          return yupSchema.validate(valuesToCheck).catch(function (error) {
+            return { [error.path]: error.message };
+          });
+        }
+      },
       onSubmit: action,
     });
   };
   const formik = useCreateFormik(data, action);
 
-  const chooseInput = (type, name, list) => {
+  const chooseInput = (type, name, list, obj) => {
     switch (type) {
       case "textarea":
-        return <textarea id={name} {...formik.getFieldProps(name)} />;
+        return (
+          <>
+            <label htmlFor={name}>
+              {obj.label}
+              {obj.validate && obj.validate.required ? "*" : ""}
+            </label>
+            <textarea id={name} {...formik.getFieldProps(name)} />
+          </>
+        );
 
       case "select":
         return (
-          <select id={name} {...formik.getFieldProps(name)}>
-            <option value="">select {name} </option>
-            {list.map((li) => (
-              <option value={li}>{li}</option>
-            ))}
-          </select>
+          <>
+            <label htmlFor={name}>
+              {obj.label}
+              {obj.validate && obj.validate.required ? "*" : ""}
+            </label>
+            <select id={name} {...formik.getFieldProps(name)}>
+              <option value="">
+                {obj.selectLabel ? obj.selectLabel : `select ${name}`}{" "}
+              </option>
+              {list.map((li) => (
+                <option key={li} value={li}>
+                  {li}
+                </option>
+              ))}
+            </select>
+          </>
         );
 
+      case "checkbox":
+        return (
+          <div style={{ margin: "5px 0", padding: "5px" }}>
+            <input id={name} type={type} {...formik.getFieldProps(name)} />
+            <label htmlFor={name}>
+              {obj.label}
+              {obj.validate && obj.validate.required ? "*" : ""}
+            </label>
+          </div>
+        );
       default:
-        return <input id={name} type={type} {...formik.getFieldProps(name)} />;
+        return (
+          <>
+            <label htmlFor={name}>
+              {obj.label}
+              {obj.validate && obj.validate.required ? "*" : ""}
+            </label>
+            <input id={name} type={type} {...formik.getFieldProps(name)} />
+          </>
+        );
     }
   };
   return (
     <form onSubmit={formik.handleSubmit} className={styles.form}>
       <h2>{title}</h2>
-      {data.map((datum, i) => (
-        <div
-          key={i}
-          className={`${styles.inner} ${
-            formik.touched[datum.name] && formik.errors[datum.name]
-              ? styles.error
-              : ""
-          }`}
-        >
-          <label htmlFor={datum.name}>
-            {datum.label}
-            {datum.validate && datum.validate.required ? "*" : ""}
-          </label>
-          {chooseInput(datum.type, datum.name, datum.list)}
-          {formik.touched[datum.name] && formik.errors[datum.name] ? (
-            <span>{formik.errors[datum.name]}</span>
-          ) : null}
-        </div>
-      ))}
+      {data.map(
+        (datum, i) =>
+          (!datum.dependent ||
+            (datum.dependent &&
+              formik.values[datum.dependent.key] ===
+                datum.dependent.value)) && (
+            <div
+              key={i}
+              className={`${styles.inner} ${
+                formik.touched[datum.name] && formik.errors[datum.name]
+                  ? styles.error
+                  : ""
+              }`}
+            >
+              {chooseInput(datum.type, datum.name, datum.list, datum)}
+              {formik.touched[datum.name] && formik.errors[datum.name] ? (
+                <span>{formik.errors[datum.name]}</span>
+              ) : null}
+            </div>
+          )
+      )}
 
       <button
         disabled={
