@@ -2,8 +2,8 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import styles from "./styles.module.css";
-
-const FormBuilder = ({ data, action, title }) => {
+import logo from "../../assets/logo.jpeg";
+const FormBuilder = ({ data, action, title, instruction }) => {
   const addYupMethod = (obj, type, value) => {
     switch (type) {
       case "max":
@@ -86,13 +86,13 @@ const FormBuilder = ({ data, action, title }) => {
       case "select":
         return (
           <>
-            <label htmlFor={name}>
+            {/* <label htmlFor={name}>
               {obj.label}
               {obj.validate && obj.validate.required ? "*" : ""}
-            </label>
+            </label> */}
             <select id={name} {...formik.getFieldProps(name)}>
               <option value="">
-                {obj.selectLabel ? obj.selectLabel : `select ${name}`}{" "}
+                {obj.label ? obj.label : `select ${name}`}{" "}
               </option>
               {list.map((li) => (
                 <option key={li} value={li}>
@@ -105,7 +105,7 @@ const FormBuilder = ({ data, action, title }) => {
 
       case "checkbox":
         return (
-          <div style={{ margin: "5px 0", padding: "5px" }}>
+          <div className={styles.checker}>
             <input id={name} type={type} {...formik.getFieldProps(name)} />
             <label htmlFor={name}>
               {obj.label}
@@ -116,18 +116,25 @@ const FormBuilder = ({ data, action, title }) => {
       default:
         return (
           <>
-            <label htmlFor={name}>
+            {/* <label htmlFor={name}>
               {obj.label}
               {obj.validate && obj.validate.required ? "*" : ""}
-            </label>
-            <input id={name} type={type} {...formik.getFieldProps(name)} />
+            </label> */}
+            <input
+              id={name}
+              type={type}
+              placeholder={obj.label}
+              {...formik.getFieldProps(name)}
+            />
           </>
         );
     }
   };
   return (
     <form onSubmit={formik.handleSubmit} className={styles.form}>
+      <img src={logo} alt="logo" />
       <h2>{title}</h2>
+      {instruction && <p>{instruction}</p>}
       {data.map(
         (datum, i) =>
           (!datum.dependent ||
@@ -157,7 +164,7 @@ const FormBuilder = ({ data, action, title }) => {
         }
         type="submit"
       >
-        Submit
+        &#8594;
       </button>
     </form>
   );

@@ -5,7 +5,8 @@ const OptIn = () => {
   return (
     <Container>
       <FormBuilder
-        title="Whatsapp Opt-in form"
+        title="Whatsapp Opt-in "
+        instruction="Please fill required fields to proceed"
         data={[
           {
             name: "customerType",

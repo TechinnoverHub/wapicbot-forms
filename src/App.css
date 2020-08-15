@@ -1,10 +1,31 @@
+* {
+  box-sizing: border-box;
+}
+.main {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: capitalize;
+}
+
+h1 {
+  font-weight: 300;
+}
+
 a {
   text-decoration: none;
   color: black;
   margin: 0 10px;
+  background-color: #883395;
+  padding: 10px 20px;
+  margin: 10px;
+  color: #fff;
+  border-radius: 5px;
 }
 
 a:hover {
-  border-bottom: 1px solid #444;
   transform: scale(1.1);
 }

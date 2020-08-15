@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import OptIn from "./Pages/OptIn";
 import Insurances from "./Pages/Insurances";
-
+import logo from "./assets/logo.jpeg";
 function App() {
   return (
     <BrowserRouter>
@@ -12,9 +12,16 @@ function App() {
           exact
           path="/"
           component={() => (
-            <div>
+            <div className="main">
+              <img src={logo} alt="logo" />
               <h1>Select a form to view</h1>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "column",
+                }}
+              >
                 <Link to="/optin">Optin</Link>
                 <Link to="/product/moovthirdparty">Car Insurance beta</Link>
               </div>

@@ -5,6 +5,23 @@
   flex-direction: column;
   max-width: 300px;
 }
+.form img {
+  align-self: center;
+  margin: 30px 0;
+}
+
+.form h2 {
+  margin: 0;
+  margin-bottom: 5px;
+  text-transform: capitalize;
+}
+
+.form p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 20px;
+}
 
 .inner {
   display: flex;
@@ -18,15 +35,23 @@
 }
 
 .inner input,
-.inner textarea {
-  padding: 10px 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.inner textarea,
+.inner select {
+  padding: 10px 0;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  margin: 15px 0 0;
+  transition: all 0.5s;
+}
+.inner input:focus {
+  border-color: #883395;
 }
 
 .inner.error input,
-.inner.error textarea {
-  border: 1px solid red;
+.inner.error textarea,
+.inner.error select {
+  border-bottom: 1px solid red;
 }
 .inner.error span {
   font-size: 10px;
@@ -35,16 +60,41 @@
 }
 
 .form button {
-  padding: 10px;
-  margin: 20px 0;
+  padding: 5px 30px;
+  margin: 50px 0;
   cursor: pointer;
-  background: green;
+  background: #883395;
   border: none;
   border-radius: 4px;
   color: #fff;
   outline: none;
+  font-size: 30px;
+  align-self: flex-end;
 }
 
 button:active {
   transform: scale(1.05);
+}
+
+.checker {
+  margin-top: 10px;
+  padding: 5px;
+  display: flex;
+  cursor: pointer;
+}
+
+.checker label {
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 20px;
+  margin: 0;
+}
+
+.checker input[type="checkbox"] {
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.inner.error .checker label {
+  color: red;
 }
