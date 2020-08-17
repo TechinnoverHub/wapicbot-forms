@@ -24,6 +24,14 @@ function App() {
               >
                 <Link to="/optin">Optin</Link>
                 <Link to="/product/moovthirdparty">Car Insurance beta</Link>
+                <Link to="/product/moovplusfiretheft">
+                  Moov Plus (Fire & Theft)
+                </Link>
+                <Link to="/product/moovluxury">Moov Plus (Fire & Theft)</Link>
+                <Link to="/product/moovprestige">
+                  Moov Prestige (Private Comprehensive)
+                </Link>
+                <Link to="/product/lifeinsurance">All Life Insurance</Link>
               </div>
             </div>
           )}
