@@ -3,60 +3,6 @@ import FormBuilder from "../components/Form";
 import Container from "../components/Container";
 import { useParams } from "react-router-dom";
 const products = {
-  // vehicle: [
-  //   {
-  //     name: "firstName",
-  //     label: "First Name",
-  //     validate: {
-  //       required: "required",
-  //       max: [15, "Must be 15 characters or less"],
-  //     },
-  //     type: "text",
-  //   },
-  //   {
-  //     name: "lastName",
-  //     label: "Last Name",
-  //     validate: {
-  //       required: "required",
-  //       max: [15, "Must be 15 characters or less"],
-  //     },
-  //     type: "text",
-  //   },
-  //   {
-  //     name: "email",
-  //     label: "Email",
-  //     validate: {
-  //       required: "required",
-  //       email: "Invalid email address",
-  //     },
-  //     type: "email",
-  //   },
-  //   {
-  //     name: "claim",
-  //     label: "Claim Number",
-  //     validate: {
-  //       required: "required",
-  //     },
-  //     type: "number",
-  //   },
-  //   {
-  //     name: "moreDetail",
-  //     label: "Gist us",
-  //     validate: {
-  //       // required: "required",
-  //     },
-  //     type: "textarea",
-  //   },
-  //   {
-  //     name: "season",
-  //     label: "what time",
-  //     validate: {
-  //       required: "required",
-  //     },
-  //     type: "select",
-  //     list: ["today", "tommorrow", "next"],
-  //   },
-  // ],
   moovthirdparty: [
     {
       name: "vehicleClass",
@@ -73,21 +19,22 @@ const products = {
     },
     {
       name: "manufacturer",
-      label: "Vehicle Make",
+      data: "manufacturers",
+      label: "select Manufacturer ",
       validate: {
         required: "required",
       },
       type: "select",
-      list: ["Acura", "Audi", "BMW", "Cardilac"],
     },
     {
       name: "model",
-      label: "Vehicle Model",
+      label: "Select Vehicle Model",
       validate: {
         required: "required",
       },
       type: "select",
-      list: ["A4", "test", "second", "test3"],
+      dependent: "manufacturer",
+      data: "carModels",
     },
     {
       name: "policyholder",
@@ -134,12 +81,12 @@ const products = {
     },
     {
       name: "manufacturer",
+      data: "manufacturers",
       label: "select Manufacturer ",
       validate: {
         required: "required",
       },
       type: "select",
-      list: ["Acura", "Audi", "BMW", "Cardilac"],
     },
     {
       name: "model",
@@ -148,7 +95,8 @@ const products = {
         required: "required",
       },
       type: "select",
-      list: ["A4", "test", "second", "test3"],
+      dependent: "manufacturer",
+      data: "carModels",
     },
     {
       name: "policyholder",
@@ -230,12 +178,12 @@ const products = {
     },
     {
       name: "manufacturer",
+      data: "manufacturers",
       label: "select Manufacturer ",
       validate: {
         required: "required",
       },
       type: "select",
-      list: ["Acura", "Audi", "BMW", "Cardilac"],
     },
     {
       name: "model",
@@ -244,7 +192,8 @@ const products = {
         required: "required",
       },
       type: "select",
-      list: ["A4", "test", "second", "test3"],
+      dependent: "manufacturer",
+      data: "carModels",
     },
     {
       name: "policyholder",
@@ -326,12 +275,12 @@ const products = {
     },
     {
       name: "manufacturer",
+      data: "manufacturers",
       label: "select Manufacturer ",
       validate: {
         required: "required",
       },
       type: "select",
-      list: ["Acura", "Audi", "BMW", "Cardilac"],
     },
     {
       name: "model",
@@ -340,7 +289,8 @@ const products = {
         required: "required",
       },
       type: "select",
-      list: ["A4", "test", "second", "test3"],
+      dependent: "manufacturer",
+      data: "carModels",
     },
     {
       name: "policyholder",
@@ -441,7 +391,7 @@ const products = {
       validate: {
         required: "required",
       },
-      type: "text",
+      type: "date",
     },
     {
       name: "sumAssured",

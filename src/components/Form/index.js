@@ -3,6 +3,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import styles from "./styles.module.css";
 import logo from "../../assets/logo.jpeg";
+import { manufacturers, carModels } from "./helpers";
+
+const dataBucket = {
+  manufacturers,
+  carModels,
+};
 const FormBuilder = ({ data, action, title, instruction }) => {
   const addYupMethod = (obj, type, value) => {
     switch (type) {
@@ -94,11 +100,31 @@ const FormBuilder = ({ data, action, title, instruction }) => {
               <option value="">
                 {obj.label ? obj.label : `select ${name}`}{" "}
               </option>
-              {list.map((li) => (
-                <option key={li} value={li}>
-                  {li}
-                </option>
-              ))}
+
+              {obj.dependent
+                ? formik.values[obj.dependent]
+                  ? dataBucket[obj.data][formik.values[obj.dependent]] &&
+                    dataBucket[obj.data][formik.values[obj.dependent]].map(
+                      (li) => (
+                        <option key={li.value} value={li.value}>
+                          {li.value}
+                        </option>
+                      )
+                    )
+                  : null
+                : obj.data
+                ? dataBucket[obj.data].map((li) => (
+                    <option key={li.value} value={li.value}>
+                      {li.value}
+                    </option>
+                  ))
+                : list
+                ? list.map((li) => (
+                    <option key={li} value={li}>
+                      {li}
+                    </option>
+                  ))
+                : null}
             </select>
           </>
         );
@@ -111,6 +137,21 @@ const FormBuilder = ({ data, action, title, instruction }) => {
               {obj.label}
               {obj.validate && obj.validate.required ? "*" : ""}
             </label>
+          </div>
+        );
+      case "date":
+        return (
+          <div className={styles.date}>
+            <label htmlFor={name}>
+              {obj.label}
+              {obj.validate && obj.validate.required ? "*" : ""}
+            </label>
+            <input
+              id={name}
+              type={type}
+              placeholder={obj.label}
+              {...formik.getFieldProps(name)}
+            />
           </div>
         );
       default:

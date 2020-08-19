@@ -98,3 +98,17 @@ button:active {
 .inner.error .checker label {
   color: red;
 }
+
+.date {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.date input {
+  margin-top: 0;
+}
+.date label {
+  margin-bottom: 0;
+  color: #888;
+}

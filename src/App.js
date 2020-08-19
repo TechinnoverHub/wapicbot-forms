@@ -27,7 +27,7 @@ function App() {
                 <Link to="/product/moovplusfiretheft">
                   Moov Plus (Fire & Theft)
                 </Link>
-                <Link to="/product/moovluxury">Moov Plus (Fire & Theft)</Link>
+                <Link to="/product/moovluxury">Moov Luxury</Link>
                 <Link to="/product/moovprestige">
                   Moov Prestige (Private Comprehensive)
                 </Link>
