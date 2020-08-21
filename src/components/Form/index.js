@@ -3,13 +3,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import styles from "./styles.module.css";
 import logo from "../../assets/logo.jpeg";
+import loader from "../../assets/loader.gif";
 import { manufacturers, carModels } from "./helpers";
 
 const dataBucket = {
   manufacturers,
   carModels,
 };
-const FormBuilder = ({ data, action, title, instruction }) => {
+const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
   const addYupMethod = (obj, type, value) => {
     switch (type) {
       case "max":
@@ -175,7 +176,15 @@ const FormBuilder = ({ data, action, title, instruction }) => {
     <form onSubmit={formik.handleSubmit} className={styles.form}>
       <img src={logo} alt="logo" />
       <h2>{title}</h2>
+
       {instruction && <p>{instruction}</p>}
+
+      {error && (
+        <div className={styles.error}>
+          <h3>Error</h3>
+          <p>{error}</p>
+        </div>
+      )}
       {data.map(
         (datum, i) =>
           (!datum.dependent ||
@@ -198,15 +207,19 @@ const FormBuilder = ({ data, action, title, instruction }) => {
           )
       )}
 
-      <button
-        disabled={
-          Object.keys(formik.touched).length &&
-          Object.keys(formik.errors).length
-        }
-        type="submit"
-      >
-        &#8594;
-      </button>
+      {loading ? (
+        <img src={loader} alt="loader" />
+      ) : (
+        <button
+          disabled={
+            Object.keys(formik.touched).length &&
+            Object.keys(formik.errors).length
+          }
+          type="submit"
+        >
+          &#8594;
+        </button>
+      )}
     </form>
   );
 };
