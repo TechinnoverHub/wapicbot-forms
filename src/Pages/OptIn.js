@@ -21,7 +21,7 @@ const OptIn = () => {
           firstname: values.firstName,
           lastname: values.lastName,
           email: values.email,
-          whatsappNo: `+${whatsappNo}`,
+          whatsappNo: `+${whatsappNo.trim()}`,
         }
       );
       console.log(data);
