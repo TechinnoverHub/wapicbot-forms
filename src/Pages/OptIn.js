@@ -21,7 +21,7 @@ const OptIn = () => {
           firstname: values.firstName,
           lastname: values.lastName,
           email: values.email,
-          whatsappNo,
+          whatsappNo: `+${whatsappNo}`,
         }
       );
       console.log(data);
@@ -52,7 +52,7 @@ const OptIn = () => {
             type: "select",
             selectLabel: "select your type",
             list: [
-              "new customer",
+              "new",
               //  "existing customer"
             ],
           },
@@ -66,7 +66,7 @@ const OptIn = () => {
             type: "text",
             dependent: {
               key: "customerType",
-              value: "new customer",
+              value: "new",
             },
           },
           {
@@ -79,7 +79,7 @@ const OptIn = () => {
             type: "text",
             dependent: {
               key: "customerType",
-              value: "new customer",
+              value: "new",
             },
           },
           {
@@ -100,7 +100,7 @@ const OptIn = () => {
             type: "number",
             dependent: {
               key: "customerType",
-              value: "existing customer",
+              value: "returning",
             },
           },
           {
