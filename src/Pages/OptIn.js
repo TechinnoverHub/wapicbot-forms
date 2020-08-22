@@ -50,9 +50,9 @@ const OptIn = () => {
               required: "required",
             },
             type: "select",
-            selectLabel: "select your type",
+            selectLabel: "select one",
             list: [
-              "new",
+              "new customer",
               //  "existing customer"
             ],
           },

@@ -93,13 +93,13 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
       case "select":
         return (
           <>
-            {/* <label htmlFor={name}>
+            <label htmlFor={name}>
               {obj.label}
               {obj.validate && obj.validate.required ? "*" : ""}
-            </label> */}
+            </label>
             <select id={name} {...formik.getFieldProps(name)}>
               <option value="">
-                {obj.label ? obj.label : `select ${name}`}{" "}
+                {obj.selectLabel ? obj.selectLabel : `select ${name}`}{" "}
               </option>
 
               {obj.dependent
