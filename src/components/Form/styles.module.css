@@ -113,14 +113,14 @@ button:active {
   color: #888;
 }
 
-.error {
+.errorBox {
   padding: 10px;
   background-color: rgb(255, 72, 72);
   border-radius: 5px;
   color: #fff;
 }
 
-.error h3 {
+.errorBox h3 {
   margin: 0;
   margin-bottom: 5px;
 }

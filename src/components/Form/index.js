@@ -180,7 +180,7 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
       {instruction && <p>{instruction}</p>}
 
       {error && (
-        <div className={styles.error}>
+        <div className={styles.errorBox}>
           <h3>Error</h3>
           <p>{error}</p>
         </div>

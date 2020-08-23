@@ -51,10 +51,7 @@ const OptIn = () => {
             },
             type: "select",
             selectLabel: "select one",
-            list: [
-              "new customer",
-              //  "existing customer"
-            ],
+            list: ["new customer", "returning customer"],
           },
           {
             name: "firstName",
@@ -66,7 +63,7 @@ const OptIn = () => {
             type: "text",
             dependent: {
               key: "customerType",
-              value: "new",
+              value: "new customer",
             },
           },
           {
@@ -79,7 +76,7 @@ const OptIn = () => {
             type: "text",
             dependent: {
               key: "customerType",
-              value: "new",
+              value: "new customer",
             },
           },
           {
@@ -100,7 +97,7 @@ const OptIn = () => {
             type: "number",
             dependent: {
               key: "customerType",
-              value: "returning",
+              value: "returning customer",
             },
           },
           {
@@ -121,7 +118,7 @@ const OptIn = () => {
           },
         ]}
         action={(values) => {
-          submitForm(values);
+          if (values.customerType === "new customer") submitForm(values);
           //alert("submitted data \n" + JSON.stringify(values, null, 2));
         }}
       />
