@@ -1,3 +1,9 @@
+import NaijaStates from "naija-state-local-government";
+import ngBanks from "ng-banks";
+const allLgasObj = {};
+NaijaStates.all().forEach((st) => {
+  allLgasObj[st.state] = st.lgas.map((lg) => ({ value: lg }));
+});
 export const manufacturers = [
   {
     value: "Acura",
@@ -1709,3 +1715,77 @@ export const carModels = {
     },
   ],
 };
+
+export const allStates = NaijaStates.states().map((st) => ({ value: st }));
+export const allLgas = allLgasObj;
+export const allBanks = [
+  {
+    value: "ACCESS BANK PLC",
+  },
+  {
+    value: "CITIBANK NIGERIA PLC",
+  },
+  {
+    value: "ACCESS(DIAMOND) BANK PLC",
+  },
+  {
+    value: "ECOBANK NIGERIA PLC",
+  },
+  {
+    value: "FIDELITY BANK PLC",
+  },
+  {
+    value: "FIRST BANK NIGERIA LIMITED",
+  },
+  {
+    value: "FIRST CITY MONUMENT BANK PLC",
+  },
+  {
+    value: "GLOBUS BANK LTD",
+  },
+  {
+    value: "GUARANTY TRUST BANK PLC",
+  },
+  {
+    value: "HERITAGE BANK PLC",
+  },
+  {
+    value: "KEY STONE BANK",
+  },
+  {
+    value: "POLARIS BANK LIMITED",
+  },
+  {
+    value: "PROVIDUS BANK LIMITED",
+  },
+  {
+    value: "STANBIC IBTC BANK LTD",
+  },
+  {
+    value: "STANDARD CHARTERED BANK NIGERIA LTD",
+  },
+  {
+    value: "STERLING BANK PLC",
+  },
+  {
+    value: "SUNTRUST BANK NIGERIA LTD",
+  },
+  {
+    value: "TITAN TRUST BANK LTD",
+  },
+  {
+    value: "UNION BANK OF NIGERIA PLC",
+  },
+  {
+    value: "UNITED BANK FOR AFRICA PLC",
+  },
+  {
+    value: "UNITY BANK PLC",
+  },
+  {
+    value: "WEMA BANK PLC",
+  },
+  {
+    value: "ZENITH BANK PLC",
+  },
+];

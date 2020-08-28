@@ -4,12 +4,23 @@ import * as Yup from "yup";
 import styles from "./styles.module.css";
 import logo from "../../assets/logo.jpeg";
 import loader from "../../assets/loader.gif";
-import { manufacturers, carModels } from "./helpers";
+import {
+  manufacturers,
+  carModels,
+  allStates,
+  allLgas,
+  allBanks,
+} from "./helpers";
 
+console.log(allBanks);
 const dataBucket = {
   manufacturers,
   carModels,
+  allStates,
+  allLgas,
+  allBanks,
 };
+
 const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
   const addYupMethod = (obj, type, value) => {
     switch (type) {
@@ -30,21 +41,23 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
     const validation = {};
     const initials = {};
     data.forEach((dt) => {
-      if (
-        !condition ||
-        !dt.dependent ||
-        (dt.dependent && condition[dt.dependent.key] === dt.dependent.value)
-      ) {
-        initials[dt.name] = "";
-        validation[dt.name] =
-          dt.type !== "number" ? Yup.string() : Yup.number();
-        Object.keys(dt.validate).forEach((ky) => {
-          validation[dt.name] = addYupMethod(
-            validation[dt.name],
-            ky,
-            dt.validate[ky]
-          );
-        });
+      if (!dt.section) {
+        if (
+          !condition ||
+          !dt.dependent ||
+          (dt.dependent && condition[dt.dependent.key] === dt.dependent.value)
+        ) {
+          initials[dt.name] = "";
+          validation[dt.name] =
+            dt.type !== "number" ? Yup.string() : Yup.number();
+          Object.keys(dt.validate).forEach((ky) => {
+            validation[dt.name] = addYupMethod(
+              validation[dt.name],
+              ky,
+              dt.validate[ky]
+            );
+          });
+        }
       }
     });
     return { validation, initials };
@@ -185,8 +198,10 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
           <p>{error}</p>
         </div>
       )}
-      {data.map(
-        (datum, i) =>
+      {data.map((datum, i) =>
+        datum.section ? (
+          <h1>{datum.section}</h1>
+        ) : (
           (!datum.dependent ||
             (datum.dependent &&
               formik.values[datum.dependent.key] ===
@@ -205,6 +220,7 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
               ) : null}
             </div>
           )
+        )
       )}
 
       {loading ? (
