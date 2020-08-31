@@ -23,12 +23,12 @@ function App() {
                   flexDirection: "column",
                 }}
               >
-                <Link to="/optin?+2349069787848">Optin</Link>
+                <Link to="/optin?whatsapp=+2349069787848">Optin</Link>
                 <Link to="/product/moov-third-party">Car Insurance beta</Link>
                 <Link to="/product/moov-plus-(fire-and-theft)">
                   Moov Plus (Fire & Theft)
                 </Link>
-                <Link to="/product/moov-luxury-(extented-comprehensive)">
+                <Link to="/product/moov-luxury-(extented-comprehensive) ">
                   Moov Luxury
                 </Link>
                 <Link to="/product/moov-prestige-(private-comprehensive)">
