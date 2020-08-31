@@ -1,5 +1,4 @@
 import NaijaStates from "naija-state-local-government";
-import ngBanks from "ng-banks";
 const allLgasObj = {};
 NaijaStates.all().forEach((st) => {
   allLgasObj[st.state] = st.lgas.map((lg) => ({ value: lg }));

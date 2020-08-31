@@ -1,45 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
 import FormBuilder from "../components/Form";
 import Container from "../components/Container";
-import axios from "axios";
-import { useLocation } from "react-router-dom";
+// import axios from "axios";
+// import { useLocation } from "react-router-dom";
 
 const KYC = () => {
-  const location = useLocation();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const submitForm = async (values) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const searchParams = new URLSearchParams(location.search);
-      const whatsappNo = searchParams.get("whatsapp");
-      if (!whatsappNo) setLoading(false);
-      const { data } = await axios.post(
-        "https://wapicbot-api.herokuapp.com/api/auth/optin",
-        {
-          firstname: values.firstName,
-          lastname: values.lastName,
-          email: values.email,
-          whatsappNo: `+${whatsappNo.trim()}`,
-        }
-      );
-      console.log(data);
-      window.location = "https://wa.me/+2348111228899";
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      if (error.response) {
-        setError(error.response.data.message);
-      }
-      console.log(error.response);
-    }
-  };
+  // const location = useLocation();
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState(null);
+  // const submitForm = async (values) => {
+  //   setLoading(true);
+  //   setError(null);
+  //   try {
+  //     const searchParams = new URLSearchParams(location.search);
+  //     const whatsappNo = searchParams.get("whatsapp");
+  //     if (!whatsappNo) setLoading(false);
+  //     const { data } = await axios.post(
+  //       "https://wapicbot-api.herokuapp.com/api/auth/optin",
+  //       {
+  //         firstname: values.firstName,
+  //         lastname: values.lastName,
+  //         email: values.email,
+  //         whatsappNo: `+${whatsappNo.trim()}`,
+  //       }
+  //     );
+  //     console.log(data);
+  //     window.location = "https://wa.me/+2348111228899";
+  //     setLoading(false);
+  //   } catch (error) {
+  //     setLoading(false);
+  //     if (error.response) {
+  //       setError(error.response.data.message);
+  //     }
+  //     console.log(error.response);
+  //   }
+  // };
   return (
     <Container>
       <FormBuilder
-        error={error}
-        loading={loading}
+        // error={error}
+        // loading={loading}
         title="KYC"
         instruction="Please fill required fields to proceed"
         data={[
