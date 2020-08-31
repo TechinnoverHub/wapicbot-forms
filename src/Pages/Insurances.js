@@ -3,7 +3,7 @@ import FormBuilder from "../components/Form";
 import Container from "../components/Container";
 import { useParams } from "react-router-dom";
 const products = {
-  moovthirdparty: [
+  "moov-third-party": [
     {
       name: "vehicleClass",
       label: "Vehicle Class",
@@ -65,7 +65,7 @@ const products = {
       type: "text",
     },
   ],
-  moovplusfiretheft: [
+  "moov-plus-(fire-and-theft)": [
     {
       name: "vehicleClass",
       label: "Select Vehicle Class",
@@ -162,7 +162,7 @@ const products = {
       list: ["yes", "no"],
     },
   ],
-  moovluxury: [
+  "moov-luxury-(extented-comprehensive)": [
     {
       name: "vehicleClass",
       label: "Select Vehicle Class",
@@ -259,7 +259,7 @@ const products = {
       list: ["yes"],
     },
   ],
-  moovprestige: [
+  "moov-prestige-(private-comprehensive)": [
     {
       name: "vehicleClass",
       label: "Select Vehicle Class",

@@ -24,12 +24,14 @@ function App() {
                 }}
               >
                 <Link to="/optin?+2349069787848">Optin</Link>
-                <Link to="/product/moovthirdparty">Car Insurance beta</Link>
-                <Link to="/product/moovplusfiretheft">
+                <Link to="/product/moov-third-party">Car Insurance beta</Link>
+                <Link to="/product/moov-plus-(fire-and-theft)">
                   Moov Plus (Fire & Theft)
                 </Link>
-                <Link to="/product/moovluxury">Moov Luxury</Link>
-                <Link to="/product/moovprestige">
+                <Link to="/product/moov-luxury-(extented-comprehensive)">
+                  Moov Luxury
+                </Link>
+                <Link to="/product/moov-prestige-(private-comprehensive)">
                   Moov Prestige (Private Comprehensive)
                 </Link>
                 <Link to="/product/lifeinsurance">All Life Insurance</Link>
