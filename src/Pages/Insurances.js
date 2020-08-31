@@ -65,6 +65,14 @@ const products = {
       },
       type: "text",
     },
+    {
+      name: "vehicleValue",
+      label: "Vehicle Value",
+      validate: {
+        required: "required",
+      },
+      type: "number",
+    },
   ],
   "moov-plus-(fire-and-theft)": [
     {
@@ -429,7 +437,7 @@ const products = {
     },
   ],
 };
-const Insurances = () => {
+const Insurances = ({ history }) => {
   const { type } = useParams();
   return (
     <Container>
@@ -437,7 +445,8 @@ const Insurances = () => {
         title="Fill Details"
         data={products[type] || []}
         action={(values) => {
-          alert(JSON.stringify(values, null, 2));
+          history.push("/quote-success", { ...values, productType: type });
+          // alert(JSON.stringify(values, null, 2));
         }}
       />
     </Container>

@@ -200,7 +200,7 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
       )}
       {data.map((datum, i) =>
         datum.section ? (
-          <h1>{datum.section}</h1>
+          <h1 key={i}>{datum.section}</h1>
         ) : (
           (!datum.dependent ||
             (datum.dependent &&

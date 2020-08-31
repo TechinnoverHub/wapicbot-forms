@@ -11,10 +11,18 @@
   text-transform: capitalize;
 }
 
-h1 {
+h1,
+h2,
+h3,
+h4 {
   font-weight: 300;
+  margin: 0;
 }
-
+.titleHead {
+  margin: 20px 0 0;
+  font-weight: bold;
+  color: #883395;
+}
 a {
   text-decoration: none;
   color: black;
@@ -28,4 +36,32 @@ a {
 
 a:hover {
   transform: scale(1.1);
+}
+.continueButton {
+  padding: 10px 30px;
+  border-radius: 30px;
+  background-color: #883395;
+  color: #fff;
+  border: none;
+  margin-top: 50px;
+  cursor: pointer;
+}
+.sect1 {
+  margin: 20px 0 0;
+  font-weight: bold;
+  color: #883395;
+}
+.group1 {
+  margin: 20px 0 0;
+  padding: 10px;
+  background-color: #883395;
+  color: #fff;
+}
+
+.group2 {
+  margin: 20px 0;
+}
+
+.group2 h4 {
+  color: #aaa;
 }

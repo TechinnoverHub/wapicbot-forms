@@ -242,6 +242,7 @@ const KYC = () => {
           },
         ]}
         action={(values) => {
+          window.location = "https://wa.me/+2348111228899";
           // if (values.customerType === "new customer") submitForm(values);
           //alert("submitted data \n" + JSON.stringify(values, null, 2));
         }}
