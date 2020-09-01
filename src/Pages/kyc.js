@@ -1,45 +1,93 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import FormBuilder from "../components/Form";
 import Container from "../components/Container";
-// import axios from "axios";
+import axios from "axios";
 // import { useLocation } from "react-router-dom";
+import includesAll from "../utils/includesAll";
+// import formatNum from "../utils/formatNum";
 
-const KYC = () => {
+const KYC = (props) => {
   // const location = useLocation();
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState(null);
-  // const submitForm = async (values) => {
-  //   setLoading(true);
-  //   setError(null);
-  //   try {
-  //     const searchParams = new URLSearchParams(location.search);
-  //     const whatsappNo = searchParams.get("whatsapp");
-  //     if (!whatsappNo) setLoading(false);
-  //     const { data } = await axios.post(
-  //       "https://wapicbot-api.herokuapp.com/api/auth/optin",
-  //       {
-  //         firstname: values.firstName,
-  //         lastname: values.lastName,
-  //         email: values.email,
-  //         whatsappNo: `+${whatsappNo.trim()}`,
-  //       }
-  //     );
-  //     console.log(data);
-  //     window.location = "https://wa.me/+2348111228899";
-  //     setLoading(false);
-  //   } catch (error) {
-  //     setLoading(false);
-  //     if (error.response) {
-  //       setError(error.response.data.message);
-  //     }
-  //     console.log(error.response);
-  //   }
-  // };
+  const [quoteDetails, setQuoteDetails] = useState({});
+  useEffect(() => {
+    const states = Object.keys(props.location.state || {});
+    const isValid = includesAll(states, [
+      "vehicleClass",
+      "manufacturer",
+      "model",
+      "policyholder",
+      "vehicleValue",
+      "product",
+      "quote",
+    ]);
+
+    console.log(isValid, props, states);
+    if (!isValid) {
+      return props.history.replace("/product/moov-third-party");
+    }
+    const {
+      vehicleClass,
+      manufacturer,
+      model,
+      policyholder,
+      vehicleValue,
+      product,
+      quote,
+    } = props.location.state;
+
+    setQuoteDetails({
+      vehicleClass,
+      manufacturer,
+      model,
+      policyholder,
+      vehicleValue,
+      product,
+      quote,
+    });
+  }, [props]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const submitForm = async (values) => {
+    setLoading(true);
+    setError(null);
+    try {
+      // const searchParams = new URLSearchParams(location.search);
+      // const whatsappNo = searchParams.get("whatsapp");/
+      // if (!whatsappNo) setLoading(false);
+      const { data } = await axios.post(
+        "https://wapicbot-api.herokuapp.com/api/users/update-kyc",
+        {
+          gender: values.gender,
+          dob: values.dateOfBirth,
+          maritalStatus: values.maritalStatus,
+          religion: values.religon,
+          height: values.height,
+          weight: values.weight,
+          state: values.state,
+          occupation: values.occupation,
+          businessType: values.businessType,
+          bankName: values.bankName,
+          accountNumber: values.accountNumber,
+          bvn: values.bvn,
+        }
+      );
+      console.log(data);
+      props.history.push("/pay", quoteDetails);
+      // window.location = "https://wa.me/+2348111228899";
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      if (error.response) {
+        setError(error.response.data.message);
+      }
+      console.log(error.response);
+    }
+  };
   return (
     <Container>
       <FormBuilder
-        // error={error}
-        // loading={loading}
+        error={error}
+        loading={loading}
         title="KYC"
         instruction="Please fill required fields to proceed"
         data={[
@@ -54,7 +102,7 @@ const KYC = () => {
             },
             type: "select",
             selectLabel: "select one",
-            list: ["male", "female"],
+            list: ["MALE", "FEMALE"],
           },
 
           {
@@ -75,15 +123,41 @@ const KYC = () => {
             selectLabel: "select one",
             list: ["divorced", "married", "single", "widowed"],
           },
-
           {
-            name: "houseAddress",
-            label: "House Number & Address",
+            name: "religion",
+            label: "Religion",
             validate: {
               required: "required",
-              min: [10, "Must be 10 characters or more"],
             },
-            type: "text",
+            type: "select",
+            selectLabel: "select one",
+            list: [
+              "BUDDISH",
+              "CHINESE FOLK RELIGION",
+              "CHRISTIANITY",
+              "HINDUISM",
+              "ISLAM",
+              "NOT APPLICABLE",
+              "OTHERS",
+              "TRADITIONAL WORSHIPPER",
+            ],
+          },
+          {
+            name: "height",
+            label: "Height (meters)",
+            validate: {
+              // required: "required",
+            },
+            type: "number",
+          },
+          {
+            name: "weight",
+            label: "Weight (Kg)",
+            validate: {
+              // required: "required",
+              // min: [10, "Must be 10 characters or more"],
+            },
+            type: "number",
           },
           {
             name: "state",
@@ -114,7 +188,43 @@ const KYC = () => {
             },
             type: "select",
             selectLabel: "select one",
-            list: ["acountant", "administrator", "architect", "banker"],
+            list: [
+              "accountant",
+              "administrator",
+              "architect",
+              "banker",
+              "beautician",
+              "business trader",
+              "caterer",
+              "civil servant",
+              "cleric",
+              "communication technologies",
+              "educationist",
+              "engineer",
+              "farmer",
+              "fashion designer",
+              "financial services consul",
+              "horologist",
+              "horticulturist",
+              "importer and exporter",
+              "information technologist",
+              "journalist",
+              "legal practitioner",
+              "merchant",
+              "military personnel",
+              "not applicable",
+              "NYSC member",
+              "others",
+              "pilot",
+              "retired",
+              "sailor",
+              "scientist",
+              "secretary",
+              "student",
+              "surveyor",
+              "system analyst",
+              "transporter",
+            ],
           },
           {
             name: "businessType",
@@ -124,7 +234,18 @@ const KYC = () => {
             },
             type: "select",
             selectLabel: "select one",
-            list: ["acountant", "administrator", "architect", "banker"],
+            list: [
+              "financial services",
+              "manufacturing",
+              "oil & gas",
+              "others",
+              "public sector",
+              "retail customer",
+              "services",
+              "sme",
+              "telecoms",
+              "transportation",
+            ],
           },
 
           {
@@ -135,7 +256,7 @@ const KYC = () => {
             label: "Chassis/VIN Number",
             validate: {
               required: "required",
-              min: [10, "Must be 10 characters or more"],
+              // min: [10, "Must be 10 characters or more"],
             },
             type: "text",
           },
@@ -144,7 +265,7 @@ const KYC = () => {
             label: "Engine Number",
             validate: {
               required: "required",
-              min: [10, "Must be 10 characters or more"],
+              // min: [10, "Must be 10 characters or more"],
             },
             type: "text",
           },
@@ -153,7 +274,7 @@ const KYC = () => {
             label: "Color",
             validate: {
               required: "required",
-              min: [10, "Must be 10 characters or more"],
+              // min: [10, "Must be 10 characters or more"],
             },
             type: "text",
           },
@@ -212,7 +333,7 @@ const KYC = () => {
             type: "date",
           },
           {
-            name: "bank",
+            name: "bankName",
             label: "Bank Name",
             validate: {
               required: "required",
@@ -242,8 +363,7 @@ const KYC = () => {
           },
         ]}
         action={(values) => {
-          window.location = "https://wa.me/+2348111228899";
-          // if (values.customerType === "new customer") submitForm(values);
+          submitForm(values);
           //alert("submitted data \n" + JSON.stringify(values, null, 2));
         }}
       />

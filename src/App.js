@@ -6,6 +6,7 @@ import Insurances from "./Pages/Insurances";
 import logo from "./assets/logo.jpeg";
 import KYC from "./Pages/kyc";
 import QuoteSuccess from "./Pages/QuoteSuccess";
+import Paystack from "./Pages/Paystack";
 function App() {
   return (
     <BrowserRouter>
@@ -35,6 +36,9 @@ function App() {
                 <Link to="/product/moov-prestige-(private-comprehensive)">
                   Moov Prestige (Private Comprehensive)
                 </Link>
+                <Link to="/product/moov-prestige-(commercial-comprehensive)">
+                  Moov Prestige (Commercial Comprehensive)
+                </Link>
                 <Link to="/product/lifeinsurance">All Life Insurance</Link>
                 <Link to="/quote-success">SuccessQuote</Link>
                 <Link to="/kyc">KYC form</Link>
@@ -46,6 +50,7 @@ function App() {
         <Route path="/product/:type" component={Insurances} />
         <Route path="/kyc" component={KYC} />
         <Route path="/quote-success" component={QuoteSuccess} />
+        <Route path="/pay" component={Paystack} />
         <Route component={() => <h1>Lost</h1>} />
       </Switch>
     </BrowserRouter>

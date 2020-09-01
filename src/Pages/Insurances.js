@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import FormBuilder from "../components/Form";
 import Container from "../components/Container";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
+const vehicleClassMap = {
+  "private Cars": "PRIVATE",
+  "Commercial Buses & Vehicle": "COMMERCIAL",
+  "commercial Buses & Vehicle": "BUSES",
+  "trucks & General Cartage": "TRUCKS",
+  uber: "UBER",
+  "motor cycle": "MOTORCYCLE",
+};
 const products = {
   "moov-third-party": [
     {
@@ -13,9 +22,9 @@ const products = {
       },
       type: "select",
       list: [
-        "Cars/Sedan/SUV",
-        "Private Buses and Pickup Trucks (Private Use Only) e.g Staff buses & Hilux",
-        "Commercial Trucks (below 3 tonnes) e.g Mack & Mercedes trucks",
+        "private Cars",
+        "Commercial Buses & Vehicle",
+        "trucks & General Cartage",
       ],
     },
     {
@@ -38,30 +47,31 @@ const products = {
       data: "carModels",
     },
     {
+      name: "regNumber",
+      label: "Registration Number",
+      validate: {
+        required: "required",
+      },
+      type: "text",
+    },
+    {
       name: "policyholder",
-      label: "Policyholder Type",
+      label: "Vehicle Type",
       validate: {
         required: "required",
       },
       type: "select",
-      list: ["Coporate", "Private"],
+      selectLabel: "select one",
+      list: ["Corporate Use", "Private Use"],
     },
-    {
-      name: "email",
-      label: "Email Address",
-      validate: {
-        required: "required",
-        min: [5, "Must be 15 characters or more"],
-      },
-      type: "text",
-    },
+
     {
       name: "phone",
       label: "Phone Number",
       validate: {
         required: "required",
-        max: [11, "Must be 15 characters"],
-        min: [11, "Must be 15 characters"],
+        max: [11, "Must be 11 characters"],
+        min: [11, "Must be 11 characters"],
       },
       type: "text",
     },
@@ -82,11 +92,7 @@ const products = {
         required: "required",
       },
       type: "select",
-      list: [
-        "Private Cars/Sedan/SUV",
-        "Private Pickup Trucks e.g  Hilux",
-        "Private Buses e.g Staff buses",
-      ],
+      list: ["private Cars"],
     },
     {
       name: "manufacturer",
@@ -108,35 +114,36 @@ const products = {
       data: "carModels",
     },
     {
-      name: "policyholder",
-      label: "Policyholder Type",
+      name: "regNumber",
+      label: "Registration Number",
       validate: {
         required: "required",
-      },
-      type: "select",
-      list: ["Coporate", "Private"],
-    },
-    {
-      name: "email",
-      label: "Email Address",
-      validate: {
-        required: "required",
-        min: [5, "Must be 15 characters or more"],
       },
       type: "text",
     },
+    {
+      name: "policyholder",
+      label: "Vehicle Type",
+      validate: {
+        required: "required",
+      },
+      selectLabel: "select one",
+      type: "select",
+      list: ["Corporate Use", "Private Use"],
+    },
+
     {
       name: "phone",
       label: "Phone Number",
       validate: {
         required: "required",
-        max: [11, "Must be 15 characters"],
-        min: [11, "Must be 15 characters"],
+        max: [11, "Must be 11 characters"],
+        min: [11, "Must be 11 characters"],
       },
       type: "text",
     },
     {
-      name: "valueOfVehicle",
+      name: "vehicleValue",
       label: "Vehicle value",
       validate: {
         required: "required",
@@ -179,11 +186,7 @@ const products = {
         required: "required",
       },
       type: "select",
-      list: [
-        "Private Cars/Sedan/SUV",
-        "Private Pickup Trucks e.g  Hilux",
-        "Private Buses e.g Staff buses",
-      ],
+      list: ["private Cars"],
     },
     {
       name: "manufacturer",
@@ -205,35 +208,36 @@ const products = {
       data: "carModels",
     },
     {
-      name: "policyholder",
-      label: "Policyholder Type",
+      name: "regNumber",
+      label: "Registration Number",
       validate: {
         required: "required",
-      },
-      type: "select",
-      list: ["Coporate", "Private"],
-    },
-    {
-      name: "email",
-      label: "Email Address",
-      validate: {
-        required: "required",
-        min: [5, "Must be 15 characters or more"],
       },
       type: "text",
     },
+    {
+      name: "policyholder",
+      label: "Vehicle Type",
+      validate: {
+        required: "required",
+      },
+      selectLabel: "select one",
+      type: "select",
+      list: ["Corporate Use", "Private Use"],
+    },
+
     {
       name: "phone",
       label: "Phone Number",
       validate: {
         required: "required",
-        max: [11, "Must be 15 characters"],
-        min: [11, "Must be 15 characters"],
+        max: [11, "Must be 11 characters"],
+        min: [11, "Must be 11 characters"],
       },
       type: "text",
     },
     {
-      name: "valueOfVehicle",
+      name: "vehicleValue",
       label: "Vehicle value",
       validate: {
         required: "required",
@@ -276,11 +280,7 @@ const products = {
         required: "required",
       },
       type: "select",
-      list: [
-        "Private Cars/Sedan/SUV",
-        "Private Pickup Trucks e.g  Hilux",
-        "Private Buses e.g Staff buses",
-      ],
+      list: ["private Cars"],
     },
     {
       name: "manufacturer",
@@ -302,35 +302,36 @@ const products = {
       data: "carModels",
     },
     {
-      name: "policyholder",
-      label: "Policyholder Type",
+      name: "regNumber",
+      label: "Registration Number",
       validate: {
         required: "required",
-      },
-      type: "select",
-      list: ["Coporate", "Private"],
-    },
-    {
-      name: "email",
-      label: "Email Address",
-      validate: {
-        required: "required",
-        min: [5, "Must be 15 characters or more"],
       },
       type: "text",
     },
+    {
+      name: "policyholder",
+      label: "Vehicle Type",
+      validate: {
+        required: "required",
+      },
+      selectLabel: "select one",
+      type: "select",
+      list: ["Corporate Use", "Private Use"],
+    },
+
     {
       name: "phone",
       label: "Phone Number",
       validate: {
         required: "required",
-        max: [11, "Must be 15 characters"],
-        min: [11, "Must be 15 characters"],
+        max: [11, "Must be 11 characters"],
+        min: [11, "Must be 11 characters"],
       },
       type: "text",
     },
     {
-      name: "valueOfVehicle",
+      name: "vehicleValue",
       label: "Vehicle value",
       validate: {
         required: "required",
@@ -356,6 +357,78 @@ const products = {
       list: ["yes", "no"],
     },
   ],
+  "moov-prestige-(commercial-comprehensive)": [
+    {
+      name: "vehicleClass",
+      label: "Select Vehicle Class",
+      validate: {
+        required: "required",
+      },
+      type: "select",
+      list: [
+        "commercial Buses & Vehicle",
+        "trucks & General Cartage",
+        "uber",
+        "motor cycle",
+      ],
+    },
+    {
+      name: "manufacturer",
+      data: "manufacturers",
+      label: "select Manufacturer ",
+      validate: {
+        required: "required",
+      },
+      type: "select",
+    },
+    {
+      name: "model",
+      label: "Select Vehicle Model",
+      validate: {
+        required: "required",
+      },
+      type: "select",
+      dependent: "manufacturer",
+      data: "carModels",
+    },
+    {
+      name: "regNumber",
+      label: "Registration Number",
+      validate: {
+        required: "required",
+      },
+      type: "text",
+    },
+    {
+      name: "policyholder",
+      label: "Vehicle Type",
+      validate: {
+        required: "required",
+      },
+      selectLabel: "select one",
+      type: "select",
+      list: ["Commercial Use", "Private Use"],
+    },
+
+    {
+      name: "phone",
+      label: "Phone Number",
+      validate: {
+        required: "required",
+        max: [11, "Must be 11 characters"],
+        min: [11, "Must be 11 characters"],
+      },
+      type: "text",
+    },
+    {
+      name: "vehicleValue",
+      label: "Vehicle value",
+      validate: {
+        required: "required",
+      },
+      type: "text",
+    },
+  ],
   lifeinsurance: [
     {
       name: "firstName",
@@ -375,15 +448,7 @@ const products = {
       },
       type: "text",
     },
-    {
-      name: "email",
-      label: "Email Address",
-      validate: {
-        required: "required",
-        min: [5, "Must be 5 characters or more"],
-      },
-      type: "text",
-    },
+
     {
       name: "phone",
       label: "Phone",
@@ -438,15 +503,49 @@ const products = {
   ],
 };
 const Insurances = ({ history }) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const { type } = useParams();
   return (
     <Container>
       <FormBuilder
+        error={error}
+        loading={loading}
         title="Fill Details"
         data={products[type] || []}
-        action={(values) => {
-          history.push("/quote-success", { ...values, productType: type });
-          // alert(JSON.stringify(values, null, 2));
+        action={async (values) => {
+          setLoading(true);
+          setError(null);
+          console.log(values);
+          try {
+            const { data } = await axios.post(
+              "https://wapicbot-api.herokuapp.com/api/products/get-quote",
+              // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
+              {
+                vehicleClass: vehicleClassMap[values.vehicleClass],
+                regNumber: values.regNumber,
+                type: values.policyholder,
+                make: values.manufacturer,
+                model: values.model,
+                worth: values.vehicleValue,
+                productCode: type,
+              }
+            );
+            console.log(data);
+            setLoading(false);
+            history.push("/quote-success", {
+              ...values,
+              productType: type,
+              quote: data.data.quote,
+            });
+          } catch (error) {
+            setLoading(false);
+            if (error.response) {
+              setError(error.response.data.message);
+            }
+            console.log(error.response);
+          }
         }}
       />
     </Container>

@@ -11,6 +11,8 @@ const productmap = {
     "Moov Luxury (Extented Comprehensive)",
   "moov-prestige-(private-comprehensive)":
     "Moov Prestige (Private Comprehensive)",
+  "moov-prestige-(commercial-comprehensive)":
+    "Moov Prestige (Commercial Comprehensive)",
 };
 const QuoteSuccess = (props) => {
   const [quoteDetails, setQuoteDetails] = useState({});
@@ -23,6 +25,7 @@ const QuoteSuccess = (props) => {
       "policyholder",
       "vehicleValue",
       "productType",
+      "quote",
     ]);
 
     console.log(isValid, props, states);
@@ -36,6 +39,7 @@ const QuoteSuccess = (props) => {
       policyholder,
       vehicleValue,
       productType,
+      quote,
     } = props.location.state;
 
     setQuoteDetails({
@@ -45,25 +49,19 @@ const QuoteSuccess = (props) => {
       policyholder,
       vehicleValue,
       product: productmap[productType],
+      quote,
     });
   }, [props]);
   return (
     <Container>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          margin: "30px 0",
-        }}
-      >
+      <div className="mobileCenter">
         <img src={logo} alt="logo" />
         <h1 className="titleHead">Quote Summary</h1>
 
         <div>
           <div className="group1">
             <h3>Choice Premium (Payable Premium)</h3>
-            <h1>₦{formatNum(quoteDetails.vehicleValue * 0.05)}</h1>
+            <h1>₦{formatNum(quoteDetails.quote)}</h1>
           </div>
 
           <div className="group2">
@@ -96,7 +94,7 @@ const QuoteSuccess = (props) => {
         </div>
         <button
           className="continueButton"
-          onClick={() => props.history.push("/kyc")}
+          onClick={() => props.history.push("/kyc", quoteDetails)}
         >
           Continue
         </button>
