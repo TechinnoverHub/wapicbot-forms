@@ -1,9 +1,24 @@
+// import "moment";
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import styles from "./styles.module.css";
 import logo from "../../assets/logo.jpeg";
 import loader from "../../assets/loader.gif";
+import {
+  TextField,
+  Select as SelectParent,
+  MenuItem,
+  FormControlLabel,
+  Checkbox as ParentCheckbox,
+} from "@material-ui/core";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+// import MomentUtils from "@date-io/moment";
+// import {
+//   KeyboardDatePicker,
+//   MuiPickersUtilsProvider,
+// } from "@material-ui/pickers";
+import styled from "styled-components";
 import {
   manufacturers,
   carModels,
@@ -12,7 +27,6 @@ import {
   allBanks,
 } from "./helpers";
 
-console.log(allBanks);
 const dataBucket = {
   manufacturers,
   carModels,
@@ -20,8 +34,42 @@ const dataBucket = {
   allLgas,
   allBanks,
 };
+const Select = styled(SelectParent)`
+  .MuiSelect-select {
+    background-color: transparent;
+    text-transform: capitalize;
+    &:focus {
+      background-color: transparent;
+    }
+  }
+`;
+
+const Checkbox = withStyles({
+  root: {
+    color: "#883395",
+    marginBottom: "20px",
+    "&$checked": {
+      color: "#883395",
+    },
+  },
+  checked: {},
+})((props) => <ParentCheckbox color="default" {...props} />);
+
+const useStyles = makeStyles((theme) => ({
+  selectEmpty: {
+    marginTop: theme.spacing(4),
+  },
+  items: {
+    textTransform: "capitalize",
+  },
+  textField: {
+    paddingTop: theme.spacing(2),
+  },
+}));
 
 const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
+  const classes = useStyles();
+
   const addYupMethod = (obj, type, value) => {
     switch (type) {
       case "max":
@@ -45,9 +93,12 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
         if (
           !condition ||
           !dt.dependent ||
-          (dt.dependent && condition[dt.dependent.key] === dt.dependent.value)
+          (dt.dependent &&
+            condition[dt.dependent.key] === dt.dependent.value) ||
+          (dt.dependent && dt.data)
         ) {
-          initials[dt.name] = "";
+          initials[dt.name] =
+            dt.type === "date" ? new Date() : dt.type === "number" ? 0 : "";
           validation[dt.name] =
             dt.type !== "number" ? Yup.string() : Yup.number();
           Object.keys(dt.validate).forEach((ky) => {
@@ -95,68 +146,123 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
       case "textarea":
         return (
           <>
-            <label htmlFor={name}>
+            <TextField
+              id={name}
+              // type={type}
+              label={obj.label}
+              {...formik.getFieldProps(name)}
+              multiline
+            />
+            {/* <label htmlFor={name}>
               {obj.label}
               {obj.validate && obj.validate.required ? "*" : ""}
             </label>
-            <textarea id={name} {...formik.getFieldProps(name)} />
+            <textarea id={name} {...formik.getFieldProps(name)} /> */}
           </>
         );
 
       case "select":
         return (
           <>
-            <label htmlFor={name}>
+            {/* <label htmlFor={name}>
               {obj.label}
               {obj.validate && obj.validate.required ? "*" : ""}
-            </label>
-            <select id={name} {...formik.getFieldProps(name)}>
-              <option value="">
-                {obj.selectLabel ? obj.selectLabel : `select ${name}`}{" "}
-              </option>
+            </label> */}
+            <Select
+              id={name}
+              {...formik.getFieldProps(name)}
+              displayEmpty
+              className={classes.selectEmpty}
+              // inputProps={{ "aria-label": "Without label" }}
+            >
+              <MenuItem className={classes.items} value="" disabled>
+                {obj.label ? obj.label : `select ${name}`}{" "}
+              </MenuItem>
 
               {obj.dependent
                 ? formik.values[obj.dependent]
                   ? dataBucket[obj.data][formik.values[obj.dependent]] &&
                     dataBucket[obj.data][formik.values[obj.dependent]].map(
                       (li) => (
-                        <option key={li.value} value={li.value}>
+                        <MenuItem
+                          className={classes.items}
+                          key={li.value}
+                          value={li.value}
+                        >
                           {li.value}
-                        </option>
+                        </MenuItem>
                       )
                     )
                   : null
                 : obj.data
                 ? dataBucket[obj.data].map((li) => (
-                    <option key={li.value} value={li.value}>
+                    <MenuItem
+                      className={classes.items}
+                      key={li.value}
+                      value={li.value}
+                    >
                       {li.value}
-                    </option>
+                    </MenuItem>
                   ))
                 : list
                 ? list.map((li) => (
-                    <option key={li} value={li}>
+                    <MenuItem className={classes.items} key={li} value={li}>
                       {li}
-                    </option>
+                    </MenuItem>
                   ))
                 : null}
-            </select>
+            </Select>
           </>
         );
 
       case "checkbox":
         return (
           <div className={styles.checker}>
-            <input id={name} type={type} {...formik.getFieldProps(name)} />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name={name}
+                  color="primary"
+                  {...formik.getFieldProps(name)}
+                />
+              }
+              label={`${obj.label}${
+                obj.validate && obj.validate.required ? "*" : ""
+              }`}
+            />
+            {/* <input id={name} type={type} {...formik.getFieldProps(name)} />
             <label htmlFor={name}>
               {obj.label}
               {obj.validate && obj.validate.required ? "*" : ""}
-            </label>
+            </label> */}
           </div>
         );
       case "date":
         return (
           <div className={styles.date}>
-            <label htmlFor={name}>
+            <TextField
+              id={name}
+              label={obj.label}
+              className={classes.textField}
+              type="date"
+              {...formik.getFieldProps(name)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            {/* <MuiPickersUtilsProvider utils={MomentUtils}>
+              <KeyboardDatePicker
+                margin="normal"
+                id={name}
+                label={obj.label}
+                format="MM/dd/yyyy"
+                {...formik.getFieldProps(name)}
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+              />
+            </MuiPickersUtilsProvider> */}
+            {/* <label htmlFor={name}>
               {obj.label}
               {obj.validate && obj.validate.required ? "*" : ""}
             </label>
@@ -165,7 +271,7 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
               type={type}
               placeholder={obj.label}
               {...formik.getFieldProps(name)}
-            />
+            /> */}
           </div>
         );
       default:
@@ -175,10 +281,10 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
               {obj.label}
               {obj.validate && obj.validate.required ? "*" : ""}
             </label> */}
-            <input
+            <TextField
               id={name}
-              type={type}
-              placeholder={obj.label}
+              // type={type}
+              label={obj.label}
               {...formik.getFieldProps(name)}
             />
           </>

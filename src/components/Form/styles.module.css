@@ -37,22 +37,24 @@
 .inner input,
 .inner textarea,
 .inner select {
-  padding: 10px 0;
-  border: none;
-  border-bottom: 1px solid #ccc;
-  outline: none;
+  padding: 5px 0;
+  /* border-bottom: 1px solid #ccc; */
+  /* outline: none; */
   margin: 15px 0 0;
-  transition: all 0.5s;
-  text-transform: capitalize;
+  /* transition: all 0.5s; */
+  /* text-transform: capitalize; */
+  background: transparent !important;
 }
-.inner input:focus {
-  border-color: #883395;
-}
+/* .inner input:focus,
+/* .inner.error textarea, */
+/* .inner.error select { */
+/* border-color: #883395 !important; */
+/* } */
 
 .inner.error input,
 .inner.error textarea,
 .inner.error select {
-  border-bottom: 1px solid red;
+  /* border-bottom: 1px solid red; */
 }
 .inner.error span {
   font-size: 10px;

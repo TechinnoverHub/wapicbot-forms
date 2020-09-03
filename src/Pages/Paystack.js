@@ -18,6 +18,7 @@ const Paystack = (props) => {
       "vehicleValue",
       "product",
       "quote",
+      "productType",
     ]);
 
     console.log(isValid, props, states);
@@ -32,6 +33,7 @@ const Paystack = (props) => {
       vehicleValue,
       product,
       quote,
+      productType,
     } = props.location.state;
 
     setQuoteDetails({
@@ -42,6 +44,7 @@ const Paystack = (props) => {
       vehicleValue,
       product,
       quote,
+      productType,
     });
   }, [props]);
   const componentProps = {

@@ -49,6 +49,7 @@ const QuoteSuccess = (props) => {
       policyholder,
       vehicleValue,
       product: productmap[productType],
+      productType,
       quote,
     });
   }, [props]);
