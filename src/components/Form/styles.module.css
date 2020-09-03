@@ -62,7 +62,7 @@
   color: red;
 }
 
-.form button {
+.form .button {
   padding: 5px 30px;
   margin: 50px 0;
   cursor: pointer;
@@ -130,3 +130,4 @@ button:active {
 .section {
   margin-top: 30px;
 }
+

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import FormBuilder from "../components/Form";
+import MultiForm from "../components/Form/MultiForm";
 import Container from "../components/Container";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -12,6 +13,14 @@ const vehicleClassMap = {
   uber: "UBER",
   "motor cycle": "MOTORCYCLE",
 };
+const vehicleType = [
+    "moov-third-party",
+    "moov-plus-(fire-and-theft)",
+    "moov-luxury-(extented-comprehensive)",
+    "moov-prestige-(private-comprehensive)",
+    "moov-prestige-(commercial-comprehensive)",
+  ];
+
 const products = {
   "moov-third-party": [
     {
@@ -509,7 +518,52 @@ const Insurances = ({ history }) => {
   const { type } = useParams();
   return (
     <Container>
-      <FormBuilder
+    {
+      vehicleType.includes(type) && 
+    
+    <MultiForm 
+    title="Fill Details"
+     error={error}
+     loading={loading}
+     action={async (values) => {
+          setLoading(true);
+          setError(null);
+          console.log(values);
+          try {
+            // const { data } = await axios.post(
+            //   "https://wapicbot-api.herokuapp.com/api/products/get-quote",
+            //   // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
+            //   {
+            //     vehicleClass: vehicleClassMap[values.vehicleClass],
+            //     regNumber: values.regNumber,
+            //     type: values.policyholder,
+            //     make: values.manufacturer,
+            //     model: values.model,
+            //     worth: values.vehicleValue,
+            //     productCode: type,
+            //   }
+            // );
+            // console.log(data);
+            setLoading(false);
+            history.push("/quote-success", {
+              ...values,
+              productType: type,
+              // quote: data.data.quote,
+            });
+          } catch (error) {
+            setLoading(false);
+            if (error.response) {
+              setError(error.response.data.message);
+            }
+            console.log(error.response);
+          }
+        }}
+    template={{
+      property: null,
+      value: null
+  }} />
+}
+      { !vehicleType.includes(type) && <FormBuilder
         error={error}
         loading={loading}
         title="Fill Details"
@@ -547,7 +601,7 @@ const Insurances = ({ history }) => {
             console.log(error.response);
           }
         }}
-      />
+      /> }
     </Container>
   );
 };

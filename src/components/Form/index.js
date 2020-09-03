@@ -335,6 +335,7 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
         <img src={loader} alt="loader" />
       ) : (
         <button
+        className={styles.button}
           disabled={
             Object.keys(formik.touched).length &&
             Object.keys(formik.errors).length
