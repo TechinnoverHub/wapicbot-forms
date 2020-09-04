@@ -53,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
   btn: {
     marginTop: theme.spacing(2),
   },
+  label: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 const testData = [
@@ -131,7 +134,9 @@ const MultiForm = ({
       {state.map((st, i) => (
         <Card className={classes.card}>
           <FormControl className={classes.formControl}>
-            <InputLabel id="demo-simple-select-label">Item to cover</InputLabel>
+            <InputLabel id="demo-simple-select-label" className={classes.label}>
+              Item to cover
+            </InputLabel>
             <Select
               id={i}
               value={st.name}
@@ -141,9 +146,9 @@ const MultiForm = ({
               className={classes.selectEmpty}
               inputProps={{ "aria-label": "Without label" }}
             >
-              <MenuItem className={classes.items} value="" disabled>
+              {/* <MenuItem className={classes.items} value="" disabled>
                 Select One
-              </MenuItem>
+              </MenuItem> */}
 
               {selectData.map((li) => (
                 <MenuItem className={classes.items} key={li} value={li}>
