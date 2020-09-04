@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 // import { useFormik } from "formik";
 // import * as Yup from "yup";
 import styles from "./styles.module.css";
@@ -8,16 +8,16 @@ import {
   TextField,
   Select as SelectParent,
   MenuItem,
-//   FormControlLabel,
-//   Checkbox as ParentCheckbox,
+  //   FormControlLabel,
+  //   Checkbox as ParentCheckbox,
   Button,
   Card,
   FormControl,
   InputLabel,
-  IconButton
+  IconButton,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from "@material-ui/icons/Delete";
 
 import styled from "styled-components";
 
@@ -32,17 +32,17 @@ const Select = styled(SelectParent)`
 `;
 
 const useStyles = makeStyles((theme) => ({
-    card: {
+  card: {
     padding: theme.spacing(2),
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    },
+  },
   selectEmpty: {
     marginTop: theme.spacing(4),
-    width: '100%'
+    width: "100%",
   },
   formControl: {
-    width: '100%'
+    width: "100%",
   },
   items: {
     textTransform: "capitalize",
@@ -50,43 +50,74 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     paddingTop: theme.spacing(2),
   },
- btn: {
-     marginTop: theme.spacing(2),
-     
- }
+  btn: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
+const testData = [
+  "air conditioner",
+  "television",
+  "refrigerator",
+  "freezer",
+  "home theater/ sound system",
+  "table",
+  "gas cooker",
+  "shoes",
+  "bags",
+  "inverter",
+  "clothing",
+  "bed & beddings",
+  "water dispenser",
+  "standing fan",
+  "washing machine",
+  "living room settee",
+  "laptop",
+  "phone",
+  "jewelries",
+  "wristwatches",
+  "camera",
+  "others (movable items)",
+  "others (non-movable items)",
+  "kitchen cabinet",
+];
 
-const testData= ["air conditioner", "television", 'refrigerator', 'freezer', 'home theater/ sound system', 'table', 'gas cooker','shoes','bags','inverter','clothing','bed & beddings', 'water dispenser', 'standing fan', 'washing machine', 'living room settee', 'laptop','phone','jewelries','wristwatches', 'camera', 'others (movable items)','others (non-movable items)', 'kitchen cabinet']
-const MultiForm = ({ template, selectData=testData, action, title, instruction, loading, error }) => {
-     const classes = useStyles();
-  const [state, setState] = useState([{...template}]);
+const MultiForm = ({
+  template,
+  selectData = testData,
+  action,
+  title,
+  instruction,
+  loading,
+  error,
+}) => {
+  const classes = useStyles();
+  const [state, setState] = useState([{ ...template }]);
 
-
- const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    action(state)
-}
+    action(state);
+  };
   const handleChange = (key, i, val) => {
     const newState = [...state];
     newState[i][key] = val;
     setState(newState);
-  }
+  };
 
-const addMore = () => {
+  const addMore = () => {
     console.log(template);
-    setState([...state, {...template}])
-}
-const removeOne = (i) => {
+    setState([...state, { ...template }]);
+  };
+  const removeOne = (i) => {
     const newState = [...state];
-console.log(i, newState);
-    newState.splice(i,1);
-    
-    setState(newState)
-}
+    console.log(i, newState);
+    newState.splice(i, 1);
+
+    setState(newState);
+  };
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-     <img src={logo} alt="logo" />
+      <img src={logo} alt="logo" />
       <h2>{title}</h2>
 
       {instruction && <p>{instruction}</p>}
@@ -98,62 +129,67 @@ console.log(i, newState);
         </div>
       )}
       {state.map((st, i) => (
-          <Card  className={classes.card}>
+        <Card className={classes.card}>
           <FormControl className={classes.formControl}>
             <InputLabel id="demo-simple-select-label">Item to cover</InputLabel>
             <Select
               id={i}
-              value={st.property}
-              onChange={(data)=> handleChange('property', i, data.target.value)}
-            //   {...formik.getFieldProps(name)}
+              value={st.name}
+              onChange={(data) => handleChange("name", i, data.target.value)}
+              //   {...formik.getFieldProps(name)}
               displayEmpty
               className={classes.selectEmpty}
               inputProps={{ "aria-label": "Without label" }}
             >
               <MenuItem className={classes.items} value="" disabled>
-               Select One
+                Select One
               </MenuItem>
 
               {selectData.map((li) => (
-                    <MenuItem className={classes.items} key={li} value={li}>
-                      {li}
-                    </MenuItem>
-                  ))}
+                <MenuItem className={classes.items} key={li} value={li}>
+                  {li}
+                </MenuItem>
+              ))}
             </Select>
-             </FormControl>
-            <TextField
-              id={i}
+          </FormControl>
+          <TextField
+            id={i}
             className={classes.selectEmpty}
-              label={'Value'}
-                value={st.value}
-                 onChange={(data)=> handleChange('value', i, data.target.value)}
+            label={"Value"}
+            value={st.value}
+            onChange={(data) => handleChange("value", i, data.target.value)}
             //   {...formik.getFieldProps(name)}
-            />
-            {
-                i > 0 &&  <IconButton onClick={() => removeOne(i)} aria-label="delete" className={classes.btn}>
-          <DeleteIcon fontSize="small" color="secondary" />
-        </IconButton>
-            }
+          />
+          {i > 0 && (
+            <IconButton
+              onClick={() => removeOne(i)}
+              aria-label="delete"
+              className={classes.btn}
+            >
+              <DeleteIcon fontSize="small" color="secondary" />
+            </IconButton>
+          )}
         </Card>
       ))}
-        <div>
-        <Button onClick={addMore} variant="contained" size="small" className={classes.items}>add</Button>
-        </div>
+      <div>
+        <Button
+          onClick={addMore}
+          variant="contained"
+          size="small"
+          className={classes.items}
+        >
+          add
+        </Button>
+      </div>
 
-         {loading ? (
+      {loading ? (
         <img src={loader} alt="loader" />
       ) : (
-        <button
-        className={styles.button}
-          disabled={
-           false
-          }
-          type="submit"
-        >
+        <button className={styles.button} disabled={false} type="submit">
           &#8594;
         </button>
       )}
-      </form>
+    </form>
   );
 };
 

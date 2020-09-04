@@ -13,90 +13,92 @@ const vehicleClassMap = {
   uber: "UBER",
   "motor cycle": "MOTORCYCLE",
 };
-const houseTypes = ["house-holders-insurance","house-owners-insurance"];
-const lifeTypes = [  "e-term",
-    "smart-scholars-plan",
-    "smart-life",
-    "smart-senior-plan" ];
+const houseTypes = ["house-holders-insurance", "house-owners-insurance"];
+const lifeTypes = [
+  "e-term",
+  "smart-scholars-plan",
+  "smart-life",
+  "smart-senior-plan",
+];
 const vehicleType = [
-    "moov-third-party",
-    "moov-plus-(fire-and-theft)",
-    "moov-luxury-(extented-comprehensive)",
-    "moov-prestige-(private-comprehensive)",
-    "moov-prestige-(commercial-comprehensive)",
-  ];
-const lifeinsurance= [
-    {
-      name: "firstName",
-      label: "First Name",
-      validate: {
-        required: "required",
-        min: [5, "Must be 5 characters or more"],
-      },
-      type: "text",
+  "moov-third-party",
+  "moov-plus-(fire-and-theft)",
+  "moov-luxury-(extented-comprehensive)",
+  "moov-prestige-(private-comprehensive)",
+  "moov-prestige-(commercial-comprehensive)",
+];
+const lifeinsurance = [
+  {
+    name: "firstName",
+    label: "First Name",
+    validate: {
+      required: "required",
+      min: [5, "Must be 5 characters or more"],
     },
-    {
-      name: "lastName",
-      label: "Last Name",
-      validate: {
-        required: "required",
-        min: [5, "Must be 5 characters or more"],
-      },
-      type: "text",
+    type: "text",
+  },
+  {
+    name: "lastName",
+    label: "Last Name",
+    validate: {
+      required: "required",
+      min: [5, "Must be 5 characters or more"],
     },
+    type: "text",
+  },
 
-    {
-      name: "phone",
-      label: "Phone",
-      validate: {
-        required: "required",
-        min: [11, "Must be 11 characters or more"],
-        max: [11, "Must be 11 characters or more"],
-      },
-      type: "text",
+  {
+    name: "phone",
+    label: "Phone",
+    validate: {
+      required: "required",
+      min: [11, "Must be 11 characters or more"],
+      max: [11, "Must be 11 characters or more"],
     },
-    {
-      name: "dateOfBirth",
-      label: "Date of Birth",
-      validate: {
-        required: "required",
-      },
-      type: "date",
+    type: "text",
+  },
+  {
+    name: "dateOfBirth",
+    label: "Date of Birth",
+    validate: {
+      required: "required",
     },
-    {
-      name: "sumAssured",
-      label: "Sum Assured",
-      validate: {
-        required: "required",
-      },
-      type: "number",
+    type: "date",
+  },
+  {
+    name: "sumAssured",
+    label: "Sum Assured",
+    validate: {
+      required: "required",
     },
-    {
-      name: "duration",
-      label: "Duration",
-      validate: {
-        required: "required",
-      },
-      type: "number",
+    type: "number",
+  },
+  {
+    name: "duration",
+    label: "Duration",
+    validate: {
+      required: "required",
     },
-    {
-      name: "annualContribution",
-      label: "Annual Contribution",
-      validate: {
-        required: "required",
-      },
-      type: "number",
+    type: "number",
+  },
+  {
+    name: "annualContribution",
+    label: "Annual Contribution",
+    validate: {
+      required: "required",
     },
-    {
-      name: "message",
-      label: "Message",
-      validate: {
-        required: "required",
-        min: [5, "Must be 5 characters or more"],
-      },
-      type: "textarea",
+    type: "number",
+  },
+  {
+    name: "message",
+    label: "Message",
+    validate: {
+      required: "required",
+      min: [5, "Must be 5 characters or more"],
     },
-  ];
+    type: "textarea",
+  },
+];
 const products = {
   "moov-third-party": [
     {
@@ -515,139 +517,132 @@ const products = {
     },
   ],
   "e-term": lifeinsurance,
-    "smart-scholars-plan": lifeinsurance,
-    "smart-life":lifeinsurance,
-    "smart-senior-plan":lifeinsurance, 
+  "smart-scholars-plan": lifeinsurance,
+  "smart-life": lifeinsurance,
+  "smart-senior-plan": lifeinsurance,
 };
 const Insurances = ({ history }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const { type } = useParams();
+  const { type, userId } = useParams();
   return (
     <Container>
-    {
-      houseTypes.includes(type) && 
-     <MultiForm 
-    title="Fill Details"
-     error={error}
-     loading={loading}
-     action={async (values) => {
-          setLoading(true);
-          setError(null);
-          console.log(values);
-          try {
-            // const { data } = await axios.post(
-            //   "https://wapicbot-api.herokuapp.com/api/products/get-quote",
-            //   // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
-            //   {
-            //     vehicleClass: vehicleClassMap[values.vehicleClass],
-            //     regNumber: values.regNumber,
-            //     type: values.policyholder,
-            //     make: values.manufacturer,
-            //     model: values.model,
-            //     worth: values.vehicleValue,
-            //     productCode: type,
-            //   }
-            // );
-            // console.log(data);
-            setLoading(false);
-            history.push("/quote-success", {
-              ...values,
-              productType: type,
-              quote: 1000 //v data.data.quote,
-            });
-          } catch (error) {
-            setLoading(false);
-            if (error.response) {
-              setError(error.response.data.message);
-            }
-            console.log(error.response);
-          }
-        }}
-    template={{
-      property: null,
-      value: null
-  }} />
-}
-      { vehicleType.includes(type) && <FormBuilder
-        error={error}
-        loading={loading}
-        title="Fill Details"
-        data={products[type] || []}
-        action={async (values) => {
-          setLoading(true);
-          setError(null);
-          console.log(values);
-          try {
-            const { data } = await axios.post(
-              "https://wapicbot-api.herokuapp.com/api/products/get-quote",
-              // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
-              {
-                vehicleClass: vehicleClassMap[values.vehicleClass],
-                regNumber: values.regNumber,
-                type: values.policyholder,
-                make: values.manufacturer,
-                model: values.model,
-                worth: values.vehicleValue,
-                productCode: type,
+      {houseTypes.includes(type) && (
+        <MultiForm
+          title="Fill Details"
+          error={error}
+          loading={loading}
+          action={async (values) => {
+            setLoading(true);
+            setError(null);
+            console.log(values);
+            try {
+              const { data } = await axios.post(
+                "https://wapicbot-api.herokuapp.com/api/products/get-quote",
+                // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
+                {
+                  items: values,
+                  productCode: type,
+                }
+              );
+              console.log(data);
+              setLoading(false);
+              history.push(`/quote-success/${userId}`, {
+                productType: type,
+                quote: data.data.quote,
+              });
+            } catch (error) {
+              setLoading(false);
+              if (error.response) {
+                setError(error.response.data.message);
               }
-            );
-            console.log(data);
-            setLoading(false);
-            history.push("/quote-success", {
-              ...values,
-              productType: type,
-              quote: data.data.quote,
-            });
-          } catch (error) {
-            setLoading(false);
-            if (error.response) {
-              setError(error.response.data.message);
+              console.log(error.response);
             }
-            console.log(error.response);
-          }
-        }}
-      /> }
-      { lifeTypes.includes(type) && <FormBuilder
-        error={error}
-        loading={loading}
-        title="Fill Details"
-        data={products[type] || []}
-        action={async (values) => {
-          setLoading(true);
-          setError(null);
-          console.log(values);
-          try {
-            const { data } = await axios.post(
-              "https://wapicbot-api.herokuapp.com/api/products/get-quote",
-              // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
-              {
-                vehicleClass: vehicleClassMap[values.vehicleClass],
-                regNumber: values.regNumber,
-                type: values.policyholder,
-                make: values.manufacturer,
-                model: values.model,
-                worth: values.vehicleValue,
-                productCode: type,
+          }}
+          template={{
+            name: "",
+            value: null,
+          }}
+        />
+      )}
+      {vehicleType.includes(type) && (
+        <FormBuilder
+          error={error}
+          loading={loading}
+          title="Fill Details"
+          data={products[type] || []}
+          action={async (values) => {
+            setLoading(true);
+            setError(null);
+            console.log(values);
+            try {
+              const { data } = await axios.post(
+                "https://wapicbot-api.herokuapp.com/api/products/get-quote",
+                // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
+                {
+                  vehicleClass: vehicleClassMap[values.vehicleClass],
+                  regNumber: values.regNumber,
+                  type: values.policyholder,
+                  make: values.manufacturer,
+                  model: values.model,
+                  worth: values.vehicleValue,
+                  productCode: type,
+                }
+              );
+              console.log(data);
+              setLoading(false);
+              history.push(`/quote-success/${userId}`, {
+                ...values,
+                productType: type,
+                quote: data.data.quote,
+              });
+            } catch (error) {
+              setLoading(false);
+              if (error.response) {
+                setError(error.response.data.message);
               }
-            );
-            console.log(data);
-            setLoading(false);
-            history.push("/quote-success", {
-              ...values,
-              productType: type,
-              quote: data.data.quote,
-            });
-          } catch (error) {
-            setLoading(false);
-            if (error.response) {
-              setError(error.response.data.message);
+              console.log(error.response);
             }
-            console.log(error.response);
-          }
-        }}
-      /> }
+          }}
+        />
+      )}
+      {lifeTypes.includes(type) && (
+        <FormBuilder
+          error={error}
+          loading={loading}
+          title="Fill Details"
+          data={products[type] || []}
+          action={async (values) => {
+            setLoading(true);
+            setError(null);
+            console.log(values);
+            try {
+              const { data } = await axios.post(
+                "https://wapicbot-api.herokuapp.com/api/products/get-quote",
+                // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
+                {
+                  worth: values.annualContribution,
+                  productCode: type,
+                }
+              );
+              console.log(data);
+              setLoading(false);
+              history.push(`/quote-success/${userId}`, {
+                ...values,
+                productType: type,
+                quote: data.data.quote,
+              });
+            } catch (error) {
+              setLoading(false);
+              if (error.response) {
+                setError(error.response.data.message);
+              }
+              console.log(error.response);
+            }
+          }}
+        />
+      )}
     </Container>
   );
 };

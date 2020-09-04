@@ -26,32 +26,38 @@ function App() {
                 }}
               >
                 <Link to="/optin?whatsapp=+2349069787848">Optin</Link>
-                <Link to="/product/moov-third-party">Car Insurance beta</Link>
-                <Link to="/product/moov-plus-(fire-and-theft)">
+                <Link to="/product/moov-third-party/5f4bb72825bf1a0017b8b0f0">
+                  Car Insurance beta
+                </Link>
+                <Link to="/product/moov-plus-(fire-and-theft)/5f4bb72825bf1a0017b8b0f0">
                   Moov Plus (Fire & Theft)
                 </Link>
-                <Link to="/product/moov-luxury-(extented-comprehensive)">
+                <Link to="/product/moov-luxury-(extented-comprehensive)/5f4bb72825bf1a0017b8b0f0">
                   Moov Luxury
                 </Link>
-                <Link to="/product/moov-prestige-(private-comprehensive)">
+                <Link to="/product/moov-prestige-(private-comprehensive)/5f4bb72825bf1a0017b8b0f0">
                   Moov Prestige (Private Comprehensive)
                 </Link>
-                <Link to="/product/moov-prestige-(commercial-comprehensive)">
+                <Link to="/product/moov-prestige-(commercial-comprehensive)/5f4bb72825bf1a0017b8b0f0">
                   Moov Prestige (Commercial Comprehensive)
                 </Link>
-                <Link to="/product/e-term">All Life Insurance</Link>
-                <Link to="/product/house-owners-insurance">House Insurance</Link>
+                <Link to="/product/e-term/5f4bb72825bf1a0017b8b0f0">
+                  All Life Insurance
+                </Link>
+                <Link to="/product/house-owners-insurance/5f4bb72825bf1a0017b8b0f0">
+                  House Insurance
+                </Link>
                 <Link to="/quote-success">SuccessQuote</Link>
-                <Link to="/kyc">KYC form</Link>
+                <Link to="/kyc/5f4bb72825bf1a0017b8b0f0">KYC form</Link>
               </div>
             </div>
           )}
         />
         <Route path="/optin" component={OptIn} />
-        <Route path="/product/:type" component={Insurances} />
-        <Route path="/kyc" component={KYC} />
-        <Route path="/quote-success" component={QuoteSuccess} />
-        <Route path="/pay" component={Paystack} />
+        <Route path="/product/:type/:userId" component={Insurances} />
+        <Route path="/kyc/:userId" component={KYC} />
+        <Route path="/quote-success/:userId" component={QuoteSuccess} />
+        <Route path="/pay/:userId" component={Paystack} />
         <Route component={() => <h1>Lost</h1>} />
       </Switch>
     </BrowserRouter>

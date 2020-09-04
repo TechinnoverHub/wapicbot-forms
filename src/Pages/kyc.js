@@ -2,16 +2,17 @@ import React, { useState, useEffect } from "react";
 import FormBuilder from "../components/Form";
 import Container from "../components/Container";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 // import { useLocation } from "react-router-dom";
 import includesAll from "../utils/includesAll";
 // import formatNum from "../utils/formatNum";
 const vehicleType = [
-    "moov-third-party",
-    "moov-plus-(fire-and-theft)",
-    "moov-luxury-(extented-comprehensive)",
-    "moov-prestige-(private-comprehensive)",
-    "moov-prestige-(commercial-comprehensive)",
-  ];
+  "moov-third-party",
+  "moov-plus-(fire-and-theft)",
+  "moov-luxury-(extented-comprehensive)",
+  "moov-prestige-(private-comprehensive)",
+  "moov-prestige-(commercial-comprehensive)",
+];
 const pickExtraData = (type) => {
   const vehicleType = [
     "moov-third-party",
@@ -48,7 +49,6 @@ const pickExtraData = (type) => {
         label: "Color",
         validate: {
           required: "required",
-          // min: [10, "Must be 10 characters or more"],
         },
         type: "text",
       },
@@ -100,72 +100,70 @@ const pickExtraData = (type) => {
 const KYC = (props) => {
   // const location = useLocation();
   const [quoteDetails, setQuoteDetails] = useState({});
+  const { userId } = useParams();
   useEffect(() => {
     const states = Object.keys(props.location.state || {});
-  
-     if(props.location.state) {
-    if(vehicleType.includes(props.location.state.productType)) {
+    if (props.location.state) {
+      if (vehicleType.includes(props.location.state.productType)) {
         const isValid = includesAll(states, [
-      "vehicleClass",
-      "manufacturer",
-      "model",
-      "policyholder",
-      "vehicleValue",
-      "product",
-      "quote",
-      "productType",
-    ]);
+          "vehicleClass",
+          "manufacturer",
+          "model",
+          "policyholder",
+          "vehicleValue",
+          "product",
+          "quote",
+          "productType",
+        ]);
 
-    console.log(isValid, props, states);
-    if (!isValid) {
-      return props.history.replace("/product/moov-third-party");
-    }
-      const {
-      vehicleClass,
-      manufacturer,
-      model,
-      policyholder,
-      vehicleValue,
-      product,
-      quote,
-      productType,
-    } = props.location.state;
+        console.log(isValid, props, states);
+        if (!isValid) {
+          window.location = "https://wa.me/+2348111228899";
+          return;
+        }
+        const {
+          vehicleClass,
+          manufacturer,
+          model,
+          policyholder,
+          vehicleValue,
+          product,
+          quote,
+          productType,
+        } = props.location.state;
 
-    setQuoteDetails({
-      vehicleClass,
-      manufacturer,
-      model,
-      policyholder,
-      vehicleValue,
-      product,
-      quote,
-      productType,
-    });
-    }
+        setQuoteDetails({
+          vehicleClass,
+          manufacturer,
+          model,
+          policyholder,
+          vehicleValue,
+          product,
+          quote,
+          productType,
+        });
+      }
 
-    const {
-      productType,
-      product,
-      quote,
-    } = props.location.state;
-    setQuoteDetails({ 
-      product,
-      productType:productType,
-      quote:quote,})
-    // const isValid = includesAll(states, [
-    //   "vehicleClass",
-    //   "manufacturer",
-    //   "model",
-    //   "policyholder",
-    //   "vehicleValue",
-    //   "productType",
-    //   "quote",
-    // ]);
+      const { productType, product, quote } = props.location.state;
+      setQuoteDetails({
+        product,
+        productType: productType,
+        quote: quote,
+      });
+      // const isValid = includesAll(states, [
+      //   "vehicleClass",
+      //   "manufacturer",
+      //   "model",
+      //   "policyholder",
+      //   "vehicleValue",
+      //   "productType",
+      //   "quote",
+      // ]);
 
-    // console.log(isValid, props, states);
-    // if (!isValid) {
-    //   return props.history.replace("/product/moov-third-party");
-    // }
+      // console.log(isValid, props, states);
+      // if (!isValid) {
+      //   return props.history.replace("/product/moov-third-party");
+      // }
     }
   }, [props]);
   const [loading, setLoading] = useState(false);
@@ -180,22 +178,31 @@ const KYC = (props) => {
       const { data } = await axios.post(
         "https://wapicbot-api.herokuapp.com/api/users/update-kyc",
         {
-          gender: values.gender,
-          dob: values.dateOfBirth,
-          maritalStatus: values.maritalStatus,
-          religion: values.religon,
-          height: values.height,
-          weight: values.weight,
-          state: values.state,
-          occupation: values.occupation,
-          businessType: values.businessType,
-          bankName: values.bankName,
-          accountNumber: values.accountNumber,
-          bvn: values.bvn,
+          kyc: {
+            gender: values.gender,
+            dob: values.dateOfBirth,
+            maritalStatus: values.maritalStatus,
+            religion: values.religon,
+            height: values.height,
+            weight: values.weight,
+            state: values.state,
+            occupation: values.occupation,
+            businessType: values.businessType,
+            bankName: values.bankName,
+            accountNumber: values.accountNumber,
+            bvn: values.bvn,
+          },
+          userId,
+          otherDetails: {
+            yearOfModel: values.yearOfModel,
+            color: values.color,
+            engineNumber: values.engineNumber,
+            vinnumber: values.vinnumber,
+          },
         }
       );
       console.log(data);
-      props.history.push("/pay", quoteDetails);
+      props.history.push(`/pay/${userId}`, quoteDetails);
       // window.location = "https://wa.me/+2348111228899";
       setLoading(false);
     } catch (error) {
@@ -244,7 +251,7 @@ const KYC = (props) => {
             },
             type: "select",
             selectLabel: "select one",
-            list: ["divorced", "married", "single", "widowed"],
+            list: ["DIVORCED", "MARRIED", "SINGLE", "WIDOWED"],
           },
           {
             name: "religion",
@@ -270,6 +277,7 @@ const KYC = (props) => {
             label: "Height (meters)",
             validate: {
               // required: "required",
+              min: [1, "Must be more than 1"],
             },
             type: "number",
           },
@@ -278,7 +286,7 @@ const KYC = (props) => {
             label: "Weight (Kg)",
             validate: {
               // required: "required",
-              // min: [10, "Must be 10 characters or more"],
+              min: [1, "Must be more than 1"],
             },
             type: "number",
           },
