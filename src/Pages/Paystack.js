@@ -11,11 +11,6 @@ const Paystack = (props) => {
   useEffect(() => {
     const states = Object.keys(props.location.state || {});
     const isValid = includesAll(states, [
-      "vehicleClass",
-      "manufacturer",
-      "model",
-      "policyholder",
-      "vehicleValue",
       "product",
       "quote",
       "productType",
@@ -23,25 +18,25 @@ const Paystack = (props) => {
 
     console.log(isValid, props, states);
     if (!isValid) {
-      return props.history.replace("/product/moov-third-party");
+      return props.history.replace("/");
     }
     const {
-      vehicleClass,
-      manufacturer,
-      model,
-      policyholder,
-      vehicleValue,
+      // vehicleClass,
+      // manufacturer,
+      // model,
+      // policyholder,
+      // vehicleValue,
       product,
       quote,
       productType,
     } = props.location.state;
 
     setQuoteDetails({
-      vehicleClass,
-      manufacturer,
-      model,
-      policyholder,
-      vehicleValue,
+      // vehicleClass,
+      // manufacturer,
+      // model,
+      // policyholder,
+      // vehicleValue,
       product,
       quote,
       productType,

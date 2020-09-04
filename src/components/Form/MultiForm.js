@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const testData= ["air conditioner", "test 1", 'test 2']
+const testData= ["air conditioner", "television", 'refrigerator', 'freezer', 'home theater/ sound system', 'table', 'gas cooker','shoes','bags','inverter','clothing','bed & beddings', 'water dispenser', 'standing fan', 'washing machine', 'living room settee', 'laptop','phone','jewelries','wristwatches', 'camera', 'others (movable items)','others (non-movable items)', 'kitchen cabinet']
 const MultiForm = ({ template, selectData=testData, action, title, instruction, loading, error }) => {
      const classes = useStyles();
   const [state, setState] = useState([{...template}]);

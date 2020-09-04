@@ -5,7 +5,13 @@ import axios from "axios";
 // import { useLocation } from "react-router-dom";
 import includesAll from "../utils/includesAll";
 // import formatNum from "../utils/formatNum";
-
+const vehicleType = [
+    "moov-third-party",
+    "moov-plus-(fire-and-theft)",
+    "moov-luxury-(extented-comprehensive)",
+    "moov-prestige-(private-comprehensive)",
+    "moov-prestige-(commercial-comprehensive)",
+  ];
 const pickExtraData = (type) => {
   const vehicleType = [
     "moov-third-party",
@@ -96,7 +102,10 @@ const KYC = (props) => {
   const [quoteDetails, setQuoteDetails] = useState({});
   useEffect(() => {
     const states = Object.keys(props.location.state || {});
-    const isValid = includesAll(states, [
+  
+     if(props.location.state) {
+    if(vehicleType.includes(props.location.state.productType)) {
+        const isValid = includesAll(states, [
       "vehicleClass",
       "manufacturer",
       "model",
@@ -111,7 +120,7 @@ const KYC = (props) => {
     if (!isValid) {
       return props.history.replace("/product/moov-third-party");
     }
-    const {
+      const {
       vehicleClass,
       manufacturer,
       model,
@@ -132,6 +141,32 @@ const KYC = (props) => {
       quote,
       productType,
     });
+    }
+
+    const {
+      productType,
+      product,
+      quote,
+    } = props.location.state;
+    setQuoteDetails({ 
+      product,
+      productType:productType,
+      quote:quote,})
+    // const isValid = includesAll(states, [
+    //   "vehicleClass",
+    //   "manufacturer",
+    //   "model",
+    //   "policyholder",
+    //   "vehicleValue",
+    //   "productType",
+    //   "quote",
+    // ]);
+
+    // console.log(isValid, props, states);
+    // if (!isValid) {
+    //   return props.history.replace("/product/moov-third-party");
+    // }
+    }
   }, [props]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
