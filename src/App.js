@@ -39,7 +39,8 @@ function App() {
                 <Link to="/product/moov-prestige-(commercial-comprehensive)">
                   Moov Prestige (Commercial Comprehensive)
                 </Link>
-                <Link to="/product/lifeinsurance">All Life Insurance</Link>
+                <Link to="/product/e-term">All Life Insurance</Link>
+                <Link to="/product/house-owners-insurance">House Insurance</Link>
                 <Link to="/quote-success">SuccessQuote</Link>
                 <Link to="/kyc">KYC form</Link>
               </div>

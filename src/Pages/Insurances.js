@@ -13,6 +13,11 @@ const vehicleClassMap = {
   uber: "UBER",
   "motor cycle": "MOTORCYCLE",
 };
+const houseTypes = ["house-holders-insurance","house-owners-insurance"];
+const lifeTypes = [  "e-term",
+    "smart-scholars-plan",
+    "smart-life",
+    "smart-senior-plan" ];
 const vehicleType = [
     "moov-third-party",
     "moov-plus-(fire-and-theft)",
@@ -20,7 +25,78 @@ const vehicleType = [
     "moov-prestige-(private-comprehensive)",
     "moov-prestige-(commercial-comprehensive)",
   ];
+const lifeinsurance= [
+    {
+      name: "firstName",
+      label: "First Name",
+      validate: {
+        required: "required",
+        min: [5, "Must be 5 characters or more"],
+      },
+      type: "text",
+    },
+    {
+      name: "lastName",
+      label: "Last Name",
+      validate: {
+        required: "required",
+        min: [5, "Must be 5 characters or more"],
+      },
+      type: "text",
+    },
 
+    {
+      name: "phone",
+      label: "Phone",
+      validate: {
+        required: "required",
+        min: [11, "Must be 11 characters or more"],
+        max: [11, "Must be 11 characters or more"],
+      },
+      type: "text",
+    },
+    {
+      name: "dateOfBirth",
+      label: "Date of Birth",
+      validate: {
+        required: "required",
+      },
+      type: "date",
+    },
+    {
+      name: "sumAssured",
+      label: "Sum Assured",
+      validate: {
+        required: "required",
+      },
+      type: "number",
+    },
+    {
+      name: "duration",
+      label: "Duration",
+      validate: {
+        required: "required",
+      },
+      type: "number",
+    },
+    {
+      name: "annualContribution",
+      label: "Annual Contribution",
+      validate: {
+        required: "required",
+      },
+      type: "number",
+    },
+    {
+      name: "message",
+      label: "Message",
+      validate: {
+        required: "required",
+        min: [5, "Must be 5 characters or more"],
+      },
+      type: "textarea",
+    },
+  ];
 const products = {
   "moov-third-party": [
     {
@@ -438,78 +514,10 @@ const products = {
       type: "text",
     },
   ],
-  lifeinsurance: [
-    {
-      name: "firstName",
-      label: "First Name",
-      validate: {
-        required: "required",
-        min: [5, "Must be 5 characters or more"],
-      },
-      type: "text",
-    },
-    {
-      name: "lastName",
-      label: "Last Name",
-      validate: {
-        required: "required",
-        min: [5, "Must be 5 characters or more"],
-      },
-      type: "text",
-    },
-
-    {
-      name: "phone",
-      label: "Phone",
-      validate: {
-        required: "required",
-        min: [11, "Must be 11 characters or more"],
-        max: [11, "Must be 11 characters or more"],
-      },
-      type: "text",
-    },
-    {
-      name: "dateOfBirth",
-      label: "Date of Birth",
-      validate: {
-        required: "required",
-      },
-      type: "date",
-    },
-    {
-      name: "sumAssured",
-      label: "Sum Assured",
-      validate: {
-        required: "required",
-      },
-      type: "number",
-    },
-    {
-      name: "duration",
-      label: "Duration",
-      validate: {
-        required: "required",
-      },
-      type: "number",
-    },
-    {
-      name: "annualContribution",
-      label: "Annual Contribution",
-      validate: {
-        required: "required",
-      },
-      type: "number",
-    },
-    {
-      name: "message",
-      label: "Message",
-      validate: {
-        required: "required",
-        min: [5, "Must be 5 characters or more"],
-      },
-      type: "textarea",
-    },
-  ],
+  "e-term": lifeinsurance,
+    "smart-scholars-plan": lifeinsurance,
+    "smart-life":lifeinsurance,
+    "smart-senior-plan":lifeinsurance, 
 };
 const Insurances = ({ history }) => {
   const [loading, setLoading] = useState(false);
@@ -519,9 +527,8 @@ const Insurances = ({ history }) => {
   return (
     <Container>
     {
-      vehicleType.includes(type) && 
-    
-    <MultiForm 
+      houseTypes.includes(type) && 
+     <MultiForm 
     title="Fill Details"
      error={error}
      loading={loading}
@@ -548,7 +555,7 @@ const Insurances = ({ history }) => {
             history.push("/quote-success", {
               ...values,
               productType: type,
-              // quote: data.data.quote,
+              quote: 1000 //v data.data.quote,
             });
           } catch (error) {
             setLoading(false);
@@ -563,7 +570,46 @@ const Insurances = ({ history }) => {
       value: null
   }} />
 }
-      { !vehicleType.includes(type) && <FormBuilder
+      { vehicleType.includes(type) && <FormBuilder
+        error={error}
+        loading={loading}
+        title="Fill Details"
+        data={products[type] || []}
+        action={async (values) => {
+          setLoading(true);
+          setError(null);
+          console.log(values);
+          try {
+            const { data } = await axios.post(
+              "https://wapicbot-api.herokuapp.com/api/products/get-quote",
+              // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
+              {
+                vehicleClass: vehicleClassMap[values.vehicleClass],
+                regNumber: values.regNumber,
+                type: values.policyholder,
+                make: values.manufacturer,
+                model: values.model,
+                worth: values.vehicleValue,
+                productCode: type,
+              }
+            );
+            console.log(data);
+            setLoading(false);
+            history.push("/quote-success", {
+              ...values,
+              productType: type,
+              quote: data.data.quote,
+            });
+          } catch (error) {
+            setLoading(false);
+            if (error.response) {
+              setError(error.response.data.message);
+            }
+            console.log(error.response);
+          }
+        }}
+      /> }
+      { lifeTypes.includes(type) && <FormBuilder
         error={error}
         loading={loading}
         title="Fill Details"

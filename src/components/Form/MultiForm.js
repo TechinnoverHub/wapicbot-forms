@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+// import { useFormik } from "formik";
+// import * as Yup from "yup";
 import styles from "./styles.module.css";
 import logo from "../../assets/logo.jpeg";
 import loader from "../../assets/loader.gif";
@@ -8,15 +8,15 @@ import {
   TextField,
   Select as SelectParent,
   MenuItem,
-  FormControlLabel,
-  Checkbox as ParentCheckbox,
+//   FormControlLabel,
+//   Checkbox as ParentCheckbox,
   Button,
   Card,
   FormControl,
   InputLabel,
   IconButton
 } from "@material-ui/core";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import styled from "styled-components";
@@ -56,15 +56,17 @@ const useStyles = makeStyles((theme) => ({
  }
 }));
 
-const handleSubmit = (e) => {
-e.preventDefault();
-}
+
 const testData= ["air conditioner", "test 1", 'test 2']
 const MultiForm = ({ template, selectData=testData, action, title, instruction, loading, error }) => {
      const classes = useStyles();
   const [state, setState] = useState([{...template}]);
 
 
+ const handleSubmit = (e) => {
+    e.preventDefault();
+    action(state)
+}
   const handleChange = (key, i, val) => {
     const newState = [...state];
     newState[i][key] = val;
