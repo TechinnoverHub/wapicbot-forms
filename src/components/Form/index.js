@@ -1,16 +1,18 @@
 // import "moment";
-import React from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import React, { useState, useEffect } from "react";
 import styles from "./styles.module.css";
 import logo from "../../assets/logo.jpeg";
 import loader from "../../assets/loader.gif";
+import isEmail from "validator/es/lib/isEmail";
 import {
   TextField,
   Select as SelectParent,
   MenuItem,
   FormControlLabel,
   Checkbox as ParentCheckbox,
+  FormControl,
+  InputLabel,
+  FormHelperText,
 } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 // import MomentUtils from "@date-io/moment";
@@ -57,89 +59,129 @@ const Checkbox = withStyles({
 
 const useStyles = makeStyles((theme) => ({
   selectEmpty: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(1),
   },
   items: {
     textTransform: "capitalize",
   },
   textField: {
     paddingTop: theme.spacing(2),
+    marginBottom: 0,
   },
 }));
 
 const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
+  const [state, setState] = useState({});
+  const [errorState, setErrorState] = useState({});
   const classes = useStyles();
-
-  const addYupMethod = (obj, type, value) => {
-    switch (type) {
-      case "max":
-        return obj.max(value[0], value[1]);
-      case "min":
-        return obj.min(value[0], value[1]);
-      case "email":
-        return obj.email(value);
-      case "required":
-        return obj.required(value);
-      default:
-        return obj;
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!Object.keys(errorState).length) return action(state);
   };
 
-  const createYupObject = (data, condition = false) => {
-    const validation = {};
-    const initials = {};
-    data.forEach((dt) => {
-      if (!dt.section) {
-        if (
-          !condition ||
-          !dt.dependent ||
-          (dt.dependent &&
-            condition[dt.dependent.key] === dt.dependent.value) ||
-          (dt.dependent && dt.data)
-        ) {
-          initials[dt.name] =
-            dt.type === "date" ? new Date() : dt.type === "number" ? 0 : "";
-          validation[dt.name] =
-            dt.type !== "number" ? Yup.string() : Yup.number();
-          Object.keys(dt.validate).forEach((ky) => {
-            validation[dt.name] = addYupMethod(
-              validation[dt.name],
-              ky,
-              dt.validate[ky]
-            );
-          });
+  const validateInput = (
+    type,
+    obj,
+    current,
+    dependent,
+    dependentState,
+    exactDependentValue
+  ) => {
+    if (dependent) {
+      if (typeof dependent === "string") {
+        if (dependentState) {
+          if ("required" in obj && !current) {
+            return obj["required"];
+          }
+          if ("min" in obj && current.length < obj.min[0]) {
+            return obj.min[1];
+          }
+          if ("max" in obj && current.length > obj.min[0]) {
+            return obj.min[1];
+          }
+          if ("email" in obj && !isEmail(current)) {
+            return obj.email;
+          }
+        }
+      } else {
+        if (dependentState && dependentState === exactDependentValue) {
+          if ("required" in obj && !current) {
+            return obj["required"];
+          }
+          if ("min" in obj && current.length < obj.min[0]) {
+            return obj.min[1];
+          }
+          if ("max" in obj && current.length > obj.min[0]) {
+            return obj.min[1];
+          }
+          if ("email" in obj && !isEmail(current)) {
+            return obj.email;
+          }
         }
       }
-    });
-    return { validation, initials };
-  };
-  const useCreateFormik = (data, action) => {
-    const { initials } = createYupObject(data);
-
-    return useFormik({
-      initialValues: initials,
-      // validationSchema: Yup.object(validation),
-      validate: async (values) => {
-        const valuesToCheck = {};
-        data.forEach((datum) => {
-          (!datum.dependent ||
-            (datum.dependent &&
-              formik.values[datum.dependent.key] === datum.dependent.value)) &&
-            (valuesToCheck[datum.name] = values[datum.name]);
-        });
-        const { validation } = createYupObject(data, values);
-        const yupSchema = Yup.object(validation);
-        const isValid = await yupSchema.isValid(valuesToCheck);
-        if (!isValid) {
-          return yupSchema.validate(valuesToCheck).catch(function (error) {
-            return { [error.path]: error.message };
-          });
+    } else {
+      if (
+        type === "text" ||
+        type === "select" ||
+        type === "date" ||
+        type === "email" ||
+        type === "textarea"
+      ) {
+        if ("required" in obj && !current) {
+          return obj["required"];
         }
-      },
-      onSubmit: action,
-    });
+        if ("min" in obj && current.length < obj.min[0]) {
+          return obj.min[1];
+        }
+        if ("max" in obj && current.length > obj.min[0]) {
+          return obj.min[1];
+        }
+        if ("email" in obj && !isEmail(current)) {
+          return obj.email;
+        }
+      }
+      if (type === "number") {
+        if ("required" in obj && !current) {
+          return obj["required"];
+        }
+        if ("min" in obj && current < obj.min[0]) {
+          return obj.min[1];
+        }
+        if ("max" in obj && current > obj.min[0]) {
+          return obj.min[1];
+        }
+      }
+    }
+    return null;
   };
-  const formik = useCreateFormik(data, action);
+
+  useEffect(() => {
+    const newError = {};
+
+    data.forEach((dt) => {
+      const rtErr = validateInput(
+        dt.type,
+        dt.validate,
+        state[dt.name],
+        dt.dependent,
+        dt.dependent
+          ? state[
+              typeof dt.dependent === "string" ? dt.dependent : dt.dependent.key
+            ]
+          : null,
+        dt.dependent
+          ? typeof dt.dependent === "string"
+            ? dt.dependent
+            : dt.dependent.value
+          : null
+      );
+      if (rtErr) {
+        newError[dt.name] = rtErr;
+      }
+    });
+    console.log(newError);
+    setErrorState(newError);
+  }, [state, data]);
 
   const chooseInput = (type, name, list, obj) => {
     switch (type) {
@@ -150,49 +192,50 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
               id={name}
               // type={type}
               label={obj.label}
-              {...formik.getFieldProps(name)}
+              value={state[name]}
+              error={!!errorState[name]}
+              helperText={errorState[name]}
+              onChange={(e) => setState({ ...state, [name]: e.target.value })}
               multiline
             />
             {/* <label htmlFor={name}>
               {obj.label}
               {obj.validate && obj.validate.required ? "*" : ""}
             </label>
-            <textarea id={name} {...formik.getFieldProps(name)} /> */}
+            <textarea id={name}value={state[name]}
+            onChange={(e)=> setState({...state, [name]: e.target.value})} /> */}
           </>
         );
 
       case "select":
         return (
-          <>
-            {/* <label htmlFor={name}>
-              {obj.label}
-              {obj.validate && obj.validate.required ? "*" : ""}
-            </label> */}
+          <FormControl
+            className={classes.selectEmpty}
+            error={!!errorState[name]}
+          >
+            <InputLabel className={classes.label}>
+              {obj.label ? obj.label : `select ${name}`}
+            </InputLabel>
             <Select
               id={name}
-              {...formik.getFieldProps(name)}
+              value={state[name]}
+              onChange={(e) => setState({ ...state, [name]: e.target.value })}
               displayEmpty
-              className={classes.selectEmpty}
+              className={classes.textField}
               // inputProps={{ "aria-label": "Without label" }}
             >
-              <MenuItem className={classes.items} value="" disabled>
-                {obj.label ? obj.label : `select ${name}`}{" "}
-              </MenuItem>
-
               {obj.dependent
-                ? formik.values[obj.dependent]
-                  ? dataBucket[obj.data][formik.values[obj.dependent]] &&
-                    dataBucket[obj.data][formik.values[obj.dependent]].map(
-                      (li) => (
-                        <MenuItem
-                          className={classes.items}
-                          key={li.value}
-                          value={li.value}
-                        >
-                          {li.value}
-                        </MenuItem>
-                      )
-                    )
+                ? state[obj.dependent]
+                  ? dataBucket[obj.data][state[obj.dependent]] &&
+                    dataBucket[obj.data][state[obj.dependent]].map((li) => (
+                      <MenuItem
+                        className={classes.items}
+                        key={li.value}
+                        value={li.value}
+                      >
+                        {li.value}
+                      </MenuItem>
+                    ))
                   : null
                 : obj.data
                 ? dataBucket[obj.data].map((li) => (
@@ -212,7 +255,12 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
                   ))
                 : null}
             </Select>
-          </>
+            {errorState[name] && (
+              <FormHelperText style={{ margin: 0 }}>
+                {errorState[name]}
+              </FormHelperText>
+            )}
+          </FormControl>
         );
 
       case "checkbox":
@@ -223,14 +271,20 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
                 <Checkbox
                   name={name}
                   color="primary"
-                  {...formik.getFieldProps(name)}
+                  value={state[name]}
+                  error={!!errorState[name]}
+                  helperText={errorState[name]}
+                  onChange={(e) =>
+                    setState({ ...state, [name]: e.target.value })
+                  }
                 />
               }
               label={`${obj.label}${
                 obj.validate && obj.validate.required ? "*" : ""
               }`}
             />
-            {/* <input id={name} type={type} {...formik.getFieldProps(name)} />
+            {/* <input id={name} type={type}value={state[name]}
+            onChange={(e)=> setState({...state, [name]: e.target.value})} />
             <label htmlFor={name}>
               {obj.label}
               {obj.validate && obj.validate.required ? "*" : ""}
@@ -245,7 +299,10 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
               label={obj.label}
               className={classes.textField}
               type="date"
-              {...formik.getFieldProps(name)}
+              value={state[name]}
+              error={!!errorState[name]}
+              helperText={errorState[name]}
+              onChange={(e) => setState({ ...state, [name]: e.target.value })}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -256,7 +313,8 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
                 id={name}
                 label={obj.label}
                 format="MM/dd/yyyy"
-                {...formik.getFieldProps(name)}
+               value={state[name]}
+               onChange={(e)=> setState({...state, [name]: e.target.value})}
                 KeyboardButtonProps={{
                   "aria-label": "change date",
                 }}
@@ -270,7 +328,8 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
               id={name}
               type={type}
               placeholder={obj.label}
-              {...formik.getFieldProps(name)}
+             value={state[name]}
+             onChange={(e)=> setState({...state, [name]: e.target.value})}
             /> */}
           </div>
         );
@@ -285,14 +344,17 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
               id={name}
               // type={type}
               label={obj.label}
-              {...formik.getFieldProps(name)}
+              value={state[name]}
+              error={!!errorState[name]}
+              helperText={errorState[name]}
+              onChange={(e) => setState({ ...state, [name]: e.target.value })}
             />
           </>
         );
     }
   };
   return (
-    <form onSubmit={formik.handleSubmit} className={styles.form}>
+    <form onSubmit={handleSubmit} className={styles.form}>
       <img src={logo} alt="logo" />
       <h2>{title}</h2>
 
@@ -312,20 +374,12 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
         ) : (
           (!datum.dependent ||
             (datum.dependent &&
-              formik.values[datum.dependent.key] ===
-                datum.dependent.value)) && (
-            <div
-              key={i}
-              className={`${styles.inner} ${
-                formik.touched[datum.name] && formik.errors[datum.name]
-                  ? styles.error
-                  : ""
-              }`}
-            >
+              state[datum.dependent.key] === datum.dependent.value)) && (
+            <div key={i} className={styles.inner}>
               {chooseInput(datum.type, datum.name, datum.list, datum)}
-              {formik.touched[datum.name] && formik.errors[datum.name] ? (
+              {/* {formik.touched[datum.name] && formik.errors[datum.name] ? (
                 <span>{formik.errors[datum.name]}</span>
-              ) : null}
+              ) : null} */}
             </div>
           )
         )
@@ -335,11 +389,8 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
         <img src={loader} alt="loader" />
       ) : (
         <button
-        className={styles.button}
-          disabled={
-            Object.keys(formik.touched).length &&
-            Object.keys(formik.errors).length
-          }
+          className={styles.button}
+          disabled={Object.keys(errorState).length}
           type="submit"
         >
           &#8594;

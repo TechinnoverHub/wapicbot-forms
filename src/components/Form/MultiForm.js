@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { useFormik } from "formik";
 // import * as Yup from "yup";
 import styles from "./styles.module.css";
@@ -15,6 +15,7 @@ import {
   FormControl,
   InputLabel,
   IconButton,
+  FormHelperText,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -96,10 +97,23 @@ const MultiForm = ({
 }) => {
   const classes = useStyles();
   const [state, setState] = useState([{ ...template }]);
+  const [errorState, setErrorState] = useState({});
 
+  useEffect(() => {
+    const newError = {};
+    state.forEach((st, i) => {
+      if (!st.name) {
+        newError[`name${i}`] = "is Required";
+      }
+      if (!st.value) {
+        newError[`value${i}`] = "is Required";
+      }
+    });
+    setErrorState(newError);
+  }, [state]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    action(state);
+    if (!Object.keys(errorState).length) return action(state);
   };
   const handleChange = (key, i, val) => {
     const newState = [...state];
@@ -133,7 +147,10 @@ const MultiForm = ({
       )}
       {state.map((st, i) => (
         <Card className={classes.card}>
-          <FormControl className={classes.formControl}>
+          <FormControl
+            className={classes.formControl}
+            error={errorState[`name${i}`]}
+          >
             <InputLabel id="demo-simple-select-label" className={classes.label}>
               Item to cover
             </InputLabel>
@@ -156,11 +173,18 @@ const MultiForm = ({
                 </MenuItem>
               ))}
             </Select>
+            {errorState[`name${i}`] && (
+              <FormHelperText style={{ margin: 0 }}>
+                {errorState[`name${i}`]}
+              </FormHelperText>
+            )}
           </FormControl>
           <TextField
             id={i}
             className={classes.selectEmpty}
             label={"Value"}
+            error={errorState[`value${i}`]}
+            helperText={errorState[`value${i}`]}
             value={st.value}
             onChange={(data) => handleChange("value", i, data.target.value)}
             //   {...formik.getFieldProps(name)}
@@ -190,7 +214,11 @@ const MultiForm = ({
       {loading ? (
         <img src={loader} alt="loader" />
       ) : (
-        <button className={styles.button} disabled={false} type="submit">
+        <button
+          disabled={Object.keys(errorState).length}
+          className={styles.button}
+          type="submit"
+        >
           &#8594;
         </button>
       )}

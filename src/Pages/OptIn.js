@@ -54,7 +54,7 @@ const optinFormData = [
     name: "claim",
     label: "Claim Number",
     validate: {
-      // required: "required",
+      required: "required",
     },
     type: "number",
     dependent: {
@@ -109,9 +109,7 @@ const OptIn = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      if (error.response) {
-        setError(error.response.data.message);
-      }
+
       console.log(error.response);
     }
   };
