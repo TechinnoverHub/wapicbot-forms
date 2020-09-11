@@ -19,6 +19,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
+import FileBase64 from "react-file-base64";
 
 import styled from "styled-components";
 
@@ -189,6 +190,12 @@ const MultiForm = ({
             onChange={(data) => handleChange("value", i, data.target.value)}
             //   {...formik.getFieldProps(name)}
           />
+          <div style={{marginTop: '10px'}}>
+            <FileBase64
+              disabled={loading}
+              onDone={(file) => handleChange("image", i, file.base64)}
+            />
+          </div>
           {i > 0 && (
             <IconButton
               onClick={() => removeOne(i)}

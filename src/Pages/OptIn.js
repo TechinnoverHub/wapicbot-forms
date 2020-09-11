@@ -94,6 +94,7 @@ const OptIn = () => {
         return setLoading(false);
       }
       const whatsappNo = searchParams.get("whatsapp");
+      const conversationId = searchParams.get("conversationId");
       if (!whatsappNo) return setLoading(false);
       const { data } = await axios.post(
         "https://wapicbot-api.herokuapp.com/api/auth/optin",
@@ -102,6 +103,7 @@ const OptIn = () => {
           lastname: values.lastName,
           email: values.email,
           whatsappNo: `+${whatsappNo.trim()}`,
+          conversationId
         }
       );
       console.log(data);

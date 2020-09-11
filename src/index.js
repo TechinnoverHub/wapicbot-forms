@@ -3,6 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import cloudinary from 'cloudinary/lib/cloudinary'
+
+cloudinary.v2.config({
+  cloud_name: process.env.REACT_APP_CL_NAME,
+  api_key: process.env.REACT_APP_CL_API_KEY,
+  api_secret: process.env.REACT_APP_CL_API_SECRET,
+});
 
 ReactDOM.render(
   <React.StrictMode>

@@ -4,6 +4,7 @@ import MultiForm from "../components/Form/MultiForm";
 import Container from "../components/Container";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import cloudinary from 'cloudinary/lib/cloudinary'
 
 const vehicleClassMap = {
   "private Cars": "PRIVATE",
@@ -537,12 +538,30 @@ const Insurances = ({ history }) => {
             setLoading(true);
             setError(null);
             console.log(values);
+            const valuesToUpload = await Promise.all(values.map(async val => {
+              const newVal = {...val};
+              if(newVal.image) {
+                await cloudinary.v2.uploader.upload(
+                  newVal.image,
+                  { folder: `${userId}/` },
+                  (error, result) => {
+                    if (error) {
+                      setLoading(false);
+                    } else {
+                      newVal.image = result.secure_url;
+                    }
+                  }
+                );
+              }
+              return newVal;
+            }))
+            console.log(valuesToUpload);
             try {
               const { data } = await axios.post(
                 "https://wapicbot-api.herokuapp.com/api/products/get-quote",
                 // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
                 {
-                  items: values,
+                  items: valuesToUpload,
                   productCode: type,
                 }
               );
