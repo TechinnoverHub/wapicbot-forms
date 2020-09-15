@@ -89,7 +89,7 @@ const QuoteSuccess = (props) => {
         <div>
           <div className="group1">
             <h3>Choice Premium (Payable Premium)</h3>
-            <h1>₦{formatNum(quoteDetails.quote)}</h1>
+            <h1>₦{formatNum(Math.ceil(quoteDetails.quote))}</h1>
           </div>
 
           <div className="group2">
