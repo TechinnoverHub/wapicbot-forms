@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "wapicbot",
+  "private_key_id": "6ba6c80ee2ad7a268edb8c7b75cef4f496d85154",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCX5RXLGESc3TCI\nGFZP4nUB6sZXD865O5Qq0F39iYp/B/o4FILmjhLul/fM/l7JHoHvFMeqN8V8SKZL\nr+XBBMpDAt1+NXLUUGOfSu1ZQNK4Kt6oMWYMuqZBCWZ77R+hsUjuAL1q3LpIRf1m\ni6FCC1Jum8GJAUVRwM4IAqgTwXD5+cOyxXBPMIVAY+FKkNqpyCEVA+MAiLzggMyA\nKCCSmETXcgUieW4a09dD5J4ne9nCLs64lnAOK40/tHiNtnw08Sor7OKAUfcjiily\n5x4suXPq3mK7h0/Pt1khYW/QWz0ufAo9tb6XzcwFUWbqh41UVmC1Iw80H6bSxqHg\nBNJwtqlvAgMBAAECggEABHVnEPm1cXCmsqca5X2CuvgQiHsj6pHpTcZsV21DaIcP\nsmLxFH5vPNSvBwk9GySLm4PPlM0jhHwj40Xdrq9gJMAxR6uChuE/puwU19Fak3Bb\nmLIvZp2yabykLhcuD8t7sn6QENJ0Znt6kfzYRFLbwYZqWqJz+GT6Y7JcRBtMrrjV\n1/o2qDjpTsRfabrM8HogrJHDwtPaR9u2lWbitErX29HqxFQEqQ+r/UQ3KZPokt1O\n1d3/em7tAgJspYbFC9awUU+MPSYnw7VReJWQdSn5rbMeknHRfeiZk4+6Lf7eqQX2\nljV4aMLvHi9kDyFqEO0dTLvAs5uyuaOLHLVBx9jKGQKBgQDGsURqjnMhdwapKHxa\nb9RITRfM1tLJRzRBpFD++WzdnsWWHbH2uiAeDnJU6HXnJ5wKzrt7zLdkecIlKYsC\nRzQhPWKUOxCxXIL3bjsTXYrdSjLBgpgyNh20+PP/0qgPfMWJ6xf5cMMqDtgmCURI\n4L6647oTy3ymbZdNnGDb0eQRGQKBgQDDtHQB7ouq2OUpTcRUfxGgz7NSq502902A\n/Qv4X39LZPGOA8e2ORy+Je5BWSuloLQACGkuNFBxmodXi5u1UU6AnkyHrl527C6d\nE1e0LxB13ENpED/wEqRkjHHoYxyNrYyH6ijJ4BqJU/ceG4JKE6LEM5zaZwJBALqg\nKj92oek3xwKBgCGDWNTYPhcQ6nCxwXfHkPi4+CC2w0rr1aaUvoyjKXegBhex3oiN\nEEnBigtEQk7A4ZL5F6pj9zLdTp/SB/5UYDiTEAOMit4/il+Nmi1EA94bW8BD9MPT\nWONjclReBbbHBtKicqLCIEkBw/d2bKwWLFV9f69DDT1NEs4maDfriRpRAoGAIq/5\nX95IIyAOfiOqiM988GPgBOcmFnf+5L31QTCr/1EE/4br/wBgd9OBR1PmyJSTUu4q\ntmXPXFNnabz0/E5M+78TEXl2hN2X5X9oLCerYziHOjgHHSYwvSGnjukCRppcLjry\nv9VY3r5jLpLxpO+WCfCb/JoFbEAU1A6o8P4BuEECgYBaFvqclBsNwn3t/bG48gVH\n7NeKfhye4utzD2mgl9YTrQfElnGf65D3ltw84r2jAkv5Kfpv12DXlR9jt3j3RSkJ\nH1e5u8OlRMVSkb55PQxRefqc/MQFsKv+tqAUMkJLnCHn86H7i65VyOUzLGigHjxF\no9uO3ebRPCBX2EHin87sug==\n-----END PRIVATE KEY-----\n",
+  "client_email": "wapicbot-verify@wapicbot.iam.gserviceaccount.com",
+  "client_id": "113196221793617366391",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/wapicbot-verify%40wapicbot.iam.gserviceaccount.com"
+}

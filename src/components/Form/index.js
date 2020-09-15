@@ -96,8 +96,8 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
           if ("min" in obj && current.length < obj.min[0]) {
             return obj.min[1];
           }
-          if ("max" in obj && current.length > obj.min[0]) {
-            return obj.min[1];
+          if ("max" in obj && current.length > obj.max[0]) {
+            return obj.max[1];
           }
           if ("email" in obj && !isEmail(current)) {
             return obj.email;
@@ -111,8 +111,8 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
           if ("min" in obj && current.length < obj.min[0]) {
             return obj.min[1];
           }
-          if ("max" in obj && current.length > obj.min[0]) {
-            return obj.min[1];
+          if ("max" in obj && current.length > obj.max[0]) {
+            return obj.max[1];
           }
           if ("email" in obj && !isEmail(current)) {
             return obj.email;
@@ -126,6 +126,7 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
         type === "date" ||
         type === "email" ||
         type === "textarea"
+        || type === 'checkbox'
       ) {
         if ("required" in obj && !current) {
           return obj["required"];
@@ -133,8 +134,8 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
         if ("min" in obj && current.length < obj.min[0]) {
           return obj.min[1];
         }
-        if ("max" in obj && current.length > obj.min[0]) {
-          return obj.min[1];
+        if ("max" in obj && current.length > obj.max[0]) {
+          return obj.max[1];
         }
         if ("email" in obj && !isEmail(current)) {
           return obj.email;
@@ -147,8 +148,8 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
         if ("min" in obj && current < obj.min[0]) {
           return obj.min[1];
         }
-        if ("max" in obj && current > obj.min[0]) {
-          return obj.min[1];
+        if ("max" in obj && current > obj.max[0]) {
+          return obj.max[1];
         }
       }
     }
@@ -179,7 +180,6 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
         newError[dt.name] = rtErr;
       }
     });
-    console.log(newError);
     setErrorState(newError);
   }, [state, data]);
 
@@ -275,7 +275,8 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
                   error={!!errorState[name]}
                   helperText={errorState[name]}
                   onChange={(e) =>
-                    setState({ ...state, [name]: e.target.value })
+                    setState({ ...state, [name]: e.target.checked })
+                  
                   }
                 />
               }

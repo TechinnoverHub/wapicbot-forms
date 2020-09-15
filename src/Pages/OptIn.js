@@ -20,7 +20,7 @@ const optinFormData = [
     label: "First Name",
     validate: {
       required: "required",
-      max: [15, "Must be 15 characters or less"],
+      min: [3, "Must be 3 characters or more"],
     },
     type: "text",
     dependent: {
@@ -33,7 +33,7 @@ const optinFormData = [
     label: "Last Name",
     validate: {
       required: "required",
-      max: [15, "Must be 15 characters or less"],
+      min: [3, "Must be 3 characters or more"],
     },
     type: "text",
     dependent: {
@@ -64,20 +64,13 @@ const optinFormData = [
   },
   {
     name: "wapicPolicy",
-    label: "I accept wapic policy, terms and conditions.",
+    label: "I accept wapic policy, terms and conditions and also I accept to receive messages on whatsapp",
     validate: {
       required: "required",
     },
     type: "checkbox",
   },
-  {
-    name: "whatsappPolicy",
-    label: "I accept to receive messages on whatsapp",
-    validate: {
-      required: "required",
-    },
-    type: "checkbox",
-  },
+
 ];
 const OptIn = () => {
   const location = useLocation();
@@ -85,11 +78,11 @@ const OptIn = () => {
   const [error, setError] = useState(null);
 
   const submitForm = async (values) => {
-    console.log(values);
     try {
+      setLoading(true);
       const searchParams = new URLSearchParams(location.search);
 
-      if (!values.whatsappPolicy || !values.wapicPolicy) {
+      if (!values.wapicPolicy) {
         setError("Please accept the policies");
         return setLoading(false);
       }
@@ -106,8 +99,8 @@ const OptIn = () => {
           conversationId
         }
       );
-      console.log(data);
       window.location = "https://wa.me/+2348111228899";
+      console.log(data)
       setLoading(false);
     } catch (error) {
       setLoading(false);

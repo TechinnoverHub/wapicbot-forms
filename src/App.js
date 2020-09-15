@@ -7,6 +7,7 @@ import logo from "./assets/logo.jpeg";
 import KYC from "./Pages/kyc";
 import QuoteSuccess from "./Pages/QuoteSuccess";
 import Paystack from "./Pages/Paystack";
+import VehicleCheck from "./Pages/VehicleCheck";
 function App() {
   return (
     <BrowserRouter>
@@ -49,11 +50,13 @@ function App() {
                 </Link>
                 <Link to="/quote-success">SuccessQuote</Link>
                 <Link to="/kyc/5f4bb72825bf1a0017b8b0f0">KYC form</Link>
+                <Link to="/check-vehicle">Vehicle Check</Link>
               </div>
             </div>
           )}
         />
         <Route path="/optin" component={OptIn} />
+        <Route path="/check-vehicle" component={VehicleCheck} />
         <Route path="/product/:type/:userId" component={Insurances} />
         <Route path="/kyc/:userId" component={KYC} />
         <Route path="/quote-success/:userId" component={QuoteSuccess} />
