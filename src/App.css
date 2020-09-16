@@ -65,7 +65,9 @@ a:hover {
 .group2 h4 {
   color: #aaa;
 }
-
+.group2 h2 {
+  text-transform: capitalize;
+}
 .paystack-button {
   padding: 10px 30px;
   border-radius: 30px;

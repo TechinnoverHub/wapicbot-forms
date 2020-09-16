@@ -20,7 +20,6 @@ const optinFormData = [
     label: "First Name",
     validate: {
       required: "required",
-      min: [3, "Must be 3 characters or more"],
     },
     type: "text",
     dependent: {
@@ -33,7 +32,6 @@ const optinFormData = [
     label: "Last Name",
     validate: {
       required: "required",
-      min: [3, "Must be 3 characters or more"],
     },
     type: "text",
     dependent: {

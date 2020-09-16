@@ -7,7 +7,9 @@ import logo from "../assets/logo.jpeg";
 import loader from "../assets/loader.gif";
 import includesAll from "../utils/includesAll";
 import formatNum from "../utils/formatNum";
-const publicKey = "pk_test_2e6143d930f7d438e1b3f79302de0c836779f87d";
+
+const publicKey = process.env.REACT_APP_PAYSTACK;
+console.log(process.env);
 const Paystack = (props) => {
   const [quoteDetails, setQuoteDetails] = useState({});
   const [loading, setLoading] = useState(false);
@@ -64,16 +66,13 @@ const Paystack = (props) => {
         user:userId,
         productCode: quoteDetails.productType
       }).then(({data}) => {
-         alert("Thanks for doing business with us! Come back soon!!");
          setLoading(false)
          setPaid(true)
-          // window.location = "https://wa.me/+2348111228899";
+          window.location = "https://wa.me/+2348111228899";
       }).catch(err => {
         console.log(err);
         setLoading(false)
       })
-      // alert("Thanks for doing business with us! Come back soon!!");
-      // window.location = "https://wa.me/+2348111228899";
     },
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),
   };
@@ -93,10 +92,6 @@ const Paystack = (props) => {
       paid ?   
       <div className="group2">
             <h3>Payment successfull</h3>
-            <button className="paystack-button" onClick={() => {
-              window.location = "https://wa.me/+2348111228899";
-            
-            }}>Continue to chat</button>
           </div>
           :
         <PaystackButton className="paystack-button" {...componentProps} />

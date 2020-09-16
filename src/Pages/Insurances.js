@@ -34,7 +34,6 @@ const lifeinsurance = [
     label: "First Name",
     validate: {
       required: "required",
-      min: [5, "Must be 5 characters or more"],
     },
     type: "text",
   },
@@ -43,7 +42,6 @@ const lifeinsurance = [
     label: "Last Name",
     validate: {
       required: "required",
-      min: [5, "Must be 5 characters or more"],
     },
     type: "text",
   },
@@ -72,11 +70,11 @@ const lifeinsurance = [
     validate: {
       required: "required",
     },
-    type: "number",
+    type: "currency",
   },
   {
     name: "duration",
-    label: "Duration",
+    label: "Duration (in years)",
     validate: {
       required: "required",
     },
@@ -88,7 +86,7 @@ const lifeinsurance = [
     validate: {
       required: "required",
     },
-    type: "number",
+    type: "currency",
   },
   {
     name: "message",
@@ -169,7 +167,7 @@ const products = {
       validate: {
         required: "required",
       },
-      type: "number",
+      type: "currency",
     },
   ],
   "moov-plus-(fire-and-theft)": [
@@ -236,7 +234,7 @@ const products = {
       validate: {
         required: "required",
       },
-      type: "text",
+      type: "currency",
     },
     {
       name: "floodExtension",
@@ -330,7 +328,7 @@ const products = {
       validate: {
         required: "required",
       },
-      type: "text",
+      type: "currency",
     },
     {
       name: "floodExtension",
@@ -424,7 +422,7 @@ const products = {
       validate: {
         required: "required",
       },
-      type: "text",
+      type: "currency",
     },
     {
       name: "floodExtension",
@@ -514,7 +512,7 @@ const products = {
       validate: {
         required: "required",
       },
-      type: "text",
+      type: "currency",
     },
   ],
   "e-term": lifeinsurance,

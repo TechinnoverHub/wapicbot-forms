@@ -4,6 +4,7 @@ import styles from "./styles.module.css";
 import logo from "../../assets/logo.jpeg";
 import loader from "../../assets/loader.gif";
 import isEmail from "validator/es/lib/isEmail";
+import NumberFormat from 'react-number-format';
 import {
   TextField,
   Select as SelectParent,
@@ -68,6 +69,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     marginBottom: 0,
   },
+  label: {textTransform: "capitalize",}
 }));
 
 const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
@@ -141,7 +143,7 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
           return obj.email;
         }
       }
-      if (type === "number") {
+      if (type === "number" ||type === "currency" ) {
         if ("required" in obj && !current) {
           return obj["required"];
         }
@@ -180,6 +182,7 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
         newError[dt.name] = rtErr;
       }
     });
+    console.log(newError, state);
     setErrorState(newError);
   }, [state, data]);
 
@@ -214,7 +217,7 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
             error={!!errorState[name]}
           >
             <InputLabel className={classes.label}>
-              {obj.label ? obj.label : `select ${name}`}
+              {obj.label ? obj.label : `Select ${name}`}
             </InputLabel>
             <Select
               id={name}
@@ -333,6 +336,27 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
              onChange={(e)=> setState({...state, [name]: e.target.value})}
             /> */}
           </div>
+        );
+      case 'currency':
+        return (
+          
+             <NumberFormat
+              id={name}
+              name={name}
+              customInput={TextField}
+              prefix={'₦'}
+              // format={format || null}
+              type="text"
+              thousandSeparator={true}
+              label={obj.label}
+              value={state[name]}
+              error={!!errorState[name]}
+              helperText={errorState[name]}
+              onValueChange={({value: v})=>{
+                console.log(v);
+                setState({ ...state, [name]: v })}}
+            /> 
+        
         );
       default:
         return (

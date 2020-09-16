@@ -27,29 +27,29 @@ function App() {
                 }}
               >
                 <Link to="/optin?whatsapp=+2349069787848">Optin</Link>
-                <Link to="/product/moov-third-party/5f4bb72825bf1a0017b8b0f0">
+                <Link to="/product/moov-third-party/5f6200d513833f0017840b4f">
                   Car Insurance beta
                 </Link>
-                <Link to="/product/moov-plus-(fire-and-theft)/5f4bb72825bf1a0017b8b0f0">
+                <Link to="/product/moov-plus-(fire-and-theft)/5f6200d513833f0017840b4f">
                   Moov Plus (Fire & Theft)
                 </Link>
-                <Link to="/product/moov-luxury-(extented-comprehensive)/5f4bb72825bf1a0017b8b0f0">
+                <Link to="/product/moov-luxury-(extented-comprehensive)/5f6200d513833f0017840b4f">
                   Moov Luxury
                 </Link>
-                <Link to="/product/moov-prestige-(private-comprehensive)/5f4bb72825bf1a0017b8b0f0">
+                <Link to="/product/moov-prestige-(private-comprehensive)/5f6200d513833f0017840b4f">
                   Moov Prestige (Private Comprehensive)
                 </Link>
-                <Link to="/product/moov-prestige-(commercial-comprehensive)/5f4bb72825bf1a0017b8b0f0">
+                <Link to="/product/moov-prestige-(commercial-comprehensive)/5f6200d513833f0017840b4f">
                   Moov Prestige (Commercial Comprehensive)
                 </Link>
-                <Link to="/product/e-term/5f4bb72825bf1a0017b8b0f0">
+                <Link to="/product/e-term/5f6200d513833f0017840b4f">
                   All Life Insurance
                 </Link>
-                <Link to="/product/house-owners-insurance/5f4bb72825bf1a0017b8b0f0">
+                <Link to="/product/house-owners-insurance/5f6200d513833f0017840b4f">
                   House Insurance
                 </Link>
                 <Link to="/quote-success">SuccessQuote</Link>
-                <Link to="/kyc/5f4bb72825bf1a0017b8b0f0">KYC form</Link>
+                <Link to="/kyc/5f6200d513833f0017840b4f">KYC form</Link>
                 <Link to="/check-vehicle">Vehicle Check</Link>
               </div>
             </div>

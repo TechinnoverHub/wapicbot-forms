@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 // import * as Yup from "yup";
 import styles from "./styles.module.css";
 import logo from "../../assets/logo.jpeg";
+import NumberFormat from 'react-number-format';
 import loader from "../../assets/loader.gif";
 import {
   TextField,
@@ -180,16 +181,22 @@ const MultiForm = ({
               </FormHelperText>
             )}
           </FormControl>
-          <TextField
-            id={i}
-            className={classes.selectEmpty}
-            label={"Value"}
-            error={errorState[`value${i}`]}
-            helperText={errorState[`value${i}`]}
-            value={st.value}
-            onChange={(data) => handleChange("value", i, data.target.value)}
-            //   {...formik.getFieldProps(name)}
-          />
+
+          <NumberFormat
+              id={i}
+              className={classes.selectEmpty}
+              label={"Value"}
+              error={errorState[`value${i}`]}
+              helperText={errorState[`value${i}`]}
+              value={st.value}
+              name={'value' + i}
+              customInput={TextField}
+              prefix={'₦'}
+              // format={format || null}
+              type="text"
+              thousandSeparator={true}
+              onValueChange={({value: v})=> handleChange("value", i, v)}
+            /> 
           <div style={{marginTop: '10px'}}>
             <FileBase64
               disabled={loading}
