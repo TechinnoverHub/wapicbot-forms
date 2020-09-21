@@ -1,524 +1,599 @@
-import React, { useState } from "react";
-import FormBuilder from "../components/Form";
-import MultiForm from "../components/Form/MultiForm";
-import Container from "../components/Container";
-import { useParams } from "react-router-dom";
-import axios from "axios";
-import cloudinary from 'cloudinary/lib/cloudinary'
+import React, { useState } from 'react';
+import FormBuilder from '../components/Form';
+import MultiForm from '../components/Form/MultiForm';
+import Container from '../components/Container';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+// import cloudinary from 'cloudinary/lib/cloudinary';
+const CLOUDINARY_URL = `http://api.cloudinary.com/v1_1/${process.env.REACT_APP_CL_NAME}/upload`;
+// const CLOUDINARY_URL =
+//   'cloudinary://868129558182558:nZL-vAsy9cD_E7h_t_0C8ah8X88@wapic';
 
 const vehicleClassMap = {
-  "private Cars": "PRIVATE",
-  "Commercial Buses & Vehicle": "COMMERCIAL",
-  "commercial Buses & Vehicle": "BUSES",
-  "trucks & General Cartage": "TRUCKS",
-  uber: "UBER",
-  "motor cycle": "MOTORCYCLE",
+  'private Cars': 'PRIVATE',
+  'Commercial Buses & Vehicle': 'COMMERCIAL',
+  'commercial Buses & Vehicle': 'BUSES',
+  'trucks & General Cartage': 'TRUCKS',
+  uber: 'UBER',
+  'motor cycle': 'MOTORCYCLE',
 };
-const houseTypes = ["house-holders-insurance", "house-owners-insurance"];
+const houseTypes = ['house-holders-insurance', 'house-owners-insurance'];
 const lifeTypes = [
-  "e-term",
-  "smart-scholars-plan",
-  "smart-life",
-  "smart-senior-plan",
+  'e-term',
+  'smart-scholars-plan',
+  'smart-life',
+  'smart-senior-plan',
 ];
 const vehicleType = [
-  "moov-third-party",
-  "moov-plus-(fire-and-theft)",
-  "moov-luxury-(extented-comprehensive)",
-  "moov-prestige-(private-comprehensive)",
-  "moov-prestige-(commercial-comprehensive)",
+  'moov-third-party',
+  'moov-plus-(fire-and-theft)',
+  'moov-luxury-(extented-comprehensive)',
+  'moov-prestige-(private-comprehensive)',
+  'moov-prestige-(commercial-comprehensive)',
 ];
 const lifeinsurance = [
   {
-    name: "firstName",
-    label: "First Name",
+    name: 'firstName',
+    label: 'First Name',
     validate: {
-      required: "required",
+      required: 'required',
     },
-    type: "text",
+    type: 'text',
   },
   {
-    name: "lastName",
-    label: "Last Name",
+    name: 'lastName',
+    label: 'Last Name',
     validate: {
-      required: "required",
+      required: 'required',
     },
-    type: "text",
+    type: 'text',
   },
 
   {
-    name: "phone",
-    label: "Phone",
+    name: 'phone',
+    label: 'Phone',
     validate: {
-      required: "required",
-      min: [11, "Must be 11 characters or more"],
-      max: [11, "Must be 11 characters or more"],
+      required: 'required',
+      min: [11, 'Must be 11 characters or more'],
+      max: [11, 'Must be 11 characters or more'],
     },
-    type: "text",
+    type: 'text',
   },
   {
-    name: "dateOfBirth",
-    label: "Date of Birth",
+    name: 'dateOfBirth',
+    label: 'Date of Birth',
     validate: {
-      required: "required",
+      required: 'required',
     },
-    type: "date",
+    type: 'date',
   },
   {
-    name: "sumAssured",
-    label: "Sum Assured",
+    name: 'sumAssured',
+    label: 'Sum Assured',
     validate: {
-      required: "required",
+      required: 'required',
     },
-    type: "currency",
+    type: 'currency',
   },
   {
-    name: "duration",
-    label: "Duration (in years)",
+    name: 'duration',
+    label: 'Duration (in years)',
     validate: {
-      required: "required",
+      required: 'required',
     },
-    type: "number",
+    type: 'number',
   },
   {
-    name: "annualContribution",
-    label: "Annual Contribution",
+    name: 'annualContribution',
+    label: 'Annual Contribution',
     validate: {
-      required: "required",
+      required: 'required',
     },
-    type: "currency",
+    type: 'currency',
   },
   {
-    name: "message",
-    label: "Message",
+    name: 'message',
+    label: 'Message',
     validate: {
-      required: "required",
-      min: [5, "Must be 5 characters or more"],
+      required: 'required',
+      min: [5, 'Must be 5 characters or more'],
     },
-    type: "textarea",
+    type: 'textarea',
+  },
+];
+const eTermInsurance = [
+  {
+    name: 'firstName',
+    label: 'First Name',
+    validate: {
+      required: 'required',
+    },
+    type: 'text',
+  },
+  {
+    name: 'lastName',
+    label: 'Last Name',
+    validate: {
+      required: 'required',
+    },
+    type: 'text',
+  },
+
+  {
+    name: 'phone',
+    label: 'Phone',
+    validate: {
+      required: 'required',
+      min: [11, 'Must be 11 characters or more'],
+      max: [11, 'Must be 11 characters or more'],
+    },
+    type: 'text',
+  },
+  {
+    name: 'dateOfBirth',
+    label: 'Date of Birth',
+    validate: {
+      required: 'required',
+    },
+    min: 16,
+    max: 16,
+    type: 'date',
+  },
+  {
+    name: 'sumAssured',
+    label: 'Sum Assured',
+    validate: {
+      required: 'required',
+    },
+    type: 'currency',
+  },
+  {
+    name: 'duration',
+    label: 'Duration (in years)',
+    validate: {
+      required: 'required',
+    },
+    type: 'number',
+  },
+  {
+    name: 'annualPremium',
+    label: 'Annual Premium',
+    validate: {
+      required: 'required',
+    },
+    type: 'currency',
+  },
+  {
+    name: 'message',
+    label: 'Message',
+    validate: {
+      required: 'required',
+      min: [5, 'Must be 5 characters or more'],
+    },
+    type: 'textarea',
   },
 ];
 const products = {
-  "moov-third-party": [
+  'moov-third-party': [
     {
-      name: "vehicleClass",
-      label: "Vehicle Class",
+      name: 'vehicleClass',
+      label: 'Vehicle Class',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
+      type: 'select',
       list: [
-        "private Cars",
-        "Commercial Buses & Vehicle",
-        "trucks & General Cartage",
+        'private Cars',
+        'Commercial Buses & Vehicle',
+        'trucks & General Cartage',
       ],
     },
     {
-      name: "manufacturer",
-      data: "manufacturers",
-      label: "select Manufacturer ",
+      name: 'manufacturer',
+      data: 'manufacturers',
+      label: 'select Manufacturer ',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
+      type: 'select',
     },
     {
-      name: "model",
-      label: "Select Vehicle Model",
+      name: 'model',
+      label: 'Select Vehicle Model',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      dependent: "manufacturer",
-      data: "carModels",
+      type: 'select',
+      dependent: 'manufacturer',
+      data: 'carModels',
     },
     {
-      name: "regNumber",
-      label: "Registration Number",
+      name: 'regNumber',
+      label: 'Registration Number',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "text",
+      type: 'text',
     },
     {
-      name: "policyholder",
-      label: "Vehicle Type",
+      name: 'policyholder',
+      label: 'Vehicle Type',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      selectLabel: "select one",
-      list: ["Corporate Use", "Private Use"],
+      type: 'select',
+      selectLabel: 'select one',
+      list: ['Corporate Use', 'Private Use'],
     },
 
     {
-      name: "phone",
-      label: "Phone Number",
+      name: 'phone',
+      label: 'Phone Number',
       validate: {
-        required: "required",
-        max: [11, "Must be 11 characters"],
-        min: [11, "Must be 11 characters"],
+        required: 'required',
+        max: [11, 'Must be 11 characters'],
+        min: [11, 'Must be 11 characters'],
       },
-      type: "text",
+      type: 'text',
     },
     {
-      name: "vehicleValue",
-      label: "Vehicle Value",
+      name: 'vehicleValue',
+      label: 'Vehicle Value',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "currency",
+      type: 'currency',
     },
   ],
-  "moov-plus-(fire-and-theft)": [
+  'moov-plus-(fire-and-theft)': [
     {
-      name: "vehicleClass",
-      label: "Select Vehicle Class",
+      name: 'vehicleClass',
+      label: 'Select Vehicle Class',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      list: ["private Cars"],
+      type: 'select',
+      list: ['private Cars'],
     },
     {
-      name: "manufacturer",
-      data: "manufacturers",
-      label: "select Manufacturer ",
+      name: 'manufacturer',
+      data: 'manufacturers',
+      label: 'select Manufacturer ',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
+      type: 'select',
     },
     {
-      name: "model",
-      label: "Select Vehicle Model",
+      name: 'model',
+      label: 'Select Vehicle Model',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      dependent: "manufacturer",
-      data: "carModels",
+      type: 'select',
+      dependent: 'manufacturer',
+      data: 'carModels',
     },
     {
-      name: "regNumber",
-      label: "Registration Number",
+      name: 'regNumber',
+      label: 'Registration Number',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "text",
+      type: 'text',
     },
     {
-      name: "policyholder",
-      label: "Vehicle Type",
+      name: 'policyholder',
+      label: 'Vehicle Type',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      selectLabel: "select one",
-      type: "select",
-      list: ["Corporate Use", "Private Use"],
+      selectLabel: 'select one',
+      type: 'select',
+      list: ['Corporate Use', 'Private Use'],
     },
 
     {
-      name: "phone",
-      label: "Phone Number",
+      name: 'phone',
+      label: 'Phone Number',
       validate: {
-        required: "required",
-        max: [11, "Must be 11 characters"],
-        min: [11, "Must be 11 characters"],
+        required: 'required',
+        max: [11, 'Must be 11 characters'],
+        min: [11, 'Must be 11 characters'],
       },
-      type: "text",
+      type: 'text',
     },
     {
-      name: "vehicleValue",
-      label: "Vehicle value",
+      name: 'vehicleValue',
+      label: 'Vehicle value',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "currency",
+      type: 'currency',
     },
     {
-      name: "floodExtension",
-      label: "Flood Extension",
+      name: 'floodExtension',
+      label: 'Flood Extension',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      list: ["yes", "no"],
+      type: 'select',
+      list: ['yes', 'no'],
     },
     {
-      name: "excessBuyBack",
-      label: "Excess Buy Back",
+      name: 'excessBuyBack',
+      label: 'Excess Buy Back',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      list: ["yes", "no"],
+      type: 'select',
+      list: ['yes', 'no'],
     },
     {
-      name: "vehicleTracking",
-      label: "Would you want Vehicle Tracking?",
+      name: 'vehicleTracking',
+      label: 'Would you want Vehicle Tracking?',
       validate: {
         // required: "required",
       },
-      type: "select",
-      list: ["yes", "no"],
+      type: 'select',
+      list: ['yes', 'no'],
     },
   ],
-  "moov-luxury-(extented-comprehensive)": [
+  'moov-luxury-(extented-comprehensive)': [
     {
-      name: "vehicleClass",
-      label: "Select Vehicle Class",
+      name: 'vehicleClass',
+      label: 'Select Vehicle Class',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      list: ["private Cars"],
+      type: 'select',
+      list: ['private Cars'],
     },
     {
-      name: "manufacturer",
-      data: "manufacturers",
-      label: "select Manufacturer ",
+      name: 'manufacturer',
+      data: 'manufacturers',
+      label: 'select Manufacturer ',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
+      type: 'select',
     },
     {
-      name: "model",
-      label: "Select Vehicle Model",
+      name: 'model',
+      label: 'Select Vehicle Model',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      dependent: "manufacturer",
-      data: "carModels",
+      type: 'select',
+      dependent: 'manufacturer',
+      data: 'carModels',
     },
     {
-      name: "regNumber",
-      label: "Registration Number",
+      name: 'regNumber',
+      label: 'Registration Number',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "text",
+      type: 'text',
     },
     {
-      name: "policyholder",
-      label: "Vehicle Type",
+      name: 'policyholder',
+      label: 'Vehicle Type',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      selectLabel: "select one",
-      type: "select",
-      list: ["Corporate Use", "Private Use"],
+      selectLabel: 'select one',
+      type: 'select',
+      list: ['Corporate Use', 'Private Use'],
     },
 
     {
-      name: "phone",
-      label: "Phone Number",
+      name: 'phone',
+      label: 'Phone Number',
       validate: {
-        required: "required",
-        max: [11, "Must be 11 characters"],
-        min: [11, "Must be 11 characters"],
+        required: 'required',
+        max: [11, 'Must be 11 characters'],
+        min: [11, 'Must be 11 characters'],
       },
-      type: "text",
+      type: 'text',
     },
     {
-      name: "vehicleValue",
-      label: "Vehicle value",
+      name: 'vehicleValue',
+      label: 'Vehicle value',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "currency",
+      type: 'currency',
     },
     {
-      name: "floodExtension",
-      label: "Flood Extension",
+      name: 'floodExtension',
+      label: 'Flood Extension',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      list: ["yes"],
+      type: 'select',
+      list: ['yes'],
     },
     {
-      name: "excessBuyBack",
-      label: "Excess Buy Back",
+      name: 'excessBuyBack',
+      label: 'Excess Buy Back',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      list: ["yes"],
+      type: 'select',
+      list: ['yes'],
     },
     {
-      name: "vehicleTracking",
-      label: "Would you want Vehicle Tracking?",
+      name: 'vehicleTracking',
+      label: 'Would you want Vehicle Tracking?',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      list: ["yes"],
+      type: 'select',
+      list: ['yes'],
     },
   ],
-  "moov-prestige-(private-comprehensive)": [
+  'moov-prestige-(private-comprehensive)': [
     {
-      name: "vehicleClass",
-      label: "Select Vehicle Class",
+      name: 'vehicleClass',
+      label: 'Select Vehicle Class',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      list: ["private Cars"],
+      type: 'select',
+      list: ['private Cars'],
     },
     {
-      name: "manufacturer",
-      data: "manufacturers",
-      label: "select Manufacturer ",
+      name: 'manufacturer',
+      data: 'manufacturers',
+      label: 'select Manufacturer ',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
+      type: 'select',
     },
     {
-      name: "model",
-      label: "Select Vehicle Model",
+      name: 'model',
+      label: 'Select Vehicle Model',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      dependent: "manufacturer",
-      data: "carModels",
+      type: 'select',
+      dependent: 'manufacturer',
+      data: 'carModels',
     },
     {
-      name: "regNumber",
-      label: "Registration Number",
+      name: 'regNumber',
+      label: 'Registration Number',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "text",
+      type: 'text',
     },
     {
-      name: "policyholder",
-      label: "Vehicle Type",
+      name: 'policyholder',
+      label: 'Vehicle Type',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      selectLabel: "select one",
-      type: "select",
-      list: ["Corporate Use", "Private Use"],
+      selectLabel: 'select one',
+      type: 'select',
+      list: ['Corporate Use', 'Private Use'],
     },
 
     {
-      name: "phone",
-      label: "Phone Number",
+      name: 'phone',
+      label: 'Phone Number',
       validate: {
-        required: "required",
-        max: [11, "Must be 11 characters"],
-        min: [11, "Must be 11 characters"],
+        required: 'required',
+        max: [11, 'Must be 11 characters'],
+        min: [11, 'Must be 11 characters'],
       },
-      type: "text",
+      type: 'text',
     },
     {
-      name: "vehicleValue",
-      label: "Vehicle value",
+      name: 'vehicleValue',
+      label: 'Vehicle value',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "currency",
+      type: 'currency',
     },
     {
-      name: "floodExtension",
-      label: "Flood Extension",
+      name: 'floodExtension',
+      label: 'Flood Extension',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      list: ["yes", "no"],
+      type: 'select',
+      list: ['yes', 'no'],
     },
     {
-      name: "vehicleTracking",
-      label: "Would you want Vehicle Tracking?",
+      name: 'vehicleTracking',
+      label: 'Would you want Vehicle Tracking?',
       validate: {
         // required: "required",
       },
-      type: "select",
-      list: ["yes", "no"],
+      type: 'select',
+      list: ['yes', 'no'],
     },
   ],
-  "moov-prestige-(commercial-comprehensive)": [
+  'moov-prestige-(commercial-comprehensive)': [
     {
-      name: "vehicleClass",
-      label: "Select Vehicle Class",
+      name: 'vehicleClass',
+      label: 'Select Vehicle Class',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
+      type: 'select',
       list: [
-        "commercial Buses & Vehicle",
-        "trucks & General Cartage",
-        "uber",
-        "motor cycle",
+        'commercial Buses & Vehicle',
+        'trucks & General Cartage',
+        'uber',
+        'motor cycle',
       ],
     },
     {
-      name: "manufacturer",
-      data: "manufacturers",
-      label: "select Manufacturer ",
+      name: 'manufacturer',
+      data: 'manufacturers',
+      label: 'select Manufacturer ',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
+      type: 'select',
     },
     {
-      name: "model",
-      label: "Select Vehicle Model",
+      name: 'model',
+      label: 'Select Vehicle Model',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "select",
-      dependent: "manufacturer",
-      data: "carModels",
+      type: 'select',
+      dependent: 'manufacturer',
+      data: 'carModels',
     },
     {
-      name: "regNumber",
-      label: "Registration Number",
+      name: 'regNumber',
+      label: 'Registration Number',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "text",
+      type: 'text',
     },
     {
-      name: "policyholder",
-      label: "Vehicle Type",
+      name: 'policyholder',
+      label: 'Vehicle Type',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      selectLabel: "select one",
-      type: "select",
-      list: ["Commercial Use", "Private Use"],
+      selectLabel: 'select one',
+      type: 'select',
+      list: ['Commercial Use', 'Private Use'],
     },
 
     {
-      name: "phone",
-      label: "Phone Number",
+      name: 'phone',
+      label: 'Phone Number',
       validate: {
-        required: "required",
-        max: [11, "Must be 11 characters"],
-        min: [11, "Must be 11 characters"],
+        required: 'required',
+        max: [11, 'Must be 11 characters'],
+        min: [11, 'Must be 11 characters'],
       },
-      type: "text",
+      type: 'text',
     },
     {
-      name: "vehicleValue",
-      label: "Vehicle value",
+      name: 'vehicleValue',
+      label: 'Vehicle value',
       validate: {
-        required: "required",
+        required: 'required',
       },
-      type: "currency",
+      type: 'currency',
     },
   ],
-  "e-term": lifeinsurance,
-  "smart-scholars-plan": lifeinsurance,
-  "smart-life": lifeinsurance,
-  "smart-senior-plan": lifeinsurance,
+  'e-term': eTermInsurance,
+  'smart-scholars-plan': lifeinsurance,
+  'smart-life': lifeinsurance,
+  'smart-senior-plan': lifeinsurance,
 };
 const Insurances = ({ history }) => {
   const [loading, setLoading] = useState(false);
@@ -529,34 +604,64 @@ const Insurances = ({ history }) => {
     <Container>
       {houseTypes.includes(type) && (
         <MultiForm
-          title="Fill Details"
+          title='Fill Details'
           error={error}
           loading={loading}
           action={async (values) => {
-            setLoading(true);
-            setError(null);
-            console.log(values);
-            const valuesToUpload = await Promise.all(values.map(async val => {
-              const newVal = {...val};
-              if(newVal.image) {
-                await cloudinary.v2.uploader.upload(
-                  newVal.image,
-                  { folder: `${userId}/` },
-                  (error, result) => {
-                    if (error) {
-                      setLoading(false);
-                    } else {
-                      newVal.image = result.secure_url;
-                    }
-                  }
-                );
-              }
-              return newVal;
-            }))
-            console.log(valuesToUpload);
             try {
+              setLoading(true);
+              setError(null);
+              console.log(values);
+              const valuesToUpload = await Promise.all(
+                values.map(async (val) => {
+                  const newVal = { ...val };
+                  if (newVal.image) {
+                    console.log(newVal.image);
+                    const data = {
+                      file: newVal.image,
+                      folder: `${userId}/`,
+                      upload_preset: 'pb9zgwxy',
+                    };
+                    const r = await fetch(CLOUDINARY_URL, {
+                      body: JSON.stringify(data),
+                      headers: {
+                        'content-type': 'application/json',
+                      },
+                      method: 'POST',
+                    });
+                    const result = await r.json();
+                    console.log(result);
+                    newVal.image = result.secure_url;
+                    // await cloudinary.v2.uploader.upload(
+                    //   newVal.image,
+                    //   {
+                    //     folder: `${userId}/`,
+                    //     agent: {
+                    //       headers: {
+                    //         'Access-Control-Allow-Origin': '*',
+                    //         'Access-Control-Allow-Methods':
+                    //           'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+                    //         'Access-Control-Allow-Headers':
+                    //           'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+                    //       },
+                    //     },
+                    //   },
+                    //   (error, result) => {
+                    //     if (error) {
+                    //       setLoading(false);
+                    //     } else {
+                    //       newVal.image = result.secure_url;
+                    //     }
+                    //   }
+                    // );
+                  }
+                  return newVal;
+                })
+              );
+              console.log(valuesToUpload);
+
               const { data } = await axios.post(
-                "https://wapicbot-api.herokuapp.com/api/products/get-quote",
+                'https://wapicbot-api.herokuapp.com/api/products/get-quote',
                 // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
                 {
                   items: valuesToUpload,
@@ -574,11 +679,11 @@ const Insurances = ({ history }) => {
               if (error.response) {
                 setError(error.response.data.message);
               }
-              console.log(error.response);
+              console.log(error.response, error, 'errores');
             }
           }}
           template={{
-            name: "",
+            name: '',
             value: null,
           }}
         />
@@ -587,7 +692,7 @@ const Insurances = ({ history }) => {
         <FormBuilder
           error={error}
           loading={loading}
-          title="Fill Details"
+          title='Fill Details'
           data={products[type] || []}
           action={async (values) => {
             setLoading(true);
@@ -595,7 +700,7 @@ const Insurances = ({ history }) => {
             console.log(values);
             try {
               const { data } = await axios.post(
-                "https://wapicbot-api.herokuapp.com/api/products/get-quote",
+                'https://wapicbot-api.herokuapp.com/api/products/get-quote',
                 // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
                 {
                   vehicleClass: vehicleClassMap[values.vehicleClass],
@@ -628,7 +733,7 @@ const Insurances = ({ history }) => {
         <FormBuilder
           error={error}
           loading={loading}
-          title="Fill Details"
+          title='Fill Details'
           data={products[type] || []}
           action={async (values) => {
             setLoading(true);
@@ -636,7 +741,7 @@ const Insurances = ({ history }) => {
             console.log(values);
             try {
               const { data } = await axios.post(
-                "https://wapicbot-api.herokuapp.com/api/products/get-quote",
+                'https://wapicbot-api.herokuapp.com/api/products/get-quote',
                 // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
                 {
                   worth: values.annualContribution,
