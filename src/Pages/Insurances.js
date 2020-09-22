@@ -10,6 +10,22 @@ const CLOUDINARY_URL = `http${isDev ? '' : 's'}://api.cloudinary.com/v1_1/${
   process.env.REACT_APP_CL_NAME
 }/upload`;
 
+const medicalBenefitMap = {
+  1000: 10000,
+  2000: 10000,
+  3000: 15000,
+  4000: 20000,
+  5000: 25000,
+  6000: 30000,
+  7000: 35000,
+  8000: 40000,
+  9000: 45000,
+  10000: 50000,
+  20000: 100000,
+  50000: 150000,
+  75000: 200000,
+  100000: 250000,
+};
 const vehicleClassMap = {
   'private Cars': 'PRIVATE',
   'Commercial Buses & Vehicle': 'COMMERCIAL',
@@ -149,9 +165,8 @@ const eTermInsurance = [
     type: 'select',
     setterKeys: ['sumAssured', 'medicalBenefit'],
     currency: true,
-    action: (val, setter1, setter2) => {
-      console.log(val * 100);
-      setter1(val * 100, val * 10);
+    action: (val, setter) => {
+      setter(val * 100, medicalBenefitMap[val]);
     },
     list: [
       ...[...new Array(10)].map((num, i) => (i + 1) * 1000),
@@ -168,6 +183,10 @@ const eTermInsurance = [
       required: 'required',
     },
     type: 'select',
+    setterKeys: ['annualPremium', 'medicalBenefit'],
+    action: (val, setter) => {
+      setter(val / 100, medicalBenefitMap[val / 100]);
+    },
     list: [
       ...[...new Array(10)].map((num, i) => (i + 1) * 100000),
       2000000,
@@ -775,7 +794,12 @@ const Insurances = ({ history }) => {
                 'https://wapicbot-api.herokuapp.com/api/products/get-quote',
                 // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
                 {
-                  worth: values.annualContribution,
+                  contribution: values.annualPremium,
+                  pd: values.medicalBenefit,
+                  demise: values.sumAssured,
+                  frequency: 'Y',
+                  duration: values.duration,
+                  age: values.age,
                   productCode: type,
                 }
               );

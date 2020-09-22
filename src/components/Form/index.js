@@ -221,7 +221,7 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
             </InputLabel>
             <Select
               id={name}
-              value={state[name]}
+              value={state[name] || ''}
               onChange={(e) => {
                 const val = e.target.value;
                 if (obj.action) {
@@ -371,7 +371,6 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
             error={!!errorState[name]}
             helperText={errorState[name]}
             onValueChange={({ value: v }) => {
-              console.log(v);
               setState({ ...state, [name]: v });
             }}
           />
