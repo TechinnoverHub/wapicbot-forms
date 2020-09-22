@@ -4,10 +4,11 @@ import MultiForm from '../components/Form/MultiForm';
 import Container from '../components/Container';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+const isDev = process.env.NODE_ENV === 'development';
 // import cloudinary from 'cloudinary/lib/cloudinary';
-const CLOUDINARY_URL = `http://api.cloudinary.com/v1_1/${process.env.REACT_APP_CL_NAME}/upload`;
-// const CLOUDINARY_URL =
-//   'cloudinary://868129558182558:nZL-vAsy9cD_E7h_t_0C8ah8X88@wapic';
+const CLOUDINARY_URL = `http${isDev ? '' : 's'}://api.cloudinary.com/v1_1/${
+  process.env.REACT_APP_CL_NAME
+}/upload`;
 
 const vehicleClassMap = {
   'private Cars': 'PRIVATE',
@@ -130,14 +131,35 @@ const eTermInsurance = [
     type: 'text',
   },
   {
-    name: 'dateOfBirth',
-    label: 'Date of Birth',
+    name: 'age',
+    label: 'Age',
     validate: {
       required: 'required',
     },
-    min: 16,
-    max: 16,
-    type: 'date',
+
+    type: 'select',
+    list: [...new Array(43)].map((num, i) => i + 18),
+  },
+  {
+    name: 'annualPremium',
+    label: 'Annual Premium',
+    validate: {
+      required: 'required',
+    },
+    type: 'select',
+    setterKeys: ['sumAssured', 'medicalBenefit'],
+    currency: true,
+    action: (val, setter1, setter2) => {
+      console.log(val * 100);
+      setter1(val * 100, val * 10);
+    },
+    list: [
+      ...[...new Array(10)].map((num, i) => (i + 1) * 1000),
+      20000,
+      50000,
+      75000,
+      100000,
+    ],
   },
   {
     name: 'sumAssured',
@@ -145,6 +167,23 @@ const eTermInsurance = [
     validate: {
       required: 'required',
     },
+    type: 'select',
+    list: [
+      ...[...new Array(10)].map((num, i) => (i + 1) * 100000),
+      2000000,
+      5000000,
+      7500000,
+      10000000,
+    ],
+    currency: true,
+  },
+  {
+    name: 'medicalBenefit',
+    label: 'Medical Benefit',
+    validate: {
+      required: 'required',
+    },
+    disabled: true,
     type: 'currency',
   },
   {
@@ -154,14 +193,6 @@ const eTermInsurance = [
       required: 'required',
     },
     type: 'number',
-  },
-  {
-    name: 'annualPremium',
-    label: 'Annual Premium',
-    validate: {
-      required: 'required',
-    },
-    type: 'currency',
   },
   {
     name: 'message',

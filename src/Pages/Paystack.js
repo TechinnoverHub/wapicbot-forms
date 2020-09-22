@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Container from "../components/Container";
-import { useParams } from "react-router-dom";
-import { PaystackButton } from "react-paystack";
-import logo from "../assets/logo.jpeg";
-import loader from "../assets/loader.gif";
-import includesAll from "../utils/includesAll";
-import formatNum from "../utils/formatNum";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Container from '../components/Container';
+import { useParams } from 'react-router-dom';
+import { PaystackButton } from 'react-paystack';
+import logo from '../assets/logo.jpeg';
+import loader from '../assets/loader.gif';
+import includesAll from '../utils/includesAll';
+import formatNum from '../utils/formatNum';
 
 const publicKey = process.env.REACT_APP_PAYSTACK;
-console.log(process.env);
 const Paystack = (props) => {
   const [quoteDetails, setQuoteDetails] = useState({});
   const [loading, setLoading] = useState(false);
@@ -17,15 +16,11 @@ const Paystack = (props) => {
   const { userId } = useParams();
   useEffect(() => {
     const states = Object.keys(props.location.state || {});
-    const isValid = includesAll(states, [
-      "product",
-      "quote",
-      "productType",
-    ]);
+    const isValid = includesAll(states, ['product', 'quote', 'productType']);
 
     console.log(isValid, props, states);
     if (!isValid) {
-      return props.history.replace("/");
+      return props.history.replace('/');
     }
     const {
       // vehicleClass,
@@ -50,52 +45,54 @@ const Paystack = (props) => {
     });
   }, [props]);
   const componentProps = {
-    email: "test@gmail.com",
+    email: 'test@gmail.com',
     amount: Math.ceil(quoteDetails.quote) * 100,
     metadata: {
-      name: "wapic",
+      name: 'wapic',
       phone: '08111228899',
     },
     publicKey,
-    text: "Pay Now",
+    text: 'Pay Now',
     onSuccess: (data) => {
-      setLoading(true)
+      setLoading(true);
       console.log(data);
-      axios.post('https://wapicbot-api.herokuapp.com/api/products/buy-policy', {
-        txRef:  data.trxref,
-        user:userId,
-        productCode: quoteDetails.productType
-      }).then(({data}) => {
-         setLoading(false)
-         setPaid(true)
-          window.location = "https://wa.me/+2348111228899";
-      }).catch(err => {
-        console.log(err);
-        setLoading(false)
-      })
+      axios
+        .post('https://wapicbot-api.herokuapp.com/api/products/buy-policy', {
+          txRef: data.trxref,
+          user: userId,
+          productCode: quoteDetails.productType,
+        })
+        .then(({ data }) => {
+          setLoading(false);
+          setPaid(true);
+          window.location = 'https://wa.me/+2348111228899';
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     },
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),
   };
   return (
     <Container>
-      <div className="mobileCenter">
-        <img src={logo} alt="logo" />
-        <div className="group1">
+      <div className='mobileCenter'>
+        <img src={logo} alt='logo' />
+        <div className='group1'>
           <h3>Choice Premium (Payable Premium)</h3>
           <h1>₦{formatNum(Math.ceil(quoteDetails.quote))}</h1>
         </div>
         {loading ? (
-        <div style={{marginTop: '10px'}}>
-          <img src={loader} alt="loader" />
-        </div>
-      ):
-      paid ?   
-      <div className="group2">
+          <div style={{ marginTop: '10px' }}>
+            <img src={loader} alt='loader' />
+          </div>
+        ) : paid ? (
+          <div className='group2'>
             <h3>Payment successfull</h3>
           </div>
-          :
-        <PaystackButton className="paystack-button" {...componentProps} />
-}
+        ) : (
+          <PaystackButton className='paystack-button' {...componentProps} />
+        )}
       </div>
     </Container>
   );
