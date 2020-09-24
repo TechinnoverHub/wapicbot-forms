@@ -5,6 +5,7 @@ import logo from '../../assets/logo.jpeg';
 import loader from '../../assets/loader.gif';
 import isEmail from 'validator/es/lib/isEmail';
 import NumberFormat from 'react-number-format';
+
 import {
   TextField,
   Select as SelectParent,
@@ -14,6 +15,8 @@ import {
   FormControl,
   InputLabel,
   FormHelperText,
+  Button,
+  Card,
 } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 // import MomentUtils from "@date-io/moment";
@@ -46,7 +49,13 @@ const Select = styled(SelectParent)`
     }
   }
 `;
-
+const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
 const Checkbox = withStyles({
   root: {
     color: '#883395',
@@ -74,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
   const [state, setState] = useState({});
+  const [templateData, setTemplateData] = useState({});
   const [errorState, setErrorState] = useState({});
   const classes = useStyles();
   const handleSubmit = (e) => {
@@ -188,6 +198,31 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
 
   const chooseInput = (type, name, list, obj) => {
     switch (type) {
+      case 'image':
+        return (
+          <div className='selector'>
+            <input
+              id={name}
+              name={name}
+              type='file'
+              onChange={async (e) => {
+                if (e.target.value) {
+                  const base64 = await toBase64(e.target.files[0]);
+                  setState({ ...state, [name]: base64 });
+                } else {
+                  setState({ ...state, [name]: null });
+                }
+              }}
+            />
+            <label htmlFor={name}>
+              {state[name] ? (
+                <img alt='preview' className='preview' src={state[name]} />
+              ) : (
+                `Choose ${obj.label.toLowerCase()}`
+              )}
+            </label>
+          </div>
+        );
       case 'textarea':
         return (
           <>
@@ -208,6 +243,75 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
             <textarea id={name}value={state[name]}
             onChange={(e)=> setState({...state, [name]: e.target.value})} /> */}
           </>
+        );
+      case 'multiadd':
+        return (
+          <div style={{ width: '100%' }}>
+            <div>
+              {state[name] &&
+                state[name].length &&
+                state[name].map((item) => (
+                  <Card style={{ padding: '5px', margin: '5px 0' }}>
+                    <h2>
+                      {item.fullname} ({item.relationship})
+                    </h2>
+                    <p>{item.phone}</p>
+                  </Card>
+                ))}
+            </div>
+            {obj.max && state[name] && state[name].length >= obj.max ? null : (
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                {obj.template.map((tm) => (
+                  <TextField
+                    id={tm.name}
+                    // type={type}
+                    label={tm.label}
+                    value={
+                      templateData[name] && templateData[name][tm.name]
+                        ? templateData[name][tm.name]
+                        : ''
+                    }
+                    // error={!!errorState[name]}
+                    // helperText={errorState[name]}
+                    onChange={(e) =>
+                      setTemplateData({
+                        ...templateData,
+                        [name]: {
+                          ...templateData[name],
+                          [tm.name]: e.target.value,
+                        },
+                      })
+                    }
+                  />
+                ))}
+                <Button
+                  onClick={() => {
+                    setState({
+                      ...state,
+                      [name]: [
+                        ...(state[name] && state[name].length
+                          ? state[name]
+                          : []),
+                        templateData[name],
+                      ],
+                    });
+                    setTemplateData({ ...templateData, [name]: {} });
+                  }}
+                  color='primary'
+                  variant='contained'
+                  style={{ alignSelf: 'flex-start', marginTop: '10px' }}
+                >
+                  Add
+                </Button>
+              </div>
+            )}
+          </div>
         );
 
       case 'select':

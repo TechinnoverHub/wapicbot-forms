@@ -118,7 +118,30 @@ const lifeinsurance = [
     type: 'textarea',
   },
 ];
+
 const eTermInsurance = [
+  {
+    section: 'Passport Photo',
+  },
+  {
+    name: 'passport',
+    label: 'Passport Photo',
+    validate: {
+      required: 'required',
+    },
+    type: 'image',
+  },
+  {
+    section: 'Indentification Card',
+  },
+  {
+    name: 'idCard',
+    label: 'Indentification Card',
+    validate: {
+      required: 'required',
+    },
+    type: 'image',
+  },
   {
     name: 'firstName',
     label: 'First Name',
@@ -221,6 +244,22 @@ const eTermInsurance = [
       min: [5, 'Must be 5 characters or more'],
     },
     type: 'textarea',
+  },
+  {
+    section: 'Beneficiaries',
+  },
+  {
+    name: 'beneficiaries',
+    label: 'beneficiaries',
+    type: 'multiadd',
+    max: 3,
+    template: [
+      { name: 'fullname', label: 'Full Name' },
+      // { name: 'dob', label: 'Date of Birth'  },
+      { name: 'age', label: 'Age' },
+      { name: 'relationship', label: 'Relationship' },
+      { name: 'phone', label: 'Phone Number' },
+    ],
   },
 ];
 const products = {
@@ -789,7 +828,43 @@ const Insurances = ({ history }) => {
             setLoading(true);
             setError(null);
             console.log(values);
+
             try {
+              if (values.passport) {
+                const data = {
+                  file: values.passport,
+                  folder: `${userId}/`,
+                  upload_preset: 'pb9zgwxy',
+                };
+                const r = await fetch(CLOUDINARY_URL, {
+                  body: JSON.stringify(data),
+                  headers: {
+                    'content-type': 'application/json',
+                  },
+                  method: 'POST',
+                });
+                const result = await r.json();
+                console.log(result);
+                values.passport = result.secure_url;
+              }
+              if (values.idCard) {
+                const data = {
+                  file: values.idCard,
+                  folder: `${userId}/`,
+                  upload_preset: 'pb9zgwxy',
+                };
+                const r = await fetch(CLOUDINARY_URL, {
+                  body: JSON.stringify(data),
+                  headers: {
+                    'content-type': 'application/json',
+                  },
+                  method: 'POST',
+                });
+                const result = await r.json();
+                console.log(result);
+                values.idCard = result.secure_url;
+              }
+
               const { data } = await axios.post(
                 'https://wapicbot-api.herokuapp.com/api/products/get-quote',
                 // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
@@ -801,6 +876,9 @@ const Insurances = ({ history }) => {
                   duration: values.duration,
                   age: values.age,
                   productCode: type,
+                  idCard: values.idCard,
+                  passport: values.passport,
+                  beneficiaries: values.beneficiaries || [],
                 }
               );
               console.log(data);
@@ -815,7 +893,7 @@ const Insurances = ({ history }) => {
               if (error.response) {
                 setError(error.response.data.message);
               }
-              console.log(error.response);
+              console.log(error.response, error);
             }
           }}
         />
