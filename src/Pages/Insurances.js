@@ -205,31 +205,6 @@ const eTermInsurance = [
     },
     type: 'number',
   },
-  // {
-  //   name: 'message',
-  //   label: 'Message',
-  //   validate: {
-  //     required: 'required',
-  //     min: [5, 'Must be 5 characters or more'],
-  //   },
-  //   type: 'textarea',
-  // },
-  // {
-  //   section: 'Beneficiaries',
-  // },
-  // {
-  //   name: 'beneficiaries',
-  //   label: 'beneficiaries',
-  //   type: 'multiadd',
-  //   max: 3,
-  //   template: [
-  //     { name: 'fullname', label: 'Full Name' },
-  //     // { name: 'dob', label: 'Date of Birth'  },
-  //     { name: 'age', label: 'Age' },
-  //     { name: 'relationship', label: 'Relationship' },
-  //     { name: 'phone', label: 'Phone Number' },
-  //   ],
-  // },
 ];
 const products = {
   'moov-third-party': [
@@ -774,6 +749,7 @@ const Insurances = ({ history }) => {
               setLoading(false);
               history.push(`/quote-success/${userId}`, {
                 ...values,
+                regNumber: values.regNumber,
                 productType: type,
                 quote: data.data.quote,
               });
@@ -799,41 +775,6 @@ const Insurances = ({ history }) => {
             console.log(values);
 
             try {
-              // if (values.passport) {
-              //   const data = {
-              //     file: values.passport,
-              //     folder: `${userId}/`,
-              //     upload_preset: 'pb9zgwxy',
-              //   };
-              //   const r = await fetch(CLOUDINARY_URL, {
-              //     body: JSON.stringify(data),
-              //     headers: {
-              //       'content-type': 'application/json',
-              //     },
-              //     method: 'POST',
-              //   });
-              //   const result = await r.json();
-              //   console.log(result);
-              //   values.passport = result.secure_url;
-              // }
-              // if (values.idCard) {
-              //   const data = {
-              //     file: values.idCard,
-              //     folder: `${userId}/`,
-              //     upload_preset: 'pb9zgwxy',
-              //   };
-              //   const r = await fetch(CLOUDINARY_URL, {
-              //     body: JSON.stringify(data),
-              //     headers: {
-              //       'content-type': 'application/json',
-              //     },
-              //     method: 'POST',
-              //   });
-              //   const result = await r.json();
-              //   console.log(result);
-              //   values.idCard = result.secure_url;
-              // }
-
               const { data } = await axios.post(
                 'https://wapicbot-api.herokuapp.com/api/products/get-quote',
                 // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",

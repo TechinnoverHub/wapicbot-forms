@@ -7,7 +7,19 @@ import logo from '../assets/logo.jpeg';
 import loader from '../assets/loader.gif';
 import includesAll from '../utils/includesAll';
 import formatNum from '../utils/formatNum';
-
+const vehicleType = [
+  'moov-third-party',
+  'moov-plus-(fire-and-theft)',
+  'moov-luxury-(extented-comprehensive)',
+  'moov-prestige-(private-comprehensive)',
+  'moov-prestige-(commercial-comprehensive)',
+];
+const lifeTypes = [
+  'e-term',
+  'smart-scholars-plan',
+  'smart-life',
+  'smart-senior-plan',
+];
 const publicKey = process.env.REACT_APP_PAYSTACK;
 const Paystack = (props) => {
   const [quoteDetails, setQuoteDetails] = useState({});
@@ -16,11 +28,33 @@ const Paystack = (props) => {
   const { userId } = useParams();
   useEffect(() => {
     const states = Object.keys(props.location.state || {});
-    const isValid = includesAll(states, ['product', 'quote', 'productType']);
+    const isValid = includesAll(states, [
+      'product',
+      'quote',
+      'productType',
+      'email',
+      'firstname',
+      'whatsappNo',
+      ...(vehicleType.includes(props.location.state.productType)
+        ? [
+            'manufacturer',
+            'model',
+            'engineNumber',
+            'vinnumber',
+            'regNumber',
+            'color',
+            'yearOfModel',
+          ]
+        : []),
+      ...(lifeTypes.includes(props.location.state.productType)
+        ? ['beneficiaries']
+        : []),
+    ]);
 
     console.log(isValid, props, states);
     if (!isValid) {
-      return props.history.replace('/');
+      // window.location = 'https://wa.me/+2348111228899';
+      return;
     }
     const {
       // vehicleClass,
@@ -31,6 +65,17 @@ const Paystack = (props) => {
       product,
       quote,
       productType,
+      email,
+      firstname,
+      manufacturer,
+      model,
+      engineNumber,
+      vinnumber,
+      regNumber,
+      color,
+      yearOfModel,
+      beneficiaries,
+      whatsappNo,
     } = props.location.state;
 
     setQuoteDetails({
@@ -42,14 +87,33 @@ const Paystack = (props) => {
       product,
       quote,
       productType,
+      email,
+      firstname,
+      whatsappNo,
+      ...(vehicleType.includes(props.location.state.productType)
+        ? {
+            manufacturer,
+            model,
+            engineNumber,
+            vinnumber,
+            regNumber,
+            color,
+            yearOfModel,
+          }
+        : {}),
+      ...(lifeTypes.includes(props.location.state.productType)
+        ? {
+            beneficiary: beneficiaries,
+          }
+        : {}),
     });
   }, [props]);
   const componentProps = {
-    email: 'test@gmail.com',
+    email: quoteDetails.email,
     amount: Math.ceil(quoteDetails.quote) * 100,
     metadata: {
-      name: 'wapic',
-      phone: '08111228899',
+      name: quoteDetails.firstname,
+      phone: quoteDetails.whatsappNo,
     },
     publicKey,
     text: 'Pay Now',
@@ -61,6 +125,30 @@ const Paystack = (props) => {
           txRef: data.trxref,
           user: userId,
           productCode: quoteDetails.productType,
+          policyInfo: {
+            productCode: quoteDetails.productType,
+            startDate: quoteDetails.coverStartDate,
+            premiumLC: quoteDetails.quote,
+          },
+          ...(vehicleType.includes(props.location.state.productType)
+            ? {
+                vehicleInfo: {
+                  name: quoteDetails.manufacturer,
+                  make: quoteDetails.manufacturer,
+                  model: quoteDetails.model,
+                  engineNumber: quoteDetails.engineNumber,
+                  vinNumber: quoteDetails.vinnumber,
+                  licenseNumber: quoteDetails.regNumber,
+                  color: quoteDetails.color,
+                  year: quoteDetails.yearOfModel,
+                },
+              }
+            : {}),
+          ...(lifeTypes.includes(props.location.state.productType)
+            ? {
+                beneficiary: quoteDetails.beneficiaries,
+              }
+            : {}),
         })
         .then(({ data }) => {
           setLoading(false);

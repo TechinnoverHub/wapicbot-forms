@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import FormBuilder from '../components/Form';
 import Container from '../components/Container';
 import axios from 'axios';
@@ -6,6 +6,11 @@ import { useParams } from 'react-router-dom';
 // import { useLocation } from "react-router-dom";
 import includesAll from '../utils/includesAll';
 // import formatNum from "../utils/formatNum";
+const isDev = process.env.NODE_ENV === 'development';
+
+const CLOUDINARY_URL = `http${isDev ? '' : 's'}://api.cloudinary.com/v1_1/${
+  process.env.REACT_APP_CL_NAME
+}/upload`;
 const vehicleType = [
   'moov-third-party',
   'moov-plus-(fire-and-theft)',
@@ -13,94 +18,43 @@ const vehicleType = [
   'moov-prestige-(private-comprehensive)',
   'moov-prestige-(commercial-comprehensive)',
 ];
-const pickExtraData = (type) => {
-  const vehicleType = [
-    'moov-third-party',
-    'moov-plus-(fire-and-theft)',
-    'moov-luxury-(extented-comprehensive)',
-    'moov-prestige-(private-comprehensive)',
-    'moov-prestige-(commercial-comprehensive)',
-  ];
-  if (vehicleType.includes(type)) {
-    return [
-      {
-        section: 'Vehicle Information',
-      },
-      {
-        name: 'vinnumber',
-        label: 'Chassis/VIN Number',
-        validate: {
-          required: 'required',
-          // min: [10, "Must be 10 characters or more"],
-        },
-        type: 'text',
-      },
-      {
-        name: 'engineNumber',
-        label: 'Engine Number',
-        validate: {
-          required: 'required',
-          // min: [10, "Must be 10 characters or more"],
-        },
-        type: 'text',
-      },
-      {
-        name: 'color',
-        label: 'Color',
-        validate: {
-          required: 'required',
-        },
-        type: 'text',
-      },
-      {
-        name: 'yearOfModel',
-        label: 'Year of Model',
-        validate: {
-          required: 'required',
-        },
-        type: 'select',
-        list: [
-          '2020',
-          '2019',
-          '2018',
-          '2017',
-          '2016',
-          '2015',
-          '2014',
-          '2013',
-          '2012',
-          '2011',
-          '2010',
-          '2009',
-          '2008',
-          '2007',
-          '2006',
-          '2005',
-          '2004',
-          '2003',
-          '2002',
-          '2001',
-          '2000',
-          '1999',
-          '1998',
-          '1997',
-          '1996',
-          '1995',
-          '1994',
-          '1993',
-          '1992',
-          '1991',
-          '1990',
-        ],
-      },
-    ];
-  }
-  return [];
-};
+const lifeTypes = [
+  'e-term',
+  'smart-scholars-plan',
+  'smart-life',
+  'smart-senior-plan',
+];
+
 const KYC = (props) => {
   // const location = useLocation();
   const [quoteDetails, setQuoteDetails] = useState({});
+  const [userDetails, setuserDetails] = useState({});
+  const [defaultValues, setdefaultValues] = useState({});
   const { userId } = useParams();
+  const [fetching, setFetching] = useState(true);
+
+  const fetchUser = useCallback(async () => {
+    try {
+      const { data } = await axios.get(
+        `https://wapicbot-api.herokuapp.com/api/users/${userId}`
+      );
+      console.log(data);
+
+      setuserDetails({
+        ...(data.data && data.data.email && { email: data.data.email }),
+        ...(data.data &&
+          data.data.whatsappNo && { whatsappNo: data.data.whatsappNo }),
+        ...(data.data &&
+          data.data.firstname && { firstname: data.data.firstname }),
+      });
+
+      data.data && data.data.kyc && setdefaultValues(data.data.kyc);
+      setFetching(false);
+    } catch (error) {
+      setFetching(false);
+    }
+  }, [userId]);
+
   useEffect(() => {
     const states = Object.keys(props.location.state || {});
     if (props.location.state) {
@@ -114,6 +68,11 @@ const KYC = (props) => {
           'product',
           'quote',
           'productType',
+          'vinnumber',
+          'engineNumber',
+          'color',
+          'yearOfModel',
+          'regNumber',
         ]);
 
         console.log(isValid, props, states);
@@ -130,9 +89,14 @@ const KYC = (props) => {
           product,
           quote,
           productType,
+          vinnumber,
+          engineNumber,
+          color,
+          regNumber,
+          yearOfModel,
         } = props.location.state;
 
-        setQuoteDetails({
+        return setQuoteDetails({
           vehicleClass,
           manufacturer,
           model,
@@ -141,11 +105,43 @@ const KYC = (props) => {
           product,
           quote,
           productType,
+          vinnumber,
+          engineNumber,
+          color,
+          yearOfModel,
+          regNumber,
+        });
+      }
+      if (lifeTypes.includes(props.location.state.productType)) {
+        const isValid = includesAll(states, [
+          'product',
+          'quote',
+          'productType',
+          'beneficiaries',
+        ]);
+
+        console.log(isValid, props, states);
+        if (!isValid) {
+          window.location = 'https://wa.me/+2348111228899';
+          return;
+        }
+        const {
+          product,
+          quote,
+          productType,
+          beneficiaries,
+        } = props.location.state;
+
+        return setQuoteDetails({
+          product,
+          quote,
+          productType,
+          beneficiaries,
         });
       }
 
       const { productType, product, quote } = props.location.state;
-      setQuoteDetails({
+      return setQuoteDetails({
         product,
         productType: productType,
         quote: quote,
@@ -164,14 +160,54 @@ const KYC = (props) => {
       // if (!isValid) {
       //   return props.history.replace("/product/moov-third-party");
       // }
+    } else {
+      window.location = 'https://wa.me/+2348111228899';
     }
   }, [props]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const submitForm = async (values) => {
     setLoading(true);
     setError(null);
     try {
+      if (values.passport && !values.passport.includes('https://')) {
+        const data = {
+          file: values.passport,
+          folder: `${userId}/`,
+          upload_preset: 'pb9zgwxy',
+        };
+        const r = await fetch(CLOUDINARY_URL, {
+          body: JSON.stringify(data),
+          headers: {
+            'content-type': 'application/json',
+          },
+          method: 'POST',
+        });
+        const result = await r.json();
+        console.log(result);
+        values.passport = result.secure_url;
+      }
+      if (values.idCard && !values.idCard.includes('https://')) {
+        const data = {
+          file: values.idCard,
+          folder: `${userId}/`,
+          upload_preset: 'pb9zgwxy',
+        };
+        const r = await fetch(CLOUDINARY_URL, {
+          body: JSON.stringify(data),
+          headers: {
+            'content-type': 'application/json',
+          },
+          method: 'POST',
+        });
+        const result = await r.json();
+        console.log(result);
+        values.idCard = result.secure_url;
+      }
       // const searchParams = new URLSearchParams(location.search);
       // const whatsappNo = searchParams.get("whatsapp");/
       // if (!whatsappNo) setLoading(false);
@@ -180,7 +216,7 @@ const KYC = (props) => {
         {
           kyc: {
             gender: values.gender,
-            dob: values.dateOfBirth,
+            dob: values.dob,
             maritalStatus: values.maritalStatus,
             religion: values.religon,
             height: values.height,
@@ -191,18 +227,24 @@ const KYC = (props) => {
             bankName: values.bankName,
             accountNumber: values.accountNumber,
             bvn: values.bvn,
+            idCard: values.idCard,
+            passport: values.passport,
           },
           userId,
           otherDetails: {
-            yearOfModel: values.yearOfModel,
-            color: values.color,
-            engineNumber: values.engineNumber,
-            vinnumber: values.vinnumber,
+            yearOfModel: quoteDetails.yearOfModel,
+            color: quoteDetails.color,
+            engineNumber: quoteDetails.engineNumber,
+            vinnumber: quoteDetails.vinnumber,
           },
         }
       );
       console.log(data);
-      props.history.push(`/pay/${userId}`, quoteDetails);
+      props.history.push(`/pay/${userId}`, {
+        ...quoteDetails,
+        ...userDetails,
+        coverStartDate: values.coverStartDate,
+      });
       // window.location = "https://wa.me/+2348111228899";
       setLoading(false);
     } catch (error) {
@@ -215,239 +257,243 @@ const KYC = (props) => {
   };
   return (
     <Container>
-      <FormBuilder
-        error={error}
-        loading={loading}
-        title='KYC'
-        instruction='Please fill required fields to proceed'
-        data={[
-          {
-            section: 'Passport Photo',
-          },
-          {
-            name: 'passport',
-            label: 'Passport Photo',
-            validate: {
-              required: 'required',
+      {fetching ? (
+        <h1>loading</h1>
+      ) : (
+        <FormBuilder
+          error={error}
+          loading={loading}
+          defaultValues={defaultValues}
+          title='KYC'
+          instruction='Please fill required fields to proceed'
+          data={[
+            {
+              section: 'Passport Photo',
             },
-            type: 'image',
-          },
-          {
-            section: 'Indentification Card',
-          },
-          {
-            name: 'idCard',
-            label: 'Indentification Card',
-            validate: {
-              required: 'required',
+            {
+              name: 'passport',
+              label: 'Passport Photo',
+              validate: {
+                required: 'required',
+              },
+              type: 'image',
             },
-            type: 'image',
-          },
-          {
-            section: 'Personal information',
-          },
-          {
-            name: 'gender',
-            label: 'Gender',
-            validate: {
-              required: 'required',
+            {
+              section: 'Indentification Card',
             },
-            type: 'select',
-            selectLabel: 'select one',
-            list: ['MALE', 'FEMALE'],
-          },
+            {
+              name: 'idCard',
+              label: 'Indentification Card',
+              validate: {
+                required: 'required',
+              },
+              type: 'image',
+            },
+            {
+              section: 'Personal information',
+            },
+            {
+              name: 'gender',
+              label: 'Gender',
+              validate: {
+                required: 'required',
+              },
+              type: 'select',
+              selectLabel: 'select one',
+              list: ['MALE', 'FEMALE'],
+            },
 
-          {
-            name: 'dateOfBirth',
-            label: 'Date of Birth',
-            validate: {
-              required: 'required',
+            {
+              name: 'dob',
+              label: 'Date of Birth',
+              validate: {
+                required: 'required',
+              },
+              type: 'date',
             },
-            type: 'date',
-          },
-          {
-            name: 'maritalStatus',
-            label: 'Marital Status',
-            validate: {
-              required: 'required',
+            {
+              name: 'maritalStatus',
+              label: 'Marital Status',
+              validate: {
+                required: 'required',
+              },
+              type: 'select',
+              selectLabel: 'select one',
+              list: ['DIVORCED', 'MARRIED', 'SINGLE', 'WIDOWED'],
             },
-            type: 'select',
-            selectLabel: 'select one',
-            list: ['DIVORCED', 'MARRIED', 'SINGLE', 'WIDOWED'],
-          },
-          {
-            name: 'religion',
-            label: 'Religion',
-            validate: {
-              required: 'required',
+            {
+              name: 'religion',
+              label: 'Religion',
+              validate: {
+                required: 'required',
+              },
+              type: 'select',
+              selectLabel: 'select one',
+              list: [
+                'BUDDISH',
+                'CHINESE FOLK RELIGION',
+                'CHRISTIANITY',
+                'HINDUISM',
+                'ISLAM',
+                'NOT APPLICABLE',
+                'OTHERS',
+                'TRADITIONAL WORSHIPPER',
+              ],
             },
-            type: 'select',
-            selectLabel: 'select one',
-            list: [
-              'BUDDISH',
-              'CHINESE FOLK RELIGION',
-              'CHRISTIANITY',
-              'HINDUISM',
-              'ISLAM',
-              'NOT APPLICABLE',
-              'OTHERS',
-              'TRADITIONAL WORSHIPPER',
-            ],
-          },
-          {
-            name: 'height',
-            label: 'Height (meters)',
-            validate: {
-              // required: "required",
-              min: [1, 'Must be more than 1'],
+            {
+              name: 'height',
+              label: 'Height (meters)',
+              validate: {
+                // required: "required",
+                min: [1, 'Must be more than 1'],
+              },
+              type: 'number',
             },
-            type: 'number',
-          },
-          {
-            name: 'weight',
-            label: 'Weight (Kg)',
-            validate: {
-              // required: "required",
-              min: [1, 'Must be more than 1'],
+            {
+              name: 'weight',
+              label: 'Weight (Kg)',
+              validate: {
+                // required: "required",
+                min: [1, 'Must be more than 1'],
+              },
+              type: 'number',
             },
-            type: 'number',
-          },
-          {
-            name: 'state',
-            label: 'State',
-            validate: {
-              required: 'required',
+            {
+              name: 'state',
+              label: 'State',
+              validate: {
+                required: 'required',
+              },
+              type: 'select',
+              selectLabel: 'select one',
+              data: 'allStates',
             },
-            type: 'select',
-            selectLabel: 'select one',
-            data: 'allStates',
-          },
-          {
-            name: 'city',
-            label: 'Select city',
-            validate: {
-              required: 'required',
+            {
+              name: 'city',
+              label: 'Select city',
+              validate: {
+                required: 'required',
+              },
+              type: 'select',
+              dependent: 'state',
+              data: 'allLgas',
             },
-            type: 'select',
-            dependent: 'state',
-            data: 'allLgas',
-          },
 
-          {
-            name: 'occupation',
-            label: 'Occupation',
-            validate: {
-              required: 'required',
+            {
+              name: 'occupation',
+              label: 'Occupation',
+              validate: {
+                required: 'required',
+              },
+              type: 'select',
+              selectLabel: 'select one',
+              list: [
+                'accountant',
+                'administrator',
+                'architect',
+                'banker',
+                'beautician',
+                'business trader',
+                'caterer',
+                'civil servant',
+                'cleric',
+                'communication technologies',
+                'educationist',
+                'engineer',
+                'farmer',
+                'fashion designer',
+                'financial services consul',
+                'horologist',
+                'horticulturist',
+                'importer and exporter',
+                'information technologist',
+                'journalist',
+                'legal practitioner',
+                'merchant',
+                'military personnel',
+                'not applicable',
+                'NYSC member',
+                'others',
+                'pilot',
+                'retired',
+                'sailor',
+                'scientist',
+                'secretary',
+                'student',
+                'surveyor',
+                'system analyst',
+                'transporter',
+              ],
             },
-            type: 'select',
-            selectLabel: 'select one',
-            list: [
-              'accountant',
-              'administrator',
-              'architect',
-              'banker',
-              'beautician',
-              'business trader',
-              'caterer',
-              'civil servant',
-              'cleric',
-              'communication technologies',
-              'educationist',
-              'engineer',
-              'farmer',
-              'fashion designer',
-              'financial services consul',
-              'horologist',
-              'horticulturist',
-              'importer and exporter',
-              'information technologist',
-              'journalist',
-              'legal practitioner',
-              'merchant',
-              'military personnel',
-              'not applicable',
-              'NYSC member',
-              'others',
-              'pilot',
-              'retired',
-              'sailor',
-              'scientist',
-              'secretary',
-              'student',
-              'surveyor',
-              'system analyst',
-              'transporter',
-            ],
-          },
-          {
-            name: 'businessType',
-            label: 'Business type',
-            validate: {
-              required: 'required',
+            {
+              name: 'businessType',
+              label: 'Business type',
+              validate: {
+                required: 'required',
+              },
+              type: 'select',
+              selectLabel: 'select one',
+              list: [
+                'financial services',
+                'manufacturing',
+                'oil & gas',
+                'others',
+                'public sector',
+                'retail customer',
+                'services',
+                'sme',
+                'telecoms',
+                'transportation',
+              ],
             },
-            type: 'select',
-            selectLabel: 'select one',
-            list: [
-              'financial services',
-              'manufacturing',
-              'oil & gas',
-              'others',
-              'public sector',
-              'retail customer',
-              'services',
-              'sme',
-              'telecoms',
-              'transportation',
-            ],
-          },
-          ...pickExtraData(quoteDetails.productType),
-          {
-            section: 'Cover & Bank Information',
-          },
+            {
+              section: 'Cover & Bank Information',
+            },
 
-          {
-            name: 'coverStartDate',
-            label: 'Cover Start Date',
-            validate: {
-              required: 'required',
+            {
+              name: 'coverStartDate',
+              label: 'Cover Start Date',
+              validate: {
+                required: 'required',
+              },
+              type: 'date',
             },
-            type: 'date',
-          },
-          {
-            name: 'bankName',
-            label: 'Bank Name',
-            validate: {
-              required: 'required',
+            {
+              name: 'bankName',
+              label: 'Bank Name',
+              validate: {
+                required: 'required',
+              },
+              type: 'select',
+              selectLabel: 'select one',
+              data: 'allBanks',
+              // list: ["access", "diamond", "zenith", "GTB"],
             },
-            type: 'select',
-            selectLabel: 'select one',
-            data: 'allBanks',
-            // list: ["access", "diamond", "zenith", "GTB"],
-          },
-          {
-            name: 'accountNumber',
-            label: 'Account Number',
-            validate: {
-              required: 'required',
-              min: [10, 'Must be 10 characters or more'],
+            {
+              name: 'accountNumber',
+              label: 'Account Number',
+              validate: {
+                required: 'required',
+                min: [10, 'Must be 10 characters or more'],
+              },
+              type: 'number',
             },
-            type: 'number',
-          },
-          {
-            name: 'bvn',
-            label: 'Bank Verification Number (optional)',
-            validate: {
-              // required: "required",
-              min: [10, 'Must be 10 characters or more'],
+            {
+              name: 'bvn',
+              label: 'Bank Verification Number (optional)',
+              validate: {
+                // required: "required",
+                min: [10, 'Must be 10 characters or more'],
+              },
+              type: 'number',
             },
-            type: 'number',
-          },
-        ]}
-        action={(values) => {
-          submitForm(values);
-          //alert("submitted data \n" + JSON.stringify(values, null, 2));
-        }}
-      />
+          ]}
+          action={(values) => {
+            submitForm(values);
+            //alert("submitted data \n" + JSON.stringify(values, null, 2));
+          }}
+        />
+      )}
     </Container>
   );
 };

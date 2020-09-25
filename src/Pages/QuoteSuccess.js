@@ -1,32 +1,37 @@
-import React, { useEffect, useState } from "react";
-import Container from "../components/Container";
-import logo from "../assets/logo.jpeg";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import Container from '../components/Container';
+import logo from '../assets/logo.jpeg';
+import { useParams } from 'react-router-dom';
 // import includesAll from "../utils/includesAll";
-import formatNum from "../utils/formatNum";
+import formatNum from '../utils/formatNum';
 const vehicleType = [
-  "moov-third-party",
-  "moov-plus-(fire-and-theft)",
-  "moov-luxury-(extented-comprehensive)",
-  "moov-prestige-(private-comprehensive)",
-  "moov-prestige-(commercial-comprehensive)",
+  'moov-third-party',
+  'moov-plus-(fire-and-theft)',
+  'moov-luxury-(extented-comprehensive)',
+  'moov-prestige-(private-comprehensive)',
+  'moov-prestige-(commercial-comprehensive)',
 ];
-
+const lifeTypes = [
+  'e-term',
+  'smart-scholars-plan',
+  'smart-life',
+  'smart-senior-plan',
+];
 const productmap = {
-  "moov-third-party": "Moov Third Party",
-  "moov-plus-(fire-and-theft)": "Moov Plus (Fire & Theft)",
-  "moov-luxury-(extented-comprehensive)":
-    "Moov Luxury (Extented Comprehensive)",
-  "moov-prestige-(private-comprehensive)":
-    "Moov Prestige (Private Comprehensive)",
-  "moov-prestige-(commercial-comprehensive)":
-    "Moov Prestige (Commercial Comprehensive)",
-  "house-holders-insurance": "House Holders Insurance",
-  "house-owners-insurance": "House Owners Insurance",
-  "e-term": "E-Term",
-  "smart-scholars-plan": "Smart Scholars Plan",
-  "smart-life": "Smart Life",
-  "smart-senior-plan": "Smart Senior Plan",
+  'moov-third-party': 'Moov Third Party',
+  'moov-plus-(fire-and-theft)': 'Moov Plus (Fire & Theft)',
+  'moov-luxury-(extented-comprehensive)':
+    'Moov Luxury (Extented Comprehensive)',
+  'moov-prestige-(private-comprehensive)':
+    'Moov Prestige (Private Comprehensive)',
+  'moov-prestige-(commercial-comprehensive)':
+    'Moov Prestige (Commercial Comprehensive)',
+  'house-holders-insurance': 'House Holders Insurance',
+  'house-owners-insurance': 'House Owners Insurance',
+  'e-term': 'E-Term',
+  'smart-scholars-plan': 'Smart Scholars Plan',
+  'smart-life': 'Smart Life',
+  'smart-senior-plan': 'Smart Senior Plan',
 };
 const QuoteSuccess = (props) => {
   const [quoteDetails, setQuoteDetails] = useState({});
@@ -44,6 +49,7 @@ const QuoteSuccess = (props) => {
           vehicleValue,
           productType,
           quote,
+          regNumber,
         } = props.location.state;
 
         return setQuoteDetails({
@@ -55,6 +61,7 @@ const QuoteSuccess = (props) => {
           product: productmap[productType],
           productType: productType,
           quote: quote,
+          regNumber,
         });
       }
 
@@ -82,41 +89,41 @@ const QuoteSuccess = (props) => {
   }, [props]);
   return (
     <Container>
-      <div className="mobileCenter">
-        <img src={logo} alt="logo" />
-        <h1 className="titleHead">Quote Summary</h1>
+      <div className='mobileCenter'>
+        <img src={logo} alt='logo' />
+        <h1 className='titleHead'>Quote Summary</h1>
 
         <div>
-          <div className="group1">
+          <div className='group1'>
             <h3>Choice Premium (Payable Premium)</h3>
             <h1>₦{formatNum(Math.ceil(quoteDetails.quote))}</h1>
           </div>
 
-          <div className="group2">
+          <div className='group2'>
             <h4>Product</h4>
             <h3>{quoteDetails.product}</h3>
           </div>
           {vehicleType.includes(quoteDetails.productType) && (
             <>
-              <h2 className="sect1">Vehicle Information</h2>
+              <h2 className='sect1'>Vehicle Information</h2>
 
-              <div className="group2">
+              <div className='group2'>
                 <h4>Vehicle Class</h4>
                 <h2>{quoteDetails.vehicleClass}</h2>
               </div>
-              <div className="group2">
+              <div className='group2'>
                 <h4>Vehicle Type</h4>
                 <h2>{quoteDetails.policyholder}</h2>
               </div>
-              <div className="group2">
+              <div className='group2'>
                 <h4>Vehicle make</h4>
                 <h2>{quoteDetails.manufacturer}</h2>
               </div>
-              <div className="group2">
+              <div className='group2'>
                 <h4>Vehicle model</h4>
                 <h2>{quoteDetails.model}</h2>
               </div>
-              <div className="group2">
+              <div className='group2'>
                 <h4>Vehicle value</h4>
                 <h2>₦{formatNum(quoteDetails.vehicleValue)}</h2>
               </div>
@@ -124,8 +131,17 @@ const QuoteSuccess = (props) => {
           )}
         </div>
         <button
-          className="continueButton"
-          onClick={() => props.history.push(`/kyc/${userId}`, quoteDetails)}
+          className='continueButton'
+          onClick={() => {
+            if (
+              vehicleType.includes(quoteDetails.productType) ||
+              lifeTypes.includes(quoteDetails.productType)
+            ) {
+              return props.history.push(`/extra/${userId}`, quoteDetails);
+            }
+
+            return props.history.push(`/kyc/${userId}`, quoteDetails);
+          }}
         >
           Continue
         </button>

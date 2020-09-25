@@ -81,7 +81,15 @@ const useStyles = makeStyles((theme) => ({
   label: { textTransform: 'capitalize' },
 }));
 
-const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
+const FormBuilder = ({
+  data,
+  action,
+  title,
+  instruction,
+  loading,
+  error,
+  defaultValues,
+}) => {
   const [state, setState] = useState({});
   const [templateData, setTemplateData] = useState({});
   const [errorState, setErrorState] = useState({});
@@ -167,7 +175,11 @@ const FormBuilder = ({ data, action, title, instruction, loading, error }) => {
     }
     return null;
   };
-
+  useEffect(() => {
+    if (defaultValues && Object.keys(defaultValues).length) {
+      setState(defaultValues);
+    }
+  }, [defaultValues]);
   useEffect(() => {
     const newError = {};
 
