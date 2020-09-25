@@ -1,96 +1,96 @@
-import React, { useState, useEffect } from "react";
-import FormBuilder from "../components/Form";
-import Container from "../components/Container";
-import axios from "axios";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import FormBuilder from '../components/Form';
+import Container from '../components/Container';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 // import { useLocation } from "react-router-dom";
-import includesAll from "../utils/includesAll";
+import includesAll from '../utils/includesAll';
 // import formatNum from "../utils/formatNum";
 const vehicleType = [
-  "moov-third-party",
-  "moov-plus-(fire-and-theft)",
-  "moov-luxury-(extented-comprehensive)",
-  "moov-prestige-(private-comprehensive)",
-  "moov-prestige-(commercial-comprehensive)",
+  'moov-third-party',
+  'moov-plus-(fire-and-theft)',
+  'moov-luxury-(extented-comprehensive)',
+  'moov-prestige-(private-comprehensive)',
+  'moov-prestige-(commercial-comprehensive)',
 ];
 const pickExtraData = (type) => {
   const vehicleType = [
-    "moov-third-party",
-    "moov-plus-(fire-and-theft)",
-    "moov-luxury-(extented-comprehensive)",
-    "moov-prestige-(private-comprehensive)",
-    "moov-prestige-(commercial-comprehensive)",
+    'moov-third-party',
+    'moov-plus-(fire-and-theft)',
+    'moov-luxury-(extented-comprehensive)',
+    'moov-prestige-(private-comprehensive)',
+    'moov-prestige-(commercial-comprehensive)',
   ];
   if (vehicleType.includes(type)) {
     return [
       {
-        section: "Vehicle Information",
+        section: 'Vehicle Information',
       },
       {
-        name: "vinnumber",
-        label: "Chassis/VIN Number",
+        name: 'vinnumber',
+        label: 'Chassis/VIN Number',
         validate: {
-          required: "required",
+          required: 'required',
           // min: [10, "Must be 10 characters or more"],
         },
-        type: "text",
+        type: 'text',
       },
       {
-        name: "engineNumber",
-        label: "Engine Number",
+        name: 'engineNumber',
+        label: 'Engine Number',
         validate: {
-          required: "required",
+          required: 'required',
           // min: [10, "Must be 10 characters or more"],
         },
-        type: "text",
+        type: 'text',
       },
       {
-        name: "color",
-        label: "Color",
+        name: 'color',
+        label: 'Color',
         validate: {
-          required: "required",
+          required: 'required',
         },
-        type: "text",
+        type: 'text',
       },
       {
-        name: "yearOfModel",
-        label: "Year of Model",
+        name: 'yearOfModel',
+        label: 'Year of Model',
         validate: {
-          required: "required",
+          required: 'required',
         },
-        type: "select",
+        type: 'select',
         list: [
-          "2020",
-          "2019",
-          "2018",
-          "2017",
-          "2016",
-          "2015",
-          "2014",
-          "2013",
-          "2012",
-          "2011",
-          "2010",
-          "2009",
-          "2008",
-          "2007",
-          "2006",
-          "2005",
-          "2004",
-          "2003",
-          "2002",
-          "2001",
-          "2000",
-          "1999",
-          "1998",
-          "1997",
-          "1996",
-          "1995",
-          "1994",
-          "1993",
-          "1992",
-          "1991",
-          "1990",
+          '2020',
+          '2019',
+          '2018',
+          '2017',
+          '2016',
+          '2015',
+          '2014',
+          '2013',
+          '2012',
+          '2011',
+          '2010',
+          '2009',
+          '2008',
+          '2007',
+          '2006',
+          '2005',
+          '2004',
+          '2003',
+          '2002',
+          '2001',
+          '2000',
+          '1999',
+          '1998',
+          '1997',
+          '1996',
+          '1995',
+          '1994',
+          '1993',
+          '1992',
+          '1991',
+          '1990',
         ],
       },
     ];
@@ -106,19 +106,19 @@ const KYC = (props) => {
     if (props.location.state) {
       if (vehicleType.includes(props.location.state.productType)) {
         const isValid = includesAll(states, [
-          "vehicleClass",
-          "manufacturer",
-          "model",
-          "policyholder",
-          "vehicleValue",
-          "product",
-          "quote",
-          "productType",
+          'vehicleClass',
+          'manufacturer',
+          'model',
+          'policyholder',
+          'vehicleValue',
+          'product',
+          'quote',
+          'productType',
         ]);
 
         console.log(isValid, props, states);
         if (!isValid) {
-          window.location = "https://wa.me/+2348111228899";
+          window.location = 'https://wa.me/+2348111228899';
           return;
         }
         const {
@@ -176,7 +176,7 @@ const KYC = (props) => {
       // const whatsappNo = searchParams.get("whatsapp");/
       // if (!whatsappNo) setLoading(false);
       const { data } = await axios.post(
-        "https://wapicbot-api.herokuapp.com/api/users/update-kyc",
+        'https://wapicbot-api.herokuapp.com/api/users/update-kyc',
         {
           kyc: {
             gender: values.gender,
@@ -218,207 +218,229 @@ const KYC = (props) => {
       <FormBuilder
         error={error}
         loading={loading}
-        title="KYC"
-        instruction="Please fill required fields to proceed"
+        title='KYC'
+        instruction='Please fill required fields to proceed'
         data={[
           {
-            section: "Personal information",
+            section: 'Passport Photo',
           },
           {
-            name: "gender",
-            label: "Gender",
+            name: 'passport',
+            label: 'Passport Photo',
             validate: {
-              required: "required",
+              required: 'required',
             },
-            type: "select",
-            selectLabel: "select one",
-            list: ["MALE", "FEMALE"],
-          },
-
-          {
-            name: "dateOfBirth",
-            label: "Date of Birth",
-            validate: {
-              required: "required",
-            },
-            type: "date",
+            type: 'image',
           },
           {
-            name: "maritalStatus",
-            label: "Marital Status",
-            validate: {
-              required: "required",
-            },
-            type: "select",
-            selectLabel: "select one",
-            list: ["DIVORCED", "MARRIED", "SINGLE", "WIDOWED"],
+            section: 'Indentification Card',
           },
           {
-            name: "religion",
-            label: "Religion",
+            name: 'idCard',
+            label: 'Indentification Card',
             validate: {
-              required: "required",
+              required: 'required',
             },
-            type: "select",
-            selectLabel: "select one",
-            list: [
-              "BUDDISH",
-              "CHINESE FOLK RELIGION",
-              "CHRISTIANITY",
-              "HINDUISM",
-              "ISLAM",
-              "NOT APPLICABLE",
-              "OTHERS",
-              "TRADITIONAL WORSHIPPER",
-            ],
+            type: 'image',
           },
           {
-            name: "height",
-            label: "Height (meters)",
-            validate: {
-              // required: "required",
-              min: [1, "Must be more than 1"],
-            },
-            type: "number",
+            section: 'Personal information',
           },
           {
-            name: "weight",
-            label: "Weight (Kg)",
+            name: 'gender',
+            label: 'Gender',
             validate: {
-              // required: "required",
-              min: [1, "Must be more than 1"],
+              required: 'required',
             },
-            type: "number",
-          },
-          {
-            name: "state",
-            label: "State",
-            validate: {
-              required: "required",
-            },
-            type: "select",
-            selectLabel: "select one",
-            data: "allStates",
-          },
-          {
-            name: "city",
-            label: "Select city",
-            validate: {
-              required: "required",
-            },
-            type: "select",
-            dependent: "state",
-            data: "allLgas",
+            type: 'select',
+            selectLabel: 'select one',
+            list: ['MALE', 'FEMALE'],
           },
 
           {
-            name: "occupation",
-            label: "Occupation",
+            name: 'dateOfBirth',
+            label: 'Date of Birth',
             validate: {
-              required: "required",
+              required: 'required',
             },
-            type: "select",
-            selectLabel: "select one",
+            type: 'date',
+          },
+          {
+            name: 'maritalStatus',
+            label: 'Marital Status',
+            validate: {
+              required: 'required',
+            },
+            type: 'select',
+            selectLabel: 'select one',
+            list: ['DIVORCED', 'MARRIED', 'SINGLE', 'WIDOWED'],
+          },
+          {
+            name: 'religion',
+            label: 'Religion',
+            validate: {
+              required: 'required',
+            },
+            type: 'select',
+            selectLabel: 'select one',
             list: [
-              "accountant",
-              "administrator",
-              "architect",
-              "banker",
-              "beautician",
-              "business trader",
-              "caterer",
-              "civil servant",
-              "cleric",
-              "communication technologies",
-              "educationist",
-              "engineer",
-              "farmer",
-              "fashion designer",
-              "financial services consul",
-              "horologist",
-              "horticulturist",
-              "importer and exporter",
-              "information technologist",
-              "journalist",
-              "legal practitioner",
-              "merchant",
-              "military personnel",
-              "not applicable",
-              "NYSC member",
-              "others",
-              "pilot",
-              "retired",
-              "sailor",
-              "scientist",
-              "secretary",
-              "student",
-              "surveyor",
-              "system analyst",
-              "transporter",
+              'BUDDISH',
+              'CHINESE FOLK RELIGION',
+              'CHRISTIANITY',
+              'HINDUISM',
+              'ISLAM',
+              'NOT APPLICABLE',
+              'OTHERS',
+              'TRADITIONAL WORSHIPPER',
             ],
           },
           {
-            name: "businessType",
-            label: "Business type",
+            name: 'height',
+            label: 'Height (meters)',
             validate: {
-              required: "required",
+              // required: "required",
+              min: [1, 'Must be more than 1'],
             },
-            type: "select",
-            selectLabel: "select one",
+            type: 'number',
+          },
+          {
+            name: 'weight',
+            label: 'Weight (Kg)',
+            validate: {
+              // required: "required",
+              min: [1, 'Must be more than 1'],
+            },
+            type: 'number',
+          },
+          {
+            name: 'state',
+            label: 'State',
+            validate: {
+              required: 'required',
+            },
+            type: 'select',
+            selectLabel: 'select one',
+            data: 'allStates',
+          },
+          {
+            name: 'city',
+            label: 'Select city',
+            validate: {
+              required: 'required',
+            },
+            type: 'select',
+            dependent: 'state',
+            data: 'allLgas',
+          },
+
+          {
+            name: 'occupation',
+            label: 'Occupation',
+            validate: {
+              required: 'required',
+            },
+            type: 'select',
+            selectLabel: 'select one',
             list: [
-              "financial services",
-              "manufacturing",
-              "oil & gas",
-              "others",
-              "public sector",
-              "retail customer",
-              "services",
-              "sme",
-              "telecoms",
-              "transportation",
+              'accountant',
+              'administrator',
+              'architect',
+              'banker',
+              'beautician',
+              'business trader',
+              'caterer',
+              'civil servant',
+              'cleric',
+              'communication technologies',
+              'educationist',
+              'engineer',
+              'farmer',
+              'fashion designer',
+              'financial services consul',
+              'horologist',
+              'horticulturist',
+              'importer and exporter',
+              'information technologist',
+              'journalist',
+              'legal practitioner',
+              'merchant',
+              'military personnel',
+              'not applicable',
+              'NYSC member',
+              'others',
+              'pilot',
+              'retired',
+              'sailor',
+              'scientist',
+              'secretary',
+              'student',
+              'surveyor',
+              'system analyst',
+              'transporter',
+            ],
+          },
+          {
+            name: 'businessType',
+            label: 'Business type',
+            validate: {
+              required: 'required',
+            },
+            type: 'select',
+            selectLabel: 'select one',
+            list: [
+              'financial services',
+              'manufacturing',
+              'oil & gas',
+              'others',
+              'public sector',
+              'retail customer',
+              'services',
+              'sme',
+              'telecoms',
+              'transportation',
             ],
           },
           ...pickExtraData(quoteDetails.productType),
           {
-            section: "Cover & Bank Information",
+            section: 'Cover & Bank Information',
           },
 
           {
-            name: "coverStartDate",
-            label: "Cover Start Date",
+            name: 'coverStartDate',
+            label: 'Cover Start Date',
             validate: {
-              required: "required",
+              required: 'required',
             },
-            type: "date",
+            type: 'date',
           },
           {
-            name: "bankName",
-            label: "Bank Name",
+            name: 'bankName',
+            label: 'Bank Name',
             validate: {
-              required: "required",
+              required: 'required',
             },
-            type: "select",
-            selectLabel: "select one",
-            data: "allBanks",
+            type: 'select',
+            selectLabel: 'select one',
+            data: 'allBanks',
             // list: ["access", "diamond", "zenith", "GTB"],
           },
           {
-            name: "accountNumber",
-            label: "Account Number",
+            name: 'accountNumber',
+            label: 'Account Number',
             validate: {
-              required: "required",
-              min: [10, "Must be 10 characters or more"],
+              required: 'required',
+              min: [10, 'Must be 10 characters or more'],
             },
-            type: "number",
+            type: 'number',
           },
           {
-            name: "bvn",
-            label: "Bank Verification Number (optional)",
+            name: 'bvn',
+            label: 'Bank Verification Number (optional)',
             validate: {
               // required: "required",
-              min: [10, "Must be 10 characters or more"],
+              min: [10, 'Must be 10 characters or more'],
             },
-            type: "number",
+            type: 'number',
           },
         ]}
         action={(values) => {
