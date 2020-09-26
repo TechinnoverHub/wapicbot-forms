@@ -77,13 +77,25 @@ const lifeinsurance = [
     type: 'text',
   },
   {
-    name: 'dateOfBirth',
-    label: 'Date of Birth',
+    name: 'age',
+    label: 'Age',
     validate: {
       required: 'required',
     },
-    type: 'date',
+
+    type: 'select',
+    list: [...new Array(43)].map((num, i) => i + 18),
   },
+  // {
+  //   name: 'dateOfBirth',
+  //   label: 'Date of Birth',
+  //   minDate: `${new Date().getFullYear() - 60}-01-01`,
+  //   maxDate: `${new Date().getFullYear() - 18}-12-31`,
+  //   validate: {
+  //     required: 'required',
+  //   },
+  //   type: 'date',
+  // },
   {
     name: 'sumAssured',
     label: 'Sum Assured',

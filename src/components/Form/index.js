@@ -441,6 +441,7 @@ const FormBuilder = ({
               error={!!errorState[name]}
               helperText={errorState[name]}
               onChange={(e) => setState({ ...state, [name]: e.target.value })}
+              inputProps={{ min: obj.minDate, max: obj.maxDate }}
               InputLabelProps={{
                 shrink: true,
               }}

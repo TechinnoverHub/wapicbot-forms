@@ -306,6 +306,8 @@ const KYC = (props) => {
             {
               name: 'dob',
               label: 'Date of Birth',
+              minDate: `${new Date().getFullYear() - 60}-01-01`,
+              maxDate: `${new Date().getFullYear() - 18}-12-31`,
               validate: {
                 required: 'required',
               },
@@ -453,6 +455,12 @@ const KYC = (props) => {
             {
               name: 'coverStartDate',
               label: 'Cover Start Date',
+              minDate: `${new Date().getFullYear()}-${`${
+                new Date().getMonth() + 1
+              }`.padStart(2, 0)}-${new Date().getDate()}`,
+              // maxDate: `${new Date().getFullYear()}-${
+              //   new Date().getMonth() + 2
+              // }-${new Date().getDate()}`,
               validate: {
                 required: 'required',
               },
