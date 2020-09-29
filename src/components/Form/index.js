@@ -1,4 +1,5 @@
-// import "moment";
+// import "date-fns";
+import "moment";
 import React, { useState, useEffect } from "react";
 import styles from "./styles.module.css";
 import logo from "../../assets/logo.jpeg";
@@ -19,11 +20,13 @@ import {
   Card,
 } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-// import MomentUtils from "@date-io/moment";
-// import {
-//   KeyboardDatePicker,
-//   MuiPickersUtilsProvider,
-// } from "@material-ui/pickers";
+import MomentUtils from "@date-io/moment";
+// import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  // KeyboardDatePicker,
+  DatePicker,
+} from "@material-ui/pickers";
 import styled from "styled-components";
 import {
   manufacturers,
@@ -421,18 +424,34 @@ const FormBuilder = ({
                 obj.validate && obj.validate.required ? "*" : ""
               }`}
             />
-            {/* <input id={name} type={type}value={state[name]}
-            onChange={(e)=> setState({...state, [name]: e.target.value})} />
-            <label htmlFor={name}>
-              {obj.label}
-              {obj.validate && obj.validate.required ? "*" : ""}
-            </label> */}
           </div>
         );
       case "date":
         return (
-          <div className={styles.date}>
-            <TextField
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <div className={styles.date}>
+              <DatePicker
+                className={classes.textField}
+                id={name}
+                label={obj.label}
+                value={state[name] || null}
+                error={!!errorState[name]}
+                helperText={errorState[name]}
+                format="DD/MM/yyyy"
+                placeholder="dd/mm/yyyy"
+                onChange={(val) => {
+                  console.log(val.toLocaleString());
+                  setState({
+                    ...state,
+                    [name]: val.toISOString(true).split("T")[0],
+                  });
+                }}
+                minDate={obj.minDate}
+                maxDate={obj.maxDate}
+                autoOk
+                // clearable
+              />
+              {/* <TextField
               id={name}
               label={obj.label}
               className={classes.textField}
@@ -445,32 +464,9 @@ const FormBuilder = ({
               InputLabelProps={{
                 shrink: true,
               }}
-            />
-            {/* <MuiPickersUtilsProvider utils={MomentUtils}>
-              <KeyboardDatePicker
-                margin="normal"
-                id={name}
-                label={obj.label}
-                format="MM/dd/yyyy"
-               value={state[name]}
-               onChange={(e)=> setState({...state, [name]: e.target.value})}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </MuiPickersUtilsProvider> */}
-            {/* <label htmlFor={name}>
-              {obj.label}
-              {obj.validate && obj.validate.required ? "*" : ""}
-            </label>
-            <input
-              id={name}
-              type={type}
-              placeholder={obj.label}
-             value={state[name]}
-             onChange={(e)=> setState({...state, [name]: e.target.value})}
             /> */}
-          </div>
+            </div>
+          </MuiPickersUtilsProvider>
         );
       case "currency":
         return (
