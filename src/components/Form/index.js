@@ -1,10 +1,10 @@
 // import "moment";
-import React, { useState, useEffect } from 'react';
-import styles from './styles.module.css';
-import logo from '../../assets/logo.jpeg';
-import loader from '../../assets/loader.gif';
-import isEmail from 'validator/es/lib/isEmail';
-import NumberFormat from 'react-number-format';
+import React, { useState, useEffect } from "react";
+import styles from "./styles.module.css";
+import logo from "../../assets/logo.jpeg";
+import loader from "../../assets/loader.gif";
+import isEmail from "validator/es/lib/isEmail";
+import NumberFormat from "react-number-format";
 
 import {
   TextField,
@@ -17,21 +17,21 @@ import {
   FormHelperText,
   Button,
   Card,
-} from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+} from "@material-ui/core";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 // import MomentUtils from "@date-io/moment";
 // import {
 //   KeyboardDatePicker,
 //   MuiPickersUtilsProvider,
 // } from "@material-ui/pickers";
-import styled from 'styled-components';
+import styled from "styled-components";
 import {
   manufacturers,
   carModels,
   allStates,
   allLgas,
   allBanks,
-} from './helpers';
+} from "./helpers";
 
 const dataBucket = {
   manufacturers,
@@ -58,27 +58,27 @@ const toBase64 = (file) =>
   });
 const Checkbox = withStyles({
   root: {
-    color: '#883395',
-    marginBottom: '20px',
-    '&$checked': {
-      color: '#883395',
+    color: "#883395",
+    marginBottom: "20px",
+    "&$checked": {
+      color: "#883395",
     },
   },
   checked: {},
-})((props) => <ParentCheckbox color='default' {...props} />);
+})((props) => <ParentCheckbox color="default" {...props} />);
 
 const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(1),
   },
   items: {
-    textTransform: 'capitalize',
+    textTransform: "capitalize",
   },
   textField: {
     paddingTop: theme.spacing(2),
     marginBottom: 0,
   },
-  label: { textTransform: 'capitalize' },
+  label: { textTransform: "capitalize" },
 }));
 
 const FormBuilder = ({
@@ -108,67 +108,67 @@ const FormBuilder = ({
     exactDependentValue
   ) => {
     if (dependent) {
-      if (typeof dependent === 'string') {
+      if (typeof dependent === "string") {
         if (dependentState) {
-          if ('required' in obj && !current) {
-            return obj['required'];
+          if ("required" in obj && !current) {
+            return obj["required"];
           }
-          if ('min' in obj && current.length < obj.min[0]) {
+          if ("min" in obj && current.length < obj.min[0]) {
             return obj.min[1];
           }
-          if ('max' in obj && current.length > obj.max[0]) {
+          if ("max" in obj && current.length > obj.max[0]) {
             return obj.max[1];
           }
-          if ('email' in obj && !isEmail(current)) {
+          if ("email" in obj && !isEmail(current)) {
             return obj.email;
           }
         }
       } else {
         if (dependentState && dependentState === exactDependentValue) {
-          if ('required' in obj && !current) {
-            return obj['required'];
+          if ("required" in obj && !current) {
+            return obj["required"];
           }
-          if ('min' in obj && current.length < obj.min[0]) {
+          if ("min" in obj && current.length < obj.min[0]) {
             return obj.min[1];
           }
-          if ('max' in obj && current.length > obj.max[0]) {
+          if ("max" in obj && current.length > obj.max[0]) {
             return obj.max[1];
           }
-          if ('email' in obj && !isEmail(current)) {
+          if ("email" in obj && !isEmail(current)) {
             return obj.email;
           }
         }
       }
     } else {
       if (
-        type === 'text' ||
-        type === 'select' ||
-        type === 'date' ||
-        type === 'email' ||
-        type === 'textarea' ||
-        type === 'checkbox'
+        type === "text" ||
+        type === "select" ||
+        type === "date" ||
+        type === "email" ||
+        type === "textarea" ||
+        type === "checkbox"
       ) {
-        if ('required' in obj && !current) {
-          return obj['required'];
+        if ("required" in obj && !current) {
+          return obj["required"];
         }
-        if ('min' in obj && current.length < obj.min[0]) {
+        if ("min" in obj && current.length < obj.min[0]) {
           return obj.min[1];
         }
-        if ('max' in obj && current.length > obj.max[0]) {
+        if ("max" in obj && current.length > obj.max[0]) {
           return obj.max[1];
         }
-        if ('email' in obj && !isEmail(current)) {
+        if ("email" in obj && !isEmail(current)) {
           return obj.email;
         }
       }
-      if (type === 'number' || type === 'currency') {
-        if ('required' in obj && !current) {
-          return obj['required'];
+      if (type === "number" || type === "currency") {
+        if ("required" in obj && !current) {
+          return obj["required"];
         }
-        if ('min' in obj && current < obj.min[0]) {
+        if ("min" in obj && current < obj.min[0]) {
           return obj.min[1];
         }
-        if ('max' in obj && current > obj.max[0]) {
+        if ("max" in obj && current > obj.max[0]) {
           return obj.max[1];
         }
       }
@@ -191,11 +191,11 @@ const FormBuilder = ({
         dt.dependent,
         dt.dependent
           ? state[
-              typeof dt.dependent === 'string' ? dt.dependent : dt.dependent.key
+              typeof dt.dependent === "string" ? dt.dependent : dt.dependent.key
             ]
           : null,
         dt.dependent
-          ? typeof dt.dependent === 'string'
+          ? typeof dt.dependent === "string"
             ? dt.dependent
             : dt.dependent.value
           : null
@@ -210,13 +210,13 @@ const FormBuilder = ({
 
   const chooseInput = (type, name, list, obj) => {
     switch (type) {
-      case 'image':
+      case "image":
         return (
-          <div className='selector'>
+          <div className="selector">
             <input
               id={name}
               name={name}
-              type='file'
+              type="file"
               onChange={async (e) => {
                 if (e.target.value) {
                   const base64 = await toBase64(e.target.files[0]);
@@ -228,14 +228,14 @@ const FormBuilder = ({
             />
             <label htmlFor={name}>
               {state[name] ? (
-                <img alt='preview' className='preview' src={state[name]} />
+                <img alt="preview" className="preview" src={state[name]} />
               ) : (
                 `Choose ${obj.label.toLowerCase()}`
               )}
             </label>
           </div>
         );
-      case 'textarea':
+      case "textarea":
         return (
           <>
             <TextField
@@ -256,14 +256,14 @@ const FormBuilder = ({
             onChange={(e)=> setState({...state, [name]: e.target.value})} /> */}
           </>
         );
-      case 'multiadd':
+      case "multiadd":
         return (
-          <div style={{ width: '100%' }}>
+          <div style={{ width: "100%" }}>
             <div>
               {state[name] &&
                 state[name].length &&
                 state[name].map((item) => (
-                  <Card style={{ padding: '5px', margin: '5px 0' }}>
+                  <Card style={{ padding: "5px", margin: "5px 0" }}>
                     <h2>
                       {item.fullname} ({item.relationship})
                     </h2>
@@ -274,9 +274,9 @@ const FormBuilder = ({
             {obj.max && state[name] && state[name].length >= obj.max ? null : (
               <div
                 style={{
-                  width: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
                 }}
               >
                 {obj.template.map((tm) => (
@@ -287,7 +287,7 @@ const FormBuilder = ({
                     value={
                       templateData[name] && templateData[name][tm.name]
                         ? templateData[name][tm.name]
-                        : ''
+                        : ""
                     }
                     // error={!!errorState[name]}
                     // helperText={errorState[name]}
@@ -315,9 +315,9 @@ const FormBuilder = ({
                     });
                     setTemplateData({ ...templateData, [name]: {} });
                   }}
-                  color='primary'
-                  variant='contained'
-                  style={{ alignSelf: 'flex-start', marginTop: '10px' }}
+                  color="primary"
+                  variant="contained"
+                  style={{ alignSelf: "flex-start", marginTop: "10px" }}
                 >
                   Add
                 </Button>
@@ -326,7 +326,7 @@ const FormBuilder = ({
           </div>
         );
 
-      case 'select':
+      case "select":
         return (
           <FormControl
             className={classes.selectEmpty}
@@ -337,7 +337,7 @@ const FormBuilder = ({
             </InputLabel>
             <Select
               id={name}
-              value={state[name] || ''}
+              value={state[name] || ""}
               onChange={(e) => {
                 const val = e.target.value;
                 if (obj.action) {
@@ -401,14 +401,14 @@ const FormBuilder = ({
           </FormControl>
         );
 
-      case 'checkbox':
+      case "checkbox":
         return (
           <div className={styles.checker}>
             <FormControlLabel
               control={
                 <Checkbox
                   name={name}
-                  color='primary'
+                  color="primary"
                   value={state[name]}
                   error={!!errorState[name]}
                   helperText={errorState[name]}
@@ -418,7 +418,7 @@ const FormBuilder = ({
                 />
               }
               label={`${obj.label}${
-                obj.validate && obj.validate.required ? '*' : ''
+                obj.validate && obj.validate.required ? "*" : ""
               }`}
             />
             {/* <input id={name} type={type}value={state[name]}
@@ -429,14 +429,14 @@ const FormBuilder = ({
             </label> */}
           </div>
         );
-      case 'date':
+      case "date":
         return (
           <div className={styles.date}>
             <TextField
               id={name}
               label={obj.label}
               className={classes.textField}
-              type='date'
+              type="date"
               value={state[name]}
               error={!!errorState[name]}
               helperText={errorState[name]}
@@ -472,23 +472,42 @@ const FormBuilder = ({
             /> */}
           </div>
         );
-      case 'currency':
+      case "currency":
         return (
           <NumberFormat
             id={name}
             name={name}
             customInput={TextField}
-            prefix={'₦'}
+            prefix={"₦"}
             disabled={obj.disabled}
             // format={format || null}
-            type='text'
+            type="text"
             thousandSeparator={true}
             label={obj.label}
             value={state[name]}
             error={!!errorState[name]}
             helperText={errorState[name]}
-            onValueChange={({ value: v }) => {
-              setState({ ...state, [name]: v });
+            // onValueChange={({ value: v }) => {
+            //   setState({ ...state, [name]: v });
+            // }}
+            onValueChange={({ value: val }) => {
+              if (obj.action) {
+                obj.action(val, (...args) => {
+                  const newObj = {
+                    [name]: val,
+                  };
+                  obj.setterKeys.forEach((st, i) => {
+                    newObj[st] = args[i];
+                  });
+
+                  return setState({
+                    ...state,
+                    ...newObj,
+                  });
+                });
+              } else {
+                setState({ ...state, [name]: val });
+              }
             }}
           />
         );
@@ -507,7 +526,27 @@ const FormBuilder = ({
               value={state[name]}
               error={!!errorState[name]}
               helperText={errorState[name]}
-              onChange={(e) => setState({ ...state, [name]: e.target.value })}
+              // onChange={(e) => setState({ ...state, [name]: e.target.value })}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (obj.action) {
+                  obj.action(val, (...args) => {
+                    const newObj = {
+                      [name]: val,
+                    };
+                    obj.setterKeys.forEach((st, i) => {
+                      newObj[st] = args[i];
+                    });
+
+                    return setState({
+                      ...state,
+                      ...newObj,
+                    });
+                  });
+                } else {
+                  setState({ ...state, [name]: val });
+                }
+              }}
             />
           </>
         );
@@ -515,7 +554,7 @@ const FormBuilder = ({
   };
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <img src={logo} alt='logo' />
+      <img src={logo} alt="logo" />
       <h2>{title}</h2>
 
       {instruction && <p>{instruction}</p>}
@@ -534,24 +573,26 @@ const FormBuilder = ({
         ) : (
           (!datum.dependent ||
             (datum.dependent &&
-              state[datum.dependent.key] === datum.dependent.value)) && (
+              datum.dependent.value &&
+              state[datum.dependent.key] === datum.dependent.value) ||
+            (datum.dependent &&
+              datum.dependent.gtValue &&
+              Number(state[datum.dependent.key]) >=
+                datum.dependent.gtValue)) && (
             <div key={i} className={styles.inner}>
               {chooseInput(datum.type, datum.name, datum.list, datum)}
-              {/* {formik.touched[datum.name] && formik.errors[datum.name] ? (
-                <span>{formik.errors[datum.name]}</span>
-              ) : null} */}
             </div>
           )
         )
       )}
 
       {loading ? (
-        <img src={loader} alt='loader' />
+        <img src={loader} alt="loader" />
       ) : (
         <button
           className={styles.button}
           disabled={Object.keys(errorState).length}
-          type='submit'
+          type="submit"
         >
           &#8594;
         </button>
