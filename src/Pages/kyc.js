@@ -270,6 +270,7 @@ const KYC = (props) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            height: "100vh",
           }}
         >
           <img src={loader} alt="loader" />
