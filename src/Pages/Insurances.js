@@ -301,7 +301,7 @@ const products = {
       },
     },
     {
-      name: "riotStrike",
+      name: "riot",
       label: "Riot strike and civil commotion cover",
       validate: {
         required: "required",
@@ -400,7 +400,7 @@ const products = {
       },
     },
     {
-      name: "floodExtension",
+      name: "floodExt",
       label: "Flood Extension",
       validate: {
         required: "required",
@@ -418,7 +418,7 @@ const products = {
       list: ["yes", "no"],
     },
     {
-      name: "riotStrike",
+      name: "riot",
       label: "Riot strike and civil commotion cover",
       validate: {
         required: "required",
@@ -517,7 +517,7 @@ const products = {
       },
     },
     {
-      name: "floodExtension",
+      name: "floodExt",
       label: "Flood Extension",
       validate: {
         required: "required",
@@ -535,7 +535,7 @@ const products = {
       list: ["yes"],
     },
     {
-      name: "riotStrike",
+      name: "riot",
       label: "Riot strike and civil commotion cover",
       validate: {
         required: "required",
@@ -634,7 +634,7 @@ const products = {
       },
     },
     {
-      name: "floodExtension",
+      name: "floodExt",
       label: "Flood Extension",
       validate: {
         required: "required",
@@ -643,7 +643,7 @@ const products = {
       list: ["yes", "no"],
     },
     {
-      name: "riotStrike",
+      name: "riot",
       label: "Riot strike and civil commotion cover",
       validate: {
         required: "required",
@@ -747,7 +747,7 @@ const products = {
       },
     },
     {
-      name: "riotStrike",
+      name: "riot",
       label: "Riot strike and civil commotion cover",
       validate: {
         required: "required",
@@ -879,8 +879,8 @@ const Insurances = ({ history }) => {
             console.log(values);
             try {
               const { data } = await axios.post(
-                "https://wapicbot-api.herokuapp.com/api/products/get-quote",
-                // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
+                // "https://wapicbot-api.herokuapp.com/api/products/get-quote",
+                "https://940dde6e0c61.ngrok.io/api/products/get-quote",
                 {
                   vehicleClass: vehicleClassMap[values.vehicleClass],
                   regNumber: values.regNumber,
@@ -889,6 +889,8 @@ const Insurances = ({ history }) => {
                   model: values.model,
                   worth: values.vehicleValue,
                   productCode: type,
+                  floodExt: values.floodExt,
+                  riot: values.riot,
                 }
               );
               console.log(data);

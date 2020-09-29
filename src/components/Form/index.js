@@ -572,6 +572,7 @@ const FormBuilder = ({
           </h1>
         ) : (
           (!datum.dependent ||
+            typeof datum.dependent === "string" ||
             (datum.dependent &&
               datum.dependent.value &&
               state[datum.dependent.key] === datum.dependent.value) ||
