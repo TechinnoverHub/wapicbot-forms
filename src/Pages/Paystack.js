@@ -53,7 +53,7 @@ const Paystack = (props) => {
 
     console.log(isValid, props, states);
     if (!isValid) {
-      // window.location = 'https://wa.me/+2348111228899';
+      window.location = "https://wa.me/+2348111228899";
       return;
     }
     const {
@@ -163,7 +163,9 @@ const Paystack = (props) => {
         })
         .catch((err) => {
           console.log(err);
+          setPaid(true);
           setLoading(false);
+          window.location = "https://wa.me/+2348111228899";
         });
     },
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),
