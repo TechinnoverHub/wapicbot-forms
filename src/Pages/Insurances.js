@@ -26,7 +26,22 @@ const medicalBenefitMap = {
   75000: 200000,
   100000: 250000,
 };
-
+const productmap = {
+  "moov-third-party": "Motor Insurance (3rd Party)",
+  "moov-plus-(fire-and-theft)": "Motor Insurance (Third Party Fire & Theft)",
+  "moov-luxury-(extented-comprehensive)":
+    "Motor Insurance Luxury (Comprehensive)",
+  "moov-prestige-(private-comprehensive)":
+    "Comprehensive Vehicle Insurance (Private Motor)",
+  "moov-prestige-(commercial-comprehensive)":
+    "Comprehensive Vehicle Insurance (Commercial Motor)",
+  "house-holders-insurance": "House Holders Insurance",
+  "house-owners-insurance": "House Owners Insurance",
+  "e-term": "E-Term",
+  "smart-scholars-plan": "Smart Scholars Plan",
+  "smart-life": "Smart Life",
+  "smart-senior-plan": "Smart Senior Plan",
+};
 const vehicleClassMap = {
   "private Cars": "PRIVATE",
   "Commercial Buses & Vehicle": "COMMERCIAL",
@@ -289,7 +304,7 @@ const products = {
         required: "required",
       },
       type: "currency",
-      setterKeys: ["vehicleTracking"],
+      setterKeys: ["tracking"],
       action: (val, setter) => {
         console.log(val);
         if (Number(val) >= 5000000) {
@@ -310,7 +325,7 @@ const products = {
       list: ["yes", "no"],
     },
     {
-      name: "vehicleTracking",
+      name: "tracking",
       label: "Vehicle Tracker",
       validate: {
         // required: "required",
@@ -388,7 +403,7 @@ const products = {
         required: "required",
       },
       type: "currency",
-      setterKeys: ["vehicleTracking"],
+      setterKeys: ["tracking"],
       action: (val, setter) => {
         console.log(val);
         if (Number(val) >= 5000000) {
@@ -427,7 +442,7 @@ const products = {
       list: ["yes", "no"],
     },
     {
-      name: "vehicleTracking",
+      name: "tracking",
       label: "Vehicle Tracker",
       validate: {
         // required: "required",
@@ -505,7 +520,7 @@ const products = {
         required: "required",
       },
       type: "currency",
-      setterKeys: ["vehicleTracking"],
+      setterKeys: ["tracking"],
       action: (val, setter) => {
         console.log(val);
         if (Number(val) >= 5000000) {
@@ -544,7 +559,7 @@ const products = {
       list: ["yes", "no"],
     },
     {
-      name: "vehicleTracking",
+      name: "tracking",
       label: "Vehicle Tracker",
       validate: {
         // required: "required",
@@ -622,7 +637,7 @@ const products = {
         required: "required",
       },
       type: "currency",
-      setterKeys: ["vehicleTracking"],
+      setterKeys: ["tracking"],
       action: (val, setter) => {
         console.log(val);
         if (Number(val) >= 5000000) {
@@ -652,7 +667,7 @@ const products = {
       list: ["yes", "no"],
     },
     {
-      name: "vehicleTracking",
+      name: "tracking",
       label: "Vehicle Tracker",
       validate: {
         // required: "required",
@@ -735,7 +750,7 @@ const products = {
         required: "required",
       },
       type: "currency",
-      setterKeys: ["vehicleTracking"],
+      setterKeys: ["tracking"],
       action: (val, setter) => {
         console.log(val);
         if (Number(val) >= 5000000) {
@@ -756,7 +771,7 @@ const products = {
       list: ["yes", "no"],
     },
     {
-      name: "vehicleTracking",
+      name: "tracking",
       label: "Vehicle Tracker",
       validate: {
         // required: "required",
@@ -783,7 +798,8 @@ const Insurances = ({ history }) => {
     <Container>
       {houseTypes.includes(type) && (
         <MultiForm
-          title="Fill Details"
+          title={productmap[type]}
+          instruction="Fill Details"
           error={error}
           loading={loading}
           action={async (values) => {
@@ -871,7 +887,8 @@ const Insurances = ({ history }) => {
         <FormBuilder
           error={error}
           loading={loading}
-          title="Fill Details"
+          title={productmap[type]}
+          instruction="Fill Details"
           data={products[type] || []}
           action={async (values) => {
             setLoading(true);
@@ -879,8 +896,8 @@ const Insurances = ({ history }) => {
             console.log(values);
             try {
               const { data } = await axios.post(
-                // "https://wapicbot-api.herokuapp.com/api/products/get-quote",
-                "https://940dde6e0c61.ngrok.io/api/products/get-quote",
+                "https://wapicbot-api.herokuapp.com/api/products/get-quote",
+                // "https://940dde6e0c61.ngrok.io/api/products/get-quote",
                 {
                   vehicleClass: vehicleClassMap[values.vehicleClass],
                   regNumber: values.regNumber,
@@ -891,6 +908,7 @@ const Insurances = ({ history }) => {
                   productCode: type,
                   floodExt: values.floodExt,
                   riot: values.riot,
+                  tracking: values.tracking,
                 }
               );
               console.log(data);
@@ -915,7 +933,8 @@ const Insurances = ({ history }) => {
         <FormBuilder
           error={error}
           loading={loading}
-          title="Fill Details"
+          title={productmap[type]}
+          instruction="Fill Details"
           data={products[type] || []}
           action={async (values) => {
             setLoading(true);
