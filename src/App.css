@@ -109,20 +109,31 @@ a:hover {
 .selector label {
   cursor: pointer;
   display: flex;
-  background-color: #883395;
+  /* background-color: #883395; */
   color: #fff;
   border-radius: 5px;
   width: 250px;
   height: 150px;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   overflow: hidden;
+  text-align: center;
 }
 
 .selector label:active {
   transform: scale(1.1);
 }
-
+.selector label img {
+  height: 150px;
+}
+.selector label div {
+  height: 150px;
+  background: #883395;
+  width: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .main {
   display: flex;
   flex-direction: column;

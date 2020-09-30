@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Container from "../components/Container";
-import { useParams } from "react-router-dom";
-import { PaystackButton } from "react-paystack";
-import logo from "../assets/logo.jpeg";
-import loader from "../assets/loader.gif";
-import includesAll from "../utils/includesAll";
-import formatNum from "../utils/formatNum";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Container from '../components/Container';
+import { useParams } from 'react-router-dom';
+import { PaystackButton } from 'react-paystack';
+import logo from '../assets/logo.jpeg';
+import loader from '../assets/loader.gif';
+import includesAll from '../utils/includesAll';
+import formatNum from '../utils/formatNum';
 const vehicleType = [
-  "moov-third-party",
-  "moov-plus-(fire-and-theft)",
-  "moov-luxury-(extented-comprehensive)",
-  "moov-prestige-(private-comprehensive)",
-  "moov-prestige-(commercial-comprehensive)",
+  'moov-third-party',
+  'moov-plus-(fire-and-theft)',
+  'moov-luxury-(extented-comprehensive)',
+  'moov-prestige-(private-comprehensive)',
+  'moov-prestige-(commercial-comprehensive)',
 ];
 const lifeTypes = [
-  "e-term",
-  "smart-scholars-plan",
-  "smart-life",
-  "smart-senior-plan",
+  'e-term',
+  'smart-scholars-plan',
+  'smart-life',
+  'smart-senior-plan',
 ];
 const publicKey = process.env.REACT_APP_PAYSTACK;
 const Paystack = (props) => {
@@ -29,31 +29,32 @@ const Paystack = (props) => {
   useEffect(() => {
     const states = Object.keys(props.location.state || {});
     const isValid = includesAll(states, [
-      "product",
-      "quote",
-      "productType",
-      "email",
-      "firstname",
-      "whatsappNo",
+      'product',
+      'quote',
+      'productType',
+      'email',
+      'firstname',
+      'whatsappNo',
       ...(vehicleType.includes(props.location.state.productType)
         ? [
-            "manufacturer",
-            "model",
-            "engineNumber",
-            "vinnumber",
-            "regNumber",
-            "color",
-            "yearOfModel",
+            'manufacturer',
+            'model',
+            'engineNumber',
+            'vinnumber',
+            'regNumber',
+            'color',
+            'yearOfModel',
+            'vehicleImage',
           ]
         : []),
       ...(lifeTypes.includes(props.location.state.productType)
-        ? ["beneficiaries"]
+        ? ['beneficiaries']
         : []),
     ]);
 
     console.log(isValid, props, states);
     if (!isValid) {
-      window.location = "https://wa.me/+2348111228899";
+      window.location = 'https://wa.me/+2348111228899';
       return;
     }
     const {
@@ -79,6 +80,7 @@ const Paystack = (props) => {
       floodExt,
       riot,
       tracking,
+      vehicleImage,
     } = props.location.state;
 
     setQuoteDetails({
@@ -105,6 +107,7 @@ const Paystack = (props) => {
             floodExt,
             riot,
             tracking,
+            vehicleImage,
           }
         : {}),
       ...(lifeTypes.includes(props.location.state.productType)
@@ -122,12 +125,12 @@ const Paystack = (props) => {
       phone: quoteDetails.whatsappNo,
     },
     publicKey,
-    text: "Pay Now",
+    text: 'Pay Now',
     onSuccess: (data) => {
       setLoading(true);
       console.log(data);
       axios
-        .post("https://wapicbot-api.herokuapp.com/api/products/buy-policy", {
+        .post('https://wapicbot-api.herokuapp.com/api/products/buy-policy', {
           txRef: data.trxref,
           user: userId,
           productCode: quoteDetails.productType,
@@ -147,6 +150,7 @@ const Paystack = (props) => {
                   licenseNumber: quoteDetails.regNumber,
                   color: quoteDetails.color,
                   year: quoteDetails.yearOfModel,
+                  vehicleImage: quoteDetails.vehicleImage,
                 },
               }
             : {}),
@@ -159,35 +163,35 @@ const Paystack = (props) => {
         .then(({ data }) => {
           setLoading(false);
           setPaid(true);
-          window.location = "https://wa.me/+2348111228899";
+          window.location = 'https://wa.me/+2348111228899';
         })
         .catch((err) => {
           console.log(err);
           setPaid(true);
           setLoading(false);
-          window.location = "https://wa.me/+2348111228899";
+          window.location = 'https://wa.me/+2348111228899';
         });
     },
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),
   };
   return (
     <Container>
-      <div className="mobileCenter">
-        <img src={logo} alt="logo" />
-        <div className="group1">
+      <div className='mobileCenter'>
+        <img src={logo} alt='logo' />
+        <div className='group1'>
           <h3>Choice Premium (Payable Premium)</h3>
           <h1>₦{formatNum(Math.ceil(quoteDetails.quote))}</h1>
         </div>
         {loading ? (
-          <div style={{ marginTop: "10px" }}>
-            <img src={loader} alt="loader" />
+          <div style={{ marginTop: '10px' }}>
+            <img src={loader} alt='loader' />
           </div>
         ) : paid ? (
-          <div className="group2">
+          <div className='group2'>
             <h3>Payment successfull</h3>
           </div>
         ) : (
-          <PaystackButton className="paystack-button" {...componentProps} />
+          <PaystackButton className='paystack-button' {...componentProps} />
         )}
       </div>
     </Container>

@@ -5,6 +5,11 @@ import { useParams } from 'react-router-dom';
 // import { useLocation } from "react-router-dom";
 import includesAll from '../utils/includesAll';
 // import formatNum from "../utils/formatNum";
+const isDev = process.env.NODE_ENV === 'development';
+
+const CLOUDINARY_URL = `http${isDev ? '' : 's'}://api.cloudinary.com/v1_1/${
+  process.env.REACT_APP_CL_NAME
+}/upload`;
 const vehicleType = [
   'moov-third-party',
   'moov-plus-(fire-and-theft)',
@@ -18,7 +23,7 @@ const lifeTypes = [
   'smart-life',
   'smart-senior-plan',
 ];
-const pickExtraData = (type) => {
+const pickExtraData = (type, action) => {
   const vehicleType = [
     'moov-third-party',
     'moov-plus-(fire-and-theft)',
@@ -28,6 +33,17 @@ const pickExtraData = (type) => {
   ];
   if (vehicleType.includes(type)) {
     return [
+      {
+        section: 'Vehicle image',
+      },
+      {
+        name: 'vehicleImage',
+        label: 'Vehicle Image',
+        validate: {
+          required: 'required',
+        },
+        type: 'image',
+      },
       {
         section: 'Vehicle Information',
       },
@@ -106,6 +122,7 @@ const pickExtraData = (type) => {
         section: 'Beneficiaries',
       },
       {
+        setError: action,
         name: 'beneficiaries',
         label: 'beneficiaries',
         type: 'multiadd',
@@ -171,36 +188,25 @@ const ExtraDataPage = (props) => {
     setLoading(true);
     setError(null);
     try {
-      // const searchParams = new URLSearchParams(location.search);
-      // const whatsappNo = searchParams.get("whatsapp");/
-      // if (!whatsappNo) setLoading(false);
-      // const { data } = await axios.post(
-      //   'https://wapicbot-api.herokuapp.com/api/users/update-kyc',
-      //   {
-      //     kyc: {
-      //       gender: values.gender,
-      //       dob: values.dateOfBirth,
-      //       maritalStatus: values.maritalStatus,
-      //       religion: values.religon,
-      //       height: values.height,
-      //       weight: values.weight,
-      //       state: values.state,
-      //       occupation: values.occupation,
-      //       businessType: values.businessType,
-      //       bankName: values.bankName,
-      //       accountNumber: values.accountNumber,
-      //       bvn: values.bvn,
-      //     },
-      //     userId,
-      //     otherDetails: {
-      //       yearOfModel: values.yearOfModel,
-      //       color: values.color,
-      //       engineNumber: values.engineNumber,
-      //       vinnumber: values.vinnumber,
-      //     },
-      //   }
-      // );
-      // console.log(data);
+      if (values.vehicleImage) {
+        const data = {
+          file: values.vehicleImage,
+          folder: `${userId}/`,
+          upload_preset: 'pb9zgwxy',
+        };
+        const r = await fetch(CLOUDINARY_URL, {
+          body: JSON.stringify(data),
+          headers: {
+            'content-type': 'application/json',
+          },
+          method: 'POST',
+        });
+        const result = await r.json();
+        console.log(result);
+        values.vehicleImage = result.secure_url;
+      } else {
+        return setError('Vehicle Image is required');
+      }
       props.history.push(`/kyc/${userId}`, {
         ...props.location.state,
         ...values,
@@ -222,7 +228,9 @@ const ExtraDataPage = (props) => {
         loading={loading}
         title='Extra Data'
         instruction='Please fill required fields to proceed'
-        data={[...pickExtraData(quoteDetails.productType)]}
+        data={[
+          ...pickExtraData(quoteDetails.productType, (val) => setError(val)),
+        ]}
         action={(values) => {
           submitForm(values);
           //alert("submitted data \n" + JSON.stringify(values, null, 2));
