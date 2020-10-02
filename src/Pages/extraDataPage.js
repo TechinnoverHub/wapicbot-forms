@@ -188,24 +188,27 @@ const ExtraDataPage = (props) => {
     setLoading(true);
     setError(null);
     try {
-      if (values.vehicleImage) {
-        const data = {
-          file: values.vehicleImage,
-          folder: `${userId}/`,
-          upload_preset: 'pb9zgwxy',
-        };
-        const r = await fetch(CLOUDINARY_URL, {
-          body: JSON.stringify(data),
-          headers: {
-            'content-type': 'application/json',
-          },
-          method: 'POST',
-        });
-        const result = await r.json();
-        console.log(result);
-        values.vehicleImage = result.secure_url;
-      } else {
-        return setError('Vehicle Image is required');
+      if (vehicleType.includes(props.location.state.productType)) {
+        if (values.vehicleImage) {
+          const data = {
+            file: values.vehicleImage,
+            folder: `${userId}/`,
+            upload_preset: 'pb9zgwxy',
+          };
+          const r = await fetch(CLOUDINARY_URL, {
+            body: JSON.stringify(data),
+            headers: {
+              'content-type': 'application/json',
+            },
+            method: 'POST',
+          });
+          const result = await r.json();
+          console.log(result);
+          values.vehicleImage = result.secure_url;
+        } else {
+          setLoading(false);
+          return setError('Vehicle Image is required');
+        }
       }
       props.history.push(`/kyc/${userId}`, {
         ...props.location.state,
