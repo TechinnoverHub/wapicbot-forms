@@ -806,12 +806,11 @@ const Insurances = ({ history, location }) => {
         return history.push(`/check-vehicle/${type}/${userId}`);
       }
       setDefaultValues({
-        ...defaultValues,
         manufacturer: location.state.manufacturer,
         model: location.state.model,
       });
     }
-  }, []);
+  }, [history, location.state, type, userId]);
   return (
     <Container>
       {houseTypes.includes(type) && (

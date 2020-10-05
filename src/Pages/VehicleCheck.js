@@ -19,7 +19,6 @@ const toBase64 = (file) =>
   });
 
 const VehicleCheck = ({ history }) => {
-  const [annotation, setAnnotation] = useState([]);
   const [retrivedValues, setRetrievedValues] = useState({
     manufacturer: null,
     model: null,
@@ -71,7 +70,6 @@ const VehicleCheck = ({ history }) => {
         model: foundModel,
         manufacturer: foundManufacturer,
       });
-      setAnnotation(data.data);
     } catch (error) {
       setLoading(false);
       console.log(error);
