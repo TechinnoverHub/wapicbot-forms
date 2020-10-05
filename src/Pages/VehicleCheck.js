@@ -34,7 +34,10 @@ const VehicleCheck = ({ history }) => {
       const { data } = await axios.post(
         // 'http://localhost:4500/api/vision',
         'https://wapicbot-api.herokuapp.com/api/vision',
-        formData
+        formData,
+        {
+          headers: { 'Access-Control-Allow-Origin': '*' },
+        }
       );
       setLoading(false);
       console.log(data);
