@@ -135,8 +135,8 @@ const Paystack = (props) => {
       console.log(data);
       axios
         .post(
-          // 'https://wapicbot-api.herokuapp.com/api/products/buy-policy'
-          'https://00feae9c9803.ngrok.io/api/products/buy-policy',
+          'https://wapicbot-api.herokuapp.com/api/products/buy-policy',
+          // 'https://00feae9c9803.ngrok.io/api/products/buy-policy',
           {
             txRef: data.trxref,
             user: userId,
