@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import FormBuilder from '../components/Form';
 import MultiForm from '../components/Form/MultiForm';
 import Container from '../components/Container';
 import { useParams } from 'react-router-dom';
-import includesAll from '../utils/includesAll';
+// import includesAll from '../utils/includesAll';
 import axios from 'axios';
 const isDev = process.env.NODE_ENV === 'development';
 // import cloudinary from 'cloudinary/lib/cloudinary';
@@ -794,7 +794,7 @@ const products = {
 };
 const Insurances = ({ history, location }) => {
   const [loading, setLoading] = useState(false);
-  const [defaultValues, setDefaultValues] = useState({});
+  // const [defaultValues, setDefaultValues] = useState({});
   const [error, setError] = useState(null);
 
   const { type, userId } = useParams();
@@ -907,7 +907,7 @@ const Insurances = ({ history, location }) => {
           error={error}
           loading={loading}
           title={productmap[type]}
-          defaultValues={defaultValues}
+          // defaultValues={defaultValues}
           instruction='Fill Details'
           data={products[type] || []}
           action={async (values) => {
