@@ -88,6 +88,7 @@ const OptIn = () => {
   const [error, setError] = useState(null);
 
   const submitForm = async (values) => {
+    setError(null);
     try {
       setLoading(true);
       const searchParams = new URLSearchParams(location.search);
@@ -114,7 +115,7 @@ const OptIn = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-
+      if (error.response) setError(error.response.data.message);
       console.log(error.response);
     }
   };
