@@ -168,10 +168,10 @@ const FormBuilder = ({
         if ('required' in obj && !current) {
           return obj['required'];
         }
-        if ('min' in obj && current < obj.min[0]) {
+        if ('min' in obj && Number(current) < obj.min[0]) {
           return obj.min[1];
         }
-        if ('max' in obj && current > obj.max[0]) {
+        if ('max' in obj && Number(current) > obj.max[0]) {
           return obj.max[1];
         }
       }

@@ -136,7 +136,7 @@ const Paystack = (props) => {
       axios
         .post(
           'https://wapicbot-api.herokuapp.com/api/products/buy-policy',
-          // 'https://00feae9c9803.ngrok.io/api/products/buy-policy',
+          // 'https://84f1e62a4e4b.ngrok.io/api/products/buy-policy',
           {
             txRef: data.trxref,
             user: userId,
@@ -171,13 +171,13 @@ const Paystack = (props) => {
         .then(({ data }) => {
           setLoading(false);
           setPaid(true);
-          // window.location = 'https://wa.me/+2348111228899';
+          window.location = 'https://wa.me/+2348111228899';
         })
         .catch((err) => {
           console.log(err);
           setPaid(true);
           setLoading(false);
-          // window.location = 'https://wa.me/+2348111228899';
+          window.location = 'https://wa.me/+2348111228899';
         });
     },
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),

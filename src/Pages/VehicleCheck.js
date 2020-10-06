@@ -32,9 +32,9 @@ const VehicleCheck = ({ history }) => {
     let formData = new FormData(e.target);
     try {
       const { data } = await axios.post(
-        'http://localhost:4500/api/vision',
-        // 'https://wapicbot-api.herokuapp.com/api/vision',
-        // 'https://00feae9c9803.ngrok.io/api/vision',
+        // 'http://localhost:4500/api/vision',
+        'https://wapicbot-api.herokuapp.com/api/vision',
+        // 'https://84f1e62a4e4b.ngrok.io/api/vision',
         formData
       );
       setLoading(false);

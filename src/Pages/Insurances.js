@@ -101,7 +101,7 @@ const lifeinsurance = [
     },
 
     type: 'select',
-    list: [...new Array(43)].map((num, i) => i + 18),
+    list: [...new Array(45)].map((num, i) => i + 18),
   },
   // {
   //   name: 'dateOfBirth',
@@ -126,6 +126,7 @@ const lifeinsurance = [
     label: 'Duration (in years)',
     validate: {
       required: 'required',
+      min: [3, 'Must be at least 3 years'],
     },
     type: 'number',
   },
@@ -134,6 +135,7 @@ const lifeinsurance = [
     label: 'Annual Contribution',
     validate: {
       required: 'required',
+      min: [120000, 'Must be at least ₦120,000'],
     },
     type: 'currency',
   },
@@ -797,20 +799,20 @@ const Insurances = ({ history, location }) => {
 
   const { type, userId } = useParams();
 
-  useEffect(() => {
-    const states = Object.keys(location.state || {});
-    if (vehicleType.includes(type)) {
-      const isValid = includesAll(states, ['manufacturer', 'model']);
+  // useEffect(() => {
+  //   const states = Object.keys(location.state || {});
+  //   if (vehicleType.includes(type)) {
+  //     const isValid = includesAll(states, ['manufacturer', 'model']);
 
-      if (!isValid) {
-        return history.push(`/check-vehicle/${type}/${userId}`);
-      }
-      setDefaultValues({
-        manufacturer: location.state.manufacturer,
-        model: location.state.model,
-      });
-    }
-  }, [history, location.state, type, userId]);
+  //     if (!isValid) {
+  //       return history.push(`/check-vehicle/${type}/${userId}`);
+  //     }
+  //     setDefaultValues({
+  //       manufacturer: location.state.manufacturer,
+  //       model: location.state.model,
+  //     });
+  //   }
+  // }, [history, location.state, type, userId]);
   return (
     <Container>
       {houseTypes.includes(type) && (
@@ -962,7 +964,7 @@ const Insurances = ({ history, location }) => {
             try {
               const { data } = await axios.post(
                 'https://wapicbot-api.herokuapp.com/api/products/get-quote',
-                // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
+                // 'https://84f1e62a4e4b.ngrok.io/api/products/get-quote',
                 {
                   contribution: values.annualPremium,
                   pd: values.medicalBenefit,
