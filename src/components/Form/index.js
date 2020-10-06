@@ -330,8 +330,9 @@ const FormBuilder = ({
                   onClick={() => {
                     obj.setError(null);
                     if (
+                      !templateData[name] ||
                       obj.template.map((t) => t.name).length >
-                      Object.keys(templateData[name]).length
+                        Object.keys(templateData[name]).length
                     ) {
                       return obj.setError('Fill all details');
                     }

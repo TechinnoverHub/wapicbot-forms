@@ -1,74 +1,86 @@
-import React, { useState } from "react";
-import FormBuilder from "../components/Form";
-import Container from "../components/Container";
-import axios from "axios";
-import { useLocation } from "react-router-dom";
+import React, { useState } from 'react';
+import FormBuilder from '../components/Form';
+import Container from '../components/Container';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 const optinFormData = [
   {
-    name: "customerType",
-    label: "what type of customer are you?",
+    name: 'customerType',
+    label: 'what type of customer are you?',
     validate: {
-      required: "required",
+      required: 'required',
     },
-    type: "select",
-    selectLabel: "select one",
-    list: ["new customer", "returning customer"],
+    type: 'select',
+    selectLabel: 'select one',
+    list: ['new customer', 'returning customer'],
   },
   {
-    name: "firstName",
-    label: "First Name",
+    name: 'firstName',
+    label: 'First Name',
     validate: {
-      required: "required",
+      required: 'required',
     },
-    type: "text",
+    type: 'text',
     dependent: {
-      key: "customerType",
-      value: "new customer",
+      key: 'customerType',
+      value: 'new customer',
     },
   },
   {
-    name: "lastName",
-    label: "Last Name",
+    name: 'middlename',
+    label: 'Middle Name',
     validate: {
-      required: "required",
+      required: 'required',
     },
-    type: "text",
+    type: 'text',
     dependent: {
-      key: "customerType",
-      value: "new customer",
+      key: 'customerType',
+      value: 'new customer',
     },
   },
   {
-    name: "email",
-    label: "Email",
+    name: 'lastName',
+    label: 'Last Name',
     validate: {
-      required: "required",
-      email: "Invalid email address",
+      required: 'required',
     },
-    type: "email",
-  },
-  {
-    name: "claim",
-    label: "Claim Number",
-    validate: {
-      required: "required",
-    },
-    type: "number",
+    type: 'text',
     dependent: {
-      key: "customerType",
-      value: "returning customer",
+      key: 'customerType',
+      value: 'new customer',
     },
   },
   {
-    name: "wapicPolicy",
-    label: "I accept wapic policy, terms and conditions and also I accept to receive messages on whatsapp",
+    name: 'email',
+    label: 'Email',
     validate: {
-      required: "required",
+      required: 'required',
+      email: 'Invalid email address',
     },
-    type: "checkbox",
+    type: 'email',
   },
-
+  {
+    name: 'claim',
+    label: 'Claim Number',
+    validate: {
+      required: 'required',
+    },
+    type: 'number',
+    dependent: {
+      key: 'customerType',
+      value: 'returning customer',
+    },
+  },
+  {
+    name: 'wapicPolicy',
+    label:
+      'I accept wapic policy, terms and conditions and also I accept to receive messages on whatsapp',
+    validate: {
+      required: 'required',
+    },
+    type: 'checkbox',
+  },
 ];
 const OptIn = () => {
   const location = useLocation();
@@ -81,24 +93,24 @@ const OptIn = () => {
       const searchParams = new URLSearchParams(location.search);
 
       if (!values.wapicPolicy) {
-        setError("Please accept the policies");
+        setError('Please accept the policies');
         return setLoading(false);
       }
-      const whatsappNo = searchParams.get("whatsapp");
-      const conversationId = searchParams.get("conversationId");
+      const whatsappNo = searchParams.get('whatsapp');
+      const conversationId = searchParams.get('conversationId');
       if (!whatsappNo) return setLoading(false);
       const { data } = await axios.post(
-        "https://wapicbot-api.herokuapp.com/api/auth/optin",
+        'https://wapicbot-api.herokuapp.com/api/auth/optin',
         {
           firstname: values.firstName,
           lastname: values.lastName,
           email: values.email,
           whatsappNo: `+${whatsappNo.trim()}`,
-          conversationId
+          conversationId,
         }
       );
-      window.location = "https://wa.me/+2348111228899";
-      console.log(data)
+      window.location = 'https://wa.me/+2348111228899';
+      console.log(data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -111,11 +123,11 @@ const OptIn = () => {
       <FormBuilder
         error={error}
         loading={loading}
-        title="Whatsapp Opt-in "
-        instruction="Please fill required fields to proceed"
+        title='Whatsapp Opt-in '
+        instruction='Please fill required fields to proceed'
         data={optinFormData}
         action={(values) => {
-          if (values.customerType === "new customer") submitForm(values);
+          if (values.customerType === 'new customer') submitForm(values);
           //alert("submitted data \n" + JSON.stringify(values, null, 2));
         }}
       />

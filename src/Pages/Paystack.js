@@ -27,6 +27,7 @@ const Paystack = (props) => {
   const [paid, setPaid] = useState(false);
   const { userId } = useParams();
   useEffect(() => {
+    console.log(props.location.state);
     const states = Object.keys(props.location.state || {});
     const isValid = includesAll(states, [
       'product',
@@ -35,6 +36,7 @@ const Paystack = (props) => {
       'email',
       'firstname',
       'whatsappNo',
+      'coverStartDate',
       ...(vehicleType.includes(props.location.state.productType)
         ? [
             'manufacturer',
@@ -81,6 +83,7 @@ const Paystack = (props) => {
       riot,
       tracking,
       vehicleImage,
+      coverStartDate,
     } = props.location.state;
 
     setQuoteDetails({
@@ -95,6 +98,7 @@ const Paystack = (props) => {
       email,
       firstname,
       whatsappNo,
+      coverStartDate,
       ...(vehicleType.includes(props.location.state.productType)
         ? {
             manufacturer,
@@ -112,7 +116,7 @@ const Paystack = (props) => {
         : {}),
       ...(lifeTypes.includes(props.location.state.productType)
         ? {
-            beneficiary: beneficiaries,
+            beneficiaries,
           }
         : {}),
     });
@@ -130,46 +134,50 @@ const Paystack = (props) => {
       setLoading(true);
       console.log(data);
       axios
-        .post('https://wapicbot-api.herokuapp.com/api/products/buy-policy', {
-          txRef: data.trxref,
-          user: userId,
-          productCode: quoteDetails.productType,
-          policyInfo: {
-            productCode: quoteDetails.productType,
-            startDate: quoteDetails.coverStartDate,
-            premiumLC: quoteDetails.quote,
-          },
-          ...(vehicleType.includes(props.location.state.productType)
-            ? {
-                vehicleInfo: {
-                  name: quoteDetails.manufacturer,
-                  make: quoteDetails.manufacturer,
-                  model: quoteDetails.model,
-                  engineNumber: quoteDetails.engineNumber,
-                  vinNumber: quoteDetails.vinnumber,
-                  licenseNumber: quoteDetails.regNumber,
-                  color: quoteDetails.color,
-                  year: quoteDetails.yearOfModel,
-                  vehicleImage: quoteDetails.vehicleImage,
-                },
-              }
-            : {}),
-          ...(lifeTypes.includes(props.location.state.productType)
-            ? {
-                beneficiary: quoteDetails.beneficiaries,
-              }
-            : {}),
-        })
+        .post(
+          // 'https://wapicbot-api.herokuapp.com/api/products/buy-policy'
+          'https://00feae9c9803.ngrok.io/api/products/buy-policy',
+          {
+            txRef: data.trxref,
+            user: userId,
+            // productCode: quoteDetails.productType,
+            policyInfo: {
+              productCode: quoteDetails.productType,
+              startDate: quoteDetails.coverStartDate,
+              premiumLC: quoteDetails.quote,
+            },
+            ...(vehicleType.includes(props.location.state.productType)
+              ? {
+                  vehicleInfo: {
+                    name: quoteDetails.manufacturer,
+                    make: quoteDetails.manufacturer,
+                    model: quoteDetails.model,
+                    engineNumber: quoteDetails.engineNumber,
+                    vinNumber: quoteDetails.vinnumber,
+                    licenseNumber: quoteDetails.regNumber,
+                    color: quoteDetails.color,
+                    year: quoteDetails.yearOfModel,
+                    vehicleImage: quoteDetails.vehicleImage,
+                  },
+                }
+              : {}),
+            ...(lifeTypes.includes(props.location.state.productType)
+              ? {
+                  beneficiaries: quoteDetails.beneficiaries,
+                }
+              : {}),
+          }
+        )
         .then(({ data }) => {
           setLoading(false);
           setPaid(true);
-          window.location = 'https://wa.me/+2348111228899';
+          // window.location = 'https://wa.me/+2348111228899';
         })
         .catch((err) => {
           console.log(err);
           setPaid(true);
           setLoading(false);
-          window.location = 'https://wa.me/+2348111228899';
+          // window.location = 'https://wa.me/+2348111228899';
         });
     },
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),

@@ -226,9 +226,10 @@ const KYC = (props) => {
         {
           kyc: {
             gender: values.gender,
+            title: values.title,
             dob: values.dob,
             maritalStatus: values.maritalStatus,
-            religion: values.religon,
+            religion: values.religion,
             height: values.height,
             weight: values.weight,
             state: values.state,
@@ -310,6 +311,17 @@ const KYC = (props) => {
             },
             {
               section: 'Personal information',
+            },
+
+            {
+              name: 'title',
+              label: 'Title',
+              validate: {
+                required: 'required',
+              },
+              type: 'select',
+              selectLabel: 'select one',
+              list: ['Mr.', 'Mrs.', 'Miss', 'Dr.', 'Prof.'],
             },
             {
               name: 'gender',
