@@ -123,12 +123,22 @@ const lifeinsurance = [
   },
   {
     name: 'duration',
-    label: 'Duration (in years)',
+    label: 'Duration (in terms of frequency)',
     validate: {
       required: 'required',
       min: [3, 'Must be at least 3 years'],
     },
     type: 'number',
+  },
+  {
+    name: 'frequency',
+    label: 'Frequency',
+    validate: {
+      required: 'required',
+      // min: [3, 'Must be at least 3 years'],
+    },
+    type: 'select',
+    list: ['Year', 'Bi-Annual'],
   },
   {
     name: 'annualContribution',
@@ -960,7 +970,10 @@ const Insurances = ({ history, location }) => {
             setLoading(true);
             setError(null);
             console.log(values);
-
+            const frequencyMap = {
+              Year: 'Y',
+              'Bi-Annual': 'B',
+            };
             try {
               const { data } = await axios.post(
                 'https://wapicbot-api.herokuapp.com/api/products/get-quote',
@@ -969,7 +982,7 @@ const Insurances = ({ history, location }) => {
                   contribution: values.annualPremium,
                   pd: values.medicalBenefit,
                   demise: values.sumAssured,
-                  frequency: 'Y',
+                  frequency: frequencyMap[values.frequency],
                   duration: values.duration,
                   age: values.age,
                   productCode: type,
