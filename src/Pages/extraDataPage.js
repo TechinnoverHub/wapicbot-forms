@@ -216,6 +216,12 @@ const ExtraDataPage = (props) => {
           return setError('Vehicle Image is required');
         }
       }
+      if (lifeTypes.includes(props.location.state.productType)) {
+        if (!values.beneficiaries || !values.beneficiaries.length) {
+          setLoading(false);
+          return setError('At least one (1) benefeciary is required');
+        }
+      }
       props.history.push(`/kyc/${userId}`, {
         ...props.location.state,
         ...values,

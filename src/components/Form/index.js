@@ -276,7 +276,7 @@ const FormBuilder = ({
                     }}
                   >
                     <h2>
-                      {item.fullname} ({item.relationship})
+                      {item.firstname} {item.lastname} ({item.relationship})
                     </h2>
                     <p>{item.phone}</p>
                     <button
