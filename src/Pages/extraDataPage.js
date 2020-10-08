@@ -219,7 +219,7 @@ const ExtraDataPage = (props) => {
       if (lifeTypes.includes(props.location.state.productType)) {
         if (!values.beneficiaries || !values.beneficiaries.length) {
           setLoading(false);
-          return setError('At least one (1) benefeciary is required');
+          return setError('At least one (1) beneficiary is required');
         }
       }
       props.history.push(`/kyc/${userId}`, {
