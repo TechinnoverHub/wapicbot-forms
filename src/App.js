@@ -50,6 +50,9 @@ function App() {
                 <Link to='/product/smart-life/5f6200d513833f0017840b4f'>
                   Smart Life
                 </Link>
+                <Link to='/product/smart-life-plus/5f6200d513833f0017840b4f'>
+                  Smart Life plus
+                </Link>
                 <Link to='/product/smart-senior-plan/5f6200d513833f0017840b4f'>
                   Smart Senior Plan
                 </Link>
