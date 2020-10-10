@@ -1083,7 +1083,8 @@ const Insurances = ({ history, location }) => {
               history.push(`/quote-success/${userId}`, {
                 ...values,
                 productType: type,
-                quote: data.data.quote,
+                quote: values.annualPremium,
+                expectedReturns: data.data.quote,
               });
             } catch (error) {
               setLoading(false);
