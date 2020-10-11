@@ -66,91 +66,7 @@ const vehicleType = [
   'moov-prestige-(private-comprehensive)',
   'moov-prestige-(commercial-comprehensive)',
 ];
-const lifeinsurance2 = [
-  {
-    name: 'firstName',
-    label: 'First Name',
-    validate: {
-      required: 'required',
-    },
-    type: 'text',
-  },
-  {
-    name: 'lastName',
-    label: 'Last Name',
-    validate: {
-      required: 'required',
-    },
-    type: 'text',
-  },
 
-  // {
-  //   name: 'phone',
-  //   label: 'Phone',
-  //   validate: {
-  //     required: 'required',
-  //     min: [11, 'Must be 11 characters or more'],
-  //     max: [11, 'Must be 11 characters or more'],
-  //   },
-  //   type: 'text',
-  // },
-  {
-    name: 'age',
-    label: 'Age',
-    validate: {
-      required: 'required',
-    },
-
-    type: 'select',
-    list: [...new Array(45)].map((num, i) => i + 18),
-  },
-  // {
-  //   name: 'dateOfBirth',
-  //   label: 'Date of Birth',
-  //   minDate: `${new Date().getFullYear() - 60}-01-01`,
-  //   maxDate: `${new Date().getFullYear() - 18}-12-31`,
-  //   validate: {
-  //     required: 'required',
-  //   },
-  //   type: 'date',
-  // },
-  // {
-  //   name: 'sumAssured',
-  //   label: 'Sum Assured',
-  //   validate: {
-  //     required: 'required',
-  //   },
-  //   type: 'currency',
-  // },
-  {
-    name: 'duration',
-    label: 'Duration (in terms of frequency)',
-    validate: {
-      required: 'required',
-      min: [5, 'Must be at least 5 years'],
-    },
-    type: 'number',
-  },
-  {
-    name: 'frequency',
-    label: 'Frequency',
-    validate: {
-      required: 'required',
-      // min: [3, 'Must be at least 3 years'],
-    },
-    type: 'select',
-    list: ['Year', 'Bi-Annual'],
-  },
-  {
-    name: 'annualPremium',
-    label: 'Annual Contribution',
-    validate: {
-      required: 'required',
-      min: [120000, 'Must be at least ₦120,000'],
-    },
-    type: 'currency',
-  },
-];
 const lifeinsurance = [
   {
     name: 'firstName',
@@ -236,6 +152,179 @@ const lifeinsurance = [
     type: 'currency',
   },
 ];
+const smartLifeInsurance = [
+  {
+    name: 'firstName',
+    label: 'First Name',
+    validate: {
+      required: 'required',
+    },
+    type: 'text',
+  },
+  {
+    name: 'lastName',
+    label: 'Last Name',
+    validate: {
+      required: 'required',
+    },
+    type: 'text',
+  },
+  {
+    name: 'age',
+    label: 'Age',
+    validate: {
+      required: 'required',
+    },
+
+    type: 'select',
+    list: [...new Array(45)].map((num, i) => i + 18),
+  },
+
+  {
+    name: 'duration',
+    label: 'Duration (in terms of frequency)',
+    validate: {
+      required: 'required',
+      min: [3, 'Must be at least 3 years'],
+    },
+    type: 'number',
+  },
+  {
+    name: 'frequency',
+    label: 'Frequency',
+    validate: {
+      required: 'required',
+      // min: [3, 'Must be at least 3 years'],
+    },
+    type: 'select',
+    list: ['Year', 'Bi-Annual'],
+  },
+  {
+    name: 'annualPremium',
+    label: 'Annual Contribution',
+    validate: {
+      required: 'required',
+      min: [120000, 'Must be at least ₦120,000'],
+    },
+    type: 'currency',
+  },
+];
+const smartLifePlusInsurance = [
+  {
+    name: 'firstName',
+    label: 'First Name',
+    validate: {
+      required: 'required',
+    },
+    type: 'text',
+  },
+  {
+    name: 'lastName',
+    label: 'Last Name',
+    validate: {
+      required: 'required',
+    },
+    type: 'text',
+  },
+
+  {
+    name: 'age',
+    label: 'Age',
+    validate: {
+      required: 'required',
+    },
+
+    type: 'select',
+    list: [...new Array(37)].map((num, i) => i + 18),
+  },
+
+  {
+    name: 'duration',
+    label: 'Duration (in terms of frequency)',
+    validate: {
+      required: 'required',
+      min: [3, 'Must be at least 3 years'],
+    },
+    type: 'number',
+  },
+  {
+    name: 'frequency',
+    label: 'Frequency',
+    validate: {
+      required: 'required',
+      // min: [3, 'Must be at least 3 years'],
+    },
+    type: 'select',
+    list: ['Year', 'Bi-Annual'],
+  },
+  {
+    name: 'annualPremium',
+    label: 'Annual Contribution',
+    validate: {
+      required: 'required',
+      min: [120000, 'Must be at least ₦120,000'],
+    },
+    type: 'currency',
+  },
+];
+const smartScholarInsurance = [
+  {
+    name: 'firstName',
+    label: 'First Name',
+    validate: {
+      required: 'required',
+    },
+    type: 'text',
+  },
+  {
+    name: 'lastName',
+    label: 'Last Name',
+    validate: {
+      required: 'required',
+    },
+    type: 'text',
+  },
+
+  {
+    name: 'age',
+    label: 'Age',
+    validate: {
+      required: 'required',
+    },
+
+    type: 'select',
+    list: [...new Array(48)].map((num, i) => i + 18),
+  },
+
+  {
+    name: 'duration',
+    label: 'Duration (in terms of frequency)',
+    validate: {
+      required: 'required',
+      min: [3, 'Must be at least 3 years'],
+    },
+    type: 'number',
+  },
+  {
+    name: 'frequency',
+    label: 'Frequency',
+    validate: {
+      required: 'required',
+      // min: [3, 'Must be at least 3 years'],
+    },
+    type: 'select',
+    list: ['Year', 'Bi-Annual'],
+  },
+  {
+    name: 'annualPremium',
+    label: 'Annual Contribution',
+    validate: {
+      required: 'required',
+      min: [120000, 'Must be at least ₦120,000'],
+    },
+    type: 'currency',
+  },
+];
 
 const eTermInsurance = [
   {
@@ -254,17 +343,6 @@ const eTermInsurance = [
     },
     type: 'text',
   },
-
-  // {
-  //   name: 'phone',
-  //   label: 'Phone',
-  //   validate: {
-  //     required: 'required',
-  //     min: [11, 'Must be 11 characters or more'],
-  //     max: [11, 'Must be 11 characters or more'],
-  //   },
-  //   type: 'text',
-  // },
   {
     name: 'age',
     label: 'Age',
@@ -375,27 +453,7 @@ const products = {
       },
       type: 'text',
     },
-    // {
-    //   name: "policyholder",
-    //   label: "Vehicle Type",
-    //   validate: {
-    //     required: "required",
-    //   },
-    //   type: "select",
-    //   selectLabel: "select one",
-    //   list: ["Corporate Use", "Private Use"],
-    // },
 
-    // {
-    //   name: "phone",
-    //   label: "Phone Number",
-    //   validate: {
-    //     required: "required",
-    //     max: [11, "Must be 11 characters"],
-    //     min: [11, "Must be 11 characters"],
-    //   },
-    //   type: "text",
-    // },
     {
       name: 'vehicleValue',
       label: 'Vehicle value',
@@ -884,9 +942,9 @@ const products = {
     },
   ],
   'e-term': eTermInsurance,
-  'smart-scholars-plan': lifeinsurance2,
-  'smart-life': lifeinsurance,
-  'smart-life-plus': lifeinsurance,
+  'smart-scholars-plan': smartScholarInsurance,
+  'smart-life': smartLifeInsurance,
+  'smart-life-plus': smartLifePlusInsurance,
   'smart-senior-plan': lifeinsurance,
 };
 const Insurances = ({ history, location }) => {
@@ -1083,8 +1141,14 @@ const Insurances = ({ history, location }) => {
               history.push(`/quote-success/${userId}`, {
                 ...values,
                 productType: type,
-                quote: values.annualPremium,
-                expectedReturns: data.data.quote,
+                ...([...lifeTypes.slice(1, lifeTypes.length)].includes(type)
+                  ? {
+                      quote: values.annualPremium,
+                      expectedReturns: data.data.quote,
+                    }
+                  : {
+                      quote: data.data.quote,
+                    }),
               });
             } catch (error) {
               setLoading(false);

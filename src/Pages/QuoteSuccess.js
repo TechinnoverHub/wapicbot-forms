@@ -72,7 +72,11 @@ const QuoteSuccess = (props) => {
           tracking: tracking,
         });
       }
-      if (lifeTypes.includes(props.location.state.productType)) {
+      if (
+        [...lifeTypes.slice(1, lifeTypes.length)].includes(
+          props.location.state.productType
+        )
+      ) {
         const { productType, quote, expectedReturns } = props.location.state;
 
         return setQuoteDetails({
