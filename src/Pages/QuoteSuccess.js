@@ -9,7 +9,7 @@ const vehicleType = [
   'moov-plus-(fire-and-theft)',
   'moov-luxury-(extented-comprehensive)',
   'moov-prestige-(private-comprehensive)',
-  'moov-prestige-(commercial-comprehensive)',
+  'commercial-vehicle-(comprehensive)',
 ];
 const lifeTypes = [
   'e-term',
@@ -25,7 +25,7 @@ const productmap = {
     'Motor Insurance Luxury (Comprehensive)',
   'moov-prestige-(private-comprehensive)':
     'Comprehensive Vehicle Insurance (Private Motor)',
-  'moov-prestige-(commercial-comprehensive)':
+  'commercial-vehicle-(comprehensive)':
     'Comprehensive Vehicle Insurance (Commercial Motor)',
   'house-holders-insurance': 'House Holders Insurance',
   'house-owners-insurance': 'House Owners Insurance',

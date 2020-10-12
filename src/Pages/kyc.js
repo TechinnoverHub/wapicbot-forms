@@ -17,7 +17,7 @@ const vehicleType = [
   'moov-plus-(fire-and-theft)',
   'moov-luxury-(extented-comprehensive)',
   'moov-prestige-(private-comprehensive)',
-  'moov-prestige-(commercial-comprehensive)',
+  'commercial-vehicle-(comprehensive)',
 ];
 const lifeTypes = [
   'e-term',
