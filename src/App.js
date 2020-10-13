@@ -41,7 +41,7 @@ function App() {
                 <Link to='/product/moov-prestige-(private-comprehensive)/5f6200d513833f0017840b4f'>
                   Comprehensive Vehicle Insurance (Private Motor)
                 </Link>
-                <Link to='/product/moov-prestige-(commercial-comprehensive)/5f6200d513833f0017840b4f'>
+                <Link to='/product/commercial-vehicle-(comprehensive)/5f6200d513833f0017840b4f'>
                   Comprehensive Vehicle Insurance (Commercial Motor)
                 </Link>
                 <Link to='/product/smart-scholars-plan/5f6200d513833f0017840b4f'>

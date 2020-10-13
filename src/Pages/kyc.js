@@ -513,18 +513,19 @@ const KYC = (props) => {
               label: 'Account Number',
               validate: {
                 required: 'required',
-                min: [10, 'Must be 10 characters or more'],
+                minLength: [10, 'Must be 10 characters or more'],
               },
-              type: 'number',
+              type: 'number2',
             },
             {
               name: 'bvn',
               label: 'Bank Verification Number (optional)',
               validate: {
                 // required: "required",
-                min: [10, 'Must be 10 characters or more'],
+                minLength: [11, 'Must be 11 characters or more'],
+                maxLength: [11, 'Must be 11 characters or more'],
               },
-              type: 'number',
+              type: 'bvn',
             },
           ]}
           action={(values) => {

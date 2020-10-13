@@ -21,7 +21,7 @@ const toBase64 = (file) =>
 const VehicleCheck = ({ history }) => {
   const [retrivedValues, setRetrievedValues] = useState({
     manufacturer: null,
-    model: null,
+    model: null,  
   });
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);

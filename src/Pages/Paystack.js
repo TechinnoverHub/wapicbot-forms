@@ -196,7 +196,7 @@ const Paystack = (props) => {
           </div>
         ) : paid ? (
           <div className='group2'>
-            <h3>Payment successfull</h3>
+            <h3>Payment successful</h3>
           </div>
         ) : (
           <PaystackButton className='paystack-button' {...componentProps} />

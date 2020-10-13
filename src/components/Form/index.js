@@ -164,15 +164,29 @@ const FormBuilder = ({
           return obj.email;
         }
       }
-      if (type === 'number' || type === 'currency') {
+      if (
+        type === 'number' ||
+        type === 'currency' ||
+        type === 'bvn' ||
+        type === 'number2'
+      ) {
         if ('required' in obj && !current) {
           return obj['required'];
+        }
+        if (!obj['required'] && !`${current}`.length) {
+          return null;
         }
         if ('min' in obj && Number(current) < obj.min[0]) {
           return obj.min[1];
         }
         if ('max' in obj && Number(current) > obj.max[0]) {
           return obj.max[1];
+        }
+        if ('minLength' in obj && `${current}`.length < obj.minLength[0]) {
+          return obj.minLength[1];
+        }
+        if ('maxLength' in obj && `${current}`.length > obj.maxLength[0]) {
+          return obj.maxLength[1];
         }
       }
     }
@@ -211,6 +225,131 @@ const FormBuilder = ({
     setErrorState(newError);
   }, [state, data]);
 
+  const chooseExtraInput = (type, name, obj, stateVal, setStateVal) => {
+    switch (type) {
+      case 'select':
+        return (
+          <FormControl
+            key={name}
+            className={classes.selectEmpty}
+            // error={!!errorState[name]}
+          >
+            <InputLabel className={classes.label}>{obj.label}</InputLabel>
+            <Select
+              id={name}
+              value={stateVal || ''}
+              onChange={(e) => {
+                const val = e.target.value;
+                setStateVal(val);
+              }}
+              displayEmpty
+              className={classes.textField}
+              // inputProps={{ "aria-label": "Without label" }}
+            >
+              {obj.list && obj.list.length
+                ? obj.list.map((li) => (
+                    <MenuItem className={classes.items} key={li} value={li}>
+                      {obj.currency ? `₦ ${li.toLocaleString()}` : li}
+                    </MenuItem>
+                  ))
+                : null}
+            </Select>
+            {/* {errorState[name] && (
+              <FormHelperText style={{ margin: 0 }}>
+                {errorState[name]}
+              </FormHelperText>
+            )} */}
+          </FormControl>
+        );
+      case 'number':
+        return (
+          <NumberFormat
+            id={name}
+            name={name}
+            customInput={TextField}
+            // prefix={'₦'}
+            // disabled={obj.disabled}
+            // format={format || null}
+            type='text'
+            thousandSeparator={true}
+            label={obj.label}
+            value={stateVal}
+            // error={!!errorState[name]}
+            // helperText={errorState[name]}
+            // onValueChange={({ value: v }) => {
+            //   setState({ ...state, [name]: v });
+            // }}
+            onValueChange={({ value: val }) => {
+              setStateVal(val);
+            }}
+          />
+        );
+      case 'phone':
+        return (
+          <NumberFormat
+            id={name}
+            name={name}
+            customInput={TextField}
+            // prefix={'₦'}
+            // disabled={obj.disabled}
+            // format={format || null}
+            type='text'
+            format={'### #### #### ####'}
+            // thousandSeparator={true}
+            label={obj.label}
+            value={stateVal}
+            // error={!!errorState[name]}
+            // helperText={errorState[name]}
+            // onValueChange={({ value: v }) => {
+            //   setState({ ...state, [name]: v });
+            // }}
+            onValueChange={({ value: val }) => {
+              setStateVal(val);
+            }}
+          />
+        );
+      case 'date':
+        return (
+          <MuiPickersUtilsProvider utils={MomentUtils} key={name}>
+            <div className={styles.date}>
+              <DatePicker
+                className={classes.textField}
+                id={name}
+                label={obj.label}
+                value={stateVal || null}
+                // error={!!errorState[name]}
+                // helperText={errorState[name]}
+                format='DD/MM/yyyy'
+                placeholder='dd/mm/yyyy'
+                onChange={(val) => {
+                  setStateVal(val.toISOString(true).split('T')[0]);
+                }}
+                minDate={obj.minDate}
+                maxDate={obj.maxDate}
+                autoOk
+              />
+            </div>
+          </MuiPickersUtilsProvider>
+        );
+      default:
+        return (
+          <TextField
+            key={name}
+            id={name}
+            // type={type}
+            disabled={obj.disabled}
+            label={obj.label}
+            value={stateVal}
+            // error={!!errorState[name]}
+            // helperText={errorState[name]}
+            onChange={(e) => {
+              const val = e.target.value;
+              setStateVal(val);
+            }}
+          />
+        );
+    }
+  };
   const chooseInput = (type, name, list, obj) => {
     switch (type) {
       case 'image':
@@ -302,37 +441,56 @@ const FormBuilder = ({
                   flexDirection: 'column',
                 }}
               >
-                {obj.template.map((tm, i) => (
-                  <TextField
-                    key={i}
-                    id={tm.name}
-                    // type={type}
-                    label={tm.label}
-                    value={
+                {obj.template.map(
+                  (tm, i) =>
+                    chooseExtraInput(
+                      tm.type,
+                      tm.name,
+                      tm,
                       templateData[name] && templateData[name][tm.name]
                         ? templateData[name][tm.name]
-                        : ''
-                    }
-                    // error={!!errorState[name]}
-                    // helperText={errorState[name]}
-                    onChange={(e) =>
-                      setTemplateData({
-                        ...templateData,
-                        [name]: {
-                          ...templateData[name],
-                          [tm.name]: e.target.value,
-                        },
-                      })
-                    }
-                  />
-                ))}
+                        : '',
+                      (val) =>
+                        setTemplateData({
+                          ...templateData,
+                          [name]: {
+                            ...templateData[name],
+                            [tm.name]: val,
+                          },
+                        })
+                    )
+                  // <TextField
+                  //   key={i}
+                  //   id={tm.name}
+                  //   // type={type}
+                  //   label={tm.label}
+                  //   value={
+                  //     templateData[name] && templateData[name][tm.name]
+                  //       ? templateData[name][tm.name]
+                  //       : ''
+                  //   }
+                  //   // error={!!errorState[name]}
+                  //   // helperText={errorState[name]}
+                  //   onChange={(e) =>
+                  //     setTemplateData({
+                  //       ...templateData,
+                  //       [name]: {
+                  //         ...templateData[name],
+                  //         [tm.name]: e.target.value,
+                  //       },
+                  //     })
+                  //   }
+                  // />
+                )}
                 <Button
                   onClick={() => {
                     obj.setError(null);
                     if (
                       !templateData[name] ||
                       obj.template.map((t) => t.name).length >
-                        Object.keys(templateData[name]).length
+                        Object.values(templateData[name]).filter(
+                          (t) => t.length
+                        ).length
                     ) {
                       return obj.setError('Fill all details');
                     }
@@ -505,6 +663,41 @@ const FormBuilder = ({
             customInput={TextField}
             prefix={'₦'}
             disabled={obj.disabled}
+            type='text'
+            thousandSeparator={true}
+            label={obj.label}
+            value={state[name]}
+            error={!!errorState[name]}
+            helperText={errorState[name]}
+            onValueChange={({ value: val }) => {
+              if (obj.action) {
+                obj.action(val, (...args) => {
+                  const newObj = {
+                    [name]: val,
+                  };
+                  obj.setterKeys.forEach((st, i) => {
+                    newObj[st] = args[i];
+                  });
+
+                  return setState({
+                    ...state,
+                    ...newObj,
+                  });
+                });
+              } else {
+                setState({ ...state, [name]: val });
+              }
+            }}
+          />
+        );
+      case 'number':
+        return (
+          <NumberFormat
+            id={name}
+            name={name}
+            customInput={TextField}
+            // prefix={'₦'}
+            disabled={obj.disabled}
             // format={format || null}
             type='text'
             thousandSeparator={true}
@@ -512,9 +705,77 @@ const FormBuilder = ({
             value={state[name]}
             error={!!errorState[name]}
             helperText={errorState[name]}
-            // onValueChange={({ value: v }) => {
-            //   setState({ ...state, [name]: v });
-            // }}
+            onValueChange={({ value: val }) => {
+              if (obj.action) {
+                obj.action(val, (...args) => {
+                  const newObj = {
+                    [name]: val,
+                  };
+                  obj.setterKeys.forEach((st, i) => {
+                    newObj[st] = args[i];
+                  });
+
+                  return setState({
+                    ...state,
+                    ...newObj,
+                  });
+                });
+              } else {
+                setState({ ...state, [name]: val });
+              }
+            }}
+          />
+        );
+      case 'bvn':
+        return (
+          <NumberFormat
+            id={name}
+            name={name}
+            customInput={TextField}
+            // prefix={'₦'}
+            disabled={obj.disabled}
+            format={'### #### ####'}
+            type='text'
+            // thousandSeparator={true}
+            label={obj.label}
+            value={state[name]}
+            error={!!errorState[name]}
+            helperText={errorState[name]}
+            onValueChange={({ value: val }) => {
+              if (obj.action) {
+                obj.action(val, (...args) => {
+                  const newObj = {
+                    [name]: val,
+                  };
+                  obj.setterKeys.forEach((st, i) => {
+                    newObj[st] = args[i];
+                  });
+
+                  return setState({
+                    ...state,
+                    ...newObj,
+                  });
+                });
+              } else {
+                setState({ ...state, [name]: val });
+              }
+            }}
+          />
+        );
+      case 'number2':
+        return (
+          <NumberFormat
+            id={name}
+            name={name}
+            customInput={TextField}
+            // prefix={'₦'}
+            disabled={obj.disabled}
+            type='text'
+            // thousandSeparator={true}
+            label={obj.label}
+            value={state[name]}
+            error={!!errorState[name]}
+            helperText={errorState[name]}
             onValueChange={({ value: val }) => {
               if (obj.action) {
                 obj.action(val, (...args) => {
