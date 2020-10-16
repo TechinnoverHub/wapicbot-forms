@@ -528,6 +528,7 @@ const FormBuilder = ({
             <Select
               id={name}
               value={state[name] || ''}
+              disabled={obj.disabled}
               onChange={(e) => {
                 const val = e.target.value;
                 if (obj.action) {
@@ -857,6 +858,11 @@ const FormBuilder = ({
             {datum.section}
           </h1>
         ) : (
+          // !datum.notShow ||
+          // &&
+          // !datum.notShow.key
+          // &&
+          // state[datum.notShow.key] !== datum.notShow.value
           (!datum.dependent ||
             typeof datum.dependent === 'string' ||
             (datum.dependent &&

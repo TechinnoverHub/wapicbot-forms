@@ -66,6 +66,11 @@ const vehicleType = [
   'moov-prestige-(private-comprehensive)',
   'commercial-vehicle-(comprehensive)',
 ];
+const vehicleTypeDefault = [
+  'moov-plus-(fire-and-theft)',
+  'moov-luxury-(extented-comprehensive)',
+  'moov-prestige-(private-comprehensive)',
+];
 
 const lifeinsurance = [
   {
@@ -503,6 +508,7 @@ const products = {
         required: 'required',
       },
       type: 'select',
+      disabled: true,
       list: ['private Cars'],
     },
     {
@@ -620,6 +626,7 @@ const products = {
         required: 'required',
       },
       type: 'select',
+      disabled: true,
       list: ['private Cars'],
     },
     {
@@ -737,6 +744,7 @@ const products = {
         required: 'required',
       },
       type: 'select',
+      disabled: true,
       list: ['private Cars'],
     },
     {
@@ -860,6 +868,10 @@ const products = {
         required: 'required',
       },
       type: 'select',
+      notShow: {
+        key: 'vehicleClass',
+        value: 'motor cycle',
+      },
     },
     {
       name: 'model',
@@ -870,7 +882,36 @@ const products = {
       type: 'select',
       dependent: 'manufacturer',
       data: 'carModels',
+      notShow: {
+        key: 'vehicleClass',
+        value: 'motor cycle',
+      },
     },
+    // {
+    //   name: 'manufacturer',
+    //   label: 'select Manufacturer ',
+    //   validate: {
+    //     required: 'required',
+    //   },
+    //   type: 'text',
+    //   dependent: {
+    //     key: 'vehicleClass',
+    //     value: 'motor cycle',
+    //   },
+    // },
+    // {
+    //   name: 'model',
+    //   label: 'Select Vehicle Model',
+    //   validate: {
+    //     required: 'required',
+    //   },
+    //   type: 'text',
+    //   dependent: {
+    //     key: 'vehicleClass',
+    //     value: 'motor cycle',
+    //   },
+    // },
+
     {
       name: 'regNumber',
       label: 'Registration Number',
@@ -1062,7 +1103,11 @@ const Insurances = ({ history, location }) => {
           error={error}
           loading={loading}
           title={productmap[type]}
-          // defaultValues={defaultValues}
+          defaultValues={
+            vehicleTypeDefault.includes(type)
+              ? { vehicleClass: 'private Cars' }
+              : {}
+          }
           instruction='Fill Details'
           data={products[type] || []}
           action={async (values) => {
