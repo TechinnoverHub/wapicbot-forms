@@ -887,30 +887,30 @@ const products = {
         value: 'motor cycle',
       },
     },
-    // {
-    //   name: 'manufacturer',
-    //   label: 'select Manufacturer ',
-    //   validate: {
-    //     required: 'required',
-    //   },
-    //   type: 'text',
-    //   dependent: {
-    //     key: 'vehicleClass',
-    //     value: 'motor cycle',
-    //   },
-    // },
-    // {
-    //   name: 'model',
-    //   label: 'Select Vehicle Model',
-    //   validate: {
-    //     required: 'required',
-    //   },
-    //   type: 'text',
-    //   dependent: {
-    //     key: 'vehicleClass',
-    //     value: 'motor cycle',
-    //   },
-    // },
+    {
+      name: 'manufacturer',
+      label: 'Enter Manufacturer ',
+      validate: {
+        required: 'required',
+      },
+      type: 'text',
+      dependent: {
+        key: 'vehicleClass',
+        value: 'motor cycle',
+      },
+    },
+    {
+      name: 'model',
+      label: 'Enter Vehicle Model',
+      validate: {
+        required: 'required',
+      },
+      type: 'text',
+      dependent: {
+        key: 'vehicleClass',
+        value: 'motor cycle',
+      },
+    },
 
     {
       name: 'regNumber',
@@ -946,12 +946,14 @@ const products = {
       label: 'Vehicle value',
       validate: {
         required: 'required',
+        min: [1000000, 'Must be at least ₦1,000,000', true],
       },
       type: 'currency',
       setterKeys: ['tracking'],
-      action: (val, setter) => {
+      keyState: { key: 'vehicleClass', value: 'motor cycle' },
+      action: (val, setter, keyState) => {
         console.log(val);
-        if (Number(val) >= 5000000) {
+        if (Number(val) >= 5000000 && !keyState) {
           console.log('set', val);
           setter('yes');
         } else {

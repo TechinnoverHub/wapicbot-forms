@@ -74,7 +74,10 @@ const KYC = (props) => {
           'color',
           'yearOfModel',
           'regNumber',
-          'vehicleImage',
+          'vehicleFrontImage',
+          'vehicleBackImage',
+          'vehicleLeftImage',
+          'vehicleRightImage',
         ]);
 
         console.log(isValid, props, states);
@@ -99,7 +102,10 @@ const KYC = (props) => {
           floodExt,
           riot,
           tracking,
-          vehicleImage,
+          vehicleFrontImage,
+          vehicleBackImage,
+          vehicleLeftImage,
+          vehicleRightImage,
         } = props.location.state;
 
         return setQuoteDetails({
@@ -119,7 +125,10 @@ const KYC = (props) => {
           floodExt: floodExt,
           riot: riot,
           tracking: tracking,
-          vehicleImage,
+          vehicleFrontImage,
+          vehicleBackImage,
+          vehicleLeftImage,
+          vehicleRightImage,
         });
       }
       if (lifeTypes.includes(props.location.state.productType)) {

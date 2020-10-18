@@ -46,7 +46,10 @@ const Paystack = (props) => {
             'regNumber',
             'color',
             'yearOfModel',
-            'vehicleImage',
+            'vehicleFrontImage',
+            'vehicleBackImage',
+            'vehicleLeftImage',
+            'vehicleRightImage',
           ]
         : []),
       ...(lifeTypes.includes(props.location.state.productType)
@@ -82,7 +85,10 @@ const Paystack = (props) => {
       floodExt,
       riot,
       tracking,
-      vehicleImage,
+      vehicleFrontImage,
+      vehicleBackImage,
+      vehicleLeftImage,
+      vehicleRightImage,
       coverStartDate,
     } = props.location.state;
 
@@ -111,7 +117,10 @@ const Paystack = (props) => {
             floodExt,
             riot,
             tracking,
-            vehicleImage,
+            vehicleFrontImage,
+            vehicleBackImage,
+            vehicleLeftImage,
+            vehicleRightImage,
           }
         : {}),
       ...(lifeTypes.includes(props.location.state.productType)
@@ -157,7 +166,10 @@ const Paystack = (props) => {
                     licenseNumber: quoteDetails.regNumber,
                     color: quoteDetails.color,
                     year: quoteDetails.yearOfModel,
-                    vehicleImage: quoteDetails.vehicleImage,
+                    vehicleFrontImage: quoteDetails.vehicleFrontImage,
+                    vehicleBackImage: quoteDetails.vehicleBackImage,
+                    vehicleLeftImage: quoteDetails.vehicleLeftImage,
+                    VehicleRightImage: quoteDetails.VehicleRightImage,
                   },
                 }
               : {}),

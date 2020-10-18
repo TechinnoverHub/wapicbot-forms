@@ -34,11 +34,35 @@ const pickExtraData = (type, action) => {
   if (vehicleType.includes(type)) {
     return [
       {
-        section: 'Vehicle image',
+        section: 'Vehicle images',
       },
       {
-        name: 'vehicleImage',
-        label: 'Vehicle Image',
+        name: 'vehicleFrontImage',
+        label: 'Vehicle Front Image',
+        validate: {
+          required: 'required',
+        },
+        type: 'image',
+      },
+      {
+        name: 'vehicleBackImage',
+        label: 'Vehicle Back Image',
+        validate: {
+          required: 'required',
+        },
+        type: 'image',
+      },
+      {
+        name: 'vehicleLeftImage',
+        label: 'Vehicle Left Side Image',
+        validate: {
+          required: 'required',
+        },
+        type: 'image',
+      },
+      {
+        name: 'vehicleRightImage',
+        label: 'Vehicle Right Side Image',
         validate: {
           required: 'required',
         },
@@ -200,9 +224,9 @@ const ExtraDataPage = (props) => {
     setError(null);
     try {
       if (vehicleType.includes(props.location.state.productType)) {
-        if (values.vehicleImage) {
+        if (values.vehicleFrontImage) {
           const data = {
-            file: values.vehicleImage,
+            file: values.vehicleFrontImage,
             folder: `${userId}/`,
             upload_preset: 'pb9zgwxy',
           };
@@ -215,10 +239,70 @@ const ExtraDataPage = (props) => {
           });
           const result = await r.json();
           console.log(result);
-          values.vehicleImage = result.secure_url;
+          values.vehicleFrontImage = result.secure_url;
         } else {
           setLoading(false);
-          return setError('Vehicle Image is required');
+          return setError('Vehicle Front Image is required');
+        }
+        if (values.vehicleBackImage) {
+          const data = {
+            file: values.vehicleBackImage,
+            folder: `${userId}/`,
+            upload_preset: 'pb9zgwxy',
+          };
+          const r = await fetch(CLOUDINARY_URL, {
+            body: JSON.stringify(data),
+            headers: {
+              'content-type': 'application/json',
+            },
+            method: 'POST',
+          });
+          const result = await r.json();
+          console.log(result);
+          values.vehicleBackImage = result.secure_url;
+        } else {
+          setLoading(false);
+          return setError('Vehicle Back Image is required');
+        }
+        if (values.vehicleLeftImage) {
+          const data = {
+            file: values.vehicleLeftImage,
+            folder: `${userId}/`,
+            upload_preset: 'pb9zgwxy',
+          };
+          const r = await fetch(CLOUDINARY_URL, {
+            body: JSON.stringify(data),
+            headers: {
+              'content-type': 'application/json',
+            },
+            method: 'POST',
+          });
+          const result = await r.json();
+          console.log(result);
+          values.vehicleLeftImage = result.secure_url;
+        } else {
+          setLoading(false);
+          return setError('Vehicle Left Side Image is required');
+        }
+        if (values.vehicleRightImage) {
+          const data = {
+            file: values.vehicleRightImage,
+            folder: `${userId}/`,
+            upload_preset: 'pb9zgwxy',
+          };
+          const r = await fetch(CLOUDINARY_URL, {
+            body: JSON.stringify(data),
+            headers: {
+              'content-type': 'application/json',
+            },
+            method: 'POST',
+          });
+          const result = await r.json();
+          console.log(result);
+          values.vehicleRightImage = result.secure_url;
+        } else {
+          setLoading(false);
+          return setError('Vehicle Right Side Image is required');
         }
       }
       if (lifeTypes.includes(props.location.state.productType)) {

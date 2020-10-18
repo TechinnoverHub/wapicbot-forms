@@ -108,7 +108,8 @@ const FormBuilder = ({
     current,
     dependent,
     dependentState,
-    exactDependentValue
+    exactDependentValue,
+    keyState
   ) => {
     if (dependent) {
       if (typeof dependent === 'string') {
@@ -176,10 +177,21 @@ const FormBuilder = ({
         if (!obj['required'] && !`${current}`.length) {
           return null;
         }
-        if ('min' in obj && Number(current) < obj.min[0]) {
+        if (
+          'min' in obj &&
+          Number(current) < obj.min[0] &&
+          !keyState &&
+          obj.min.length > 2 &&
+          obj.min[2]
+        ) {
           return obj.min[1];
         }
-        if ('max' in obj && Number(current) > obj.max[0]) {
+        if (
+          'max' in obj &&
+          Number(current) > obj.max[0] &&
+          !keyState &&
+          obj.max[2]
+        ) {
           return obj.max[1];
         }
         if ('minLength' in obj && `${current}`.length < obj.minLength[0]) {
@@ -201,6 +213,9 @@ const FormBuilder = ({
     const newError = {};
 
     data.forEach((dt) => {
+      if (dt.keyState) {
+        console.log(state[dt.keyState.key], dt.keyState.key);
+      }
       const rtErr = validateInput(
         dt.type,
         dt.validate,
@@ -215,7 +230,9 @@ const FormBuilder = ({
           ? typeof dt.dependent === 'string'
             ? dt.dependent
             : dt.dependent.value
-          : null
+          : null,
+
+        dt.keyState ? state[dt.keyState.key] === dt.keyState.value : false
       );
       if (rtErr) {
         newError[dt.name] = rtErr;
@@ -857,12 +874,13 @@ const FormBuilder = ({
           <h1 key={i} className={styles.section}>
             {datum.section}
           </h1>
+        ) : datum.notShow ? (
+          state[datum.notShow.key] !== datum.notShow.value ? (
+            <div key={i} className={styles.inner}>
+              {chooseInput(datum.type, datum.name, datum.list, datum)}
+            </div>
+          ) : null
         ) : (
-          // !datum.notShow ||
-          // &&
-          // !datum.notShow.key
-          // &&
-          // state[datum.notShow.key] !== datum.notShow.value
           (!datum.dependent ||
             typeof datum.dependent === 'string' ||
             (datum.dependent &&
