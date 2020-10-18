@@ -109,6 +109,7 @@ const FormBuilder = ({
     dependent,
     dependentState,
     exactDependentValue,
+    greaterType,
     keyState
   ) => {
     if (dependent) {
@@ -128,7 +129,11 @@ const FormBuilder = ({
           }
         }
       } else {
-        if (dependentState && dependentState === exactDependentValue) {
+        if (
+          dependentState &&
+          ((!greaterType && dependentState === exactDependentValue) ||
+            (greaterType && dependentState >= exactDependentValue))
+        ) {
           if ('required' in obj && !current) {
             return obj['required'];
           }
@@ -177,13 +182,7 @@ const FormBuilder = ({
         if (!obj['required'] && !`${current}`.length) {
           return null;
         }
-        if (
-          'min' in obj &&
-          Number(current) < obj.min[0] &&
-          !keyState &&
-          obj.min.length > 2 &&
-          obj.min[2]
-        ) {
+        if ('min' in obj && Number(current) < obj.min[0] && !keyState) {
           return obj.min[1];
         }
         if (
@@ -229,9 +228,17 @@ const FormBuilder = ({
         dt.dependent
           ? typeof dt.dependent === 'string'
             ? dt.dependent
+            : dt.dependent.gtValue
+            ? dt.dependent.gtValue
             : dt.dependent.value
           : null,
-
+        dt.dependent
+          ? typeof dt.dependent === 'string'
+            ? null
+            : dt.dependent.gtValue
+            ? true
+            : false
+          : null,
         dt.keyState ? state[dt.keyState.key] === dt.keyState.value : false
       );
       if (rtErr) {
@@ -570,7 +577,13 @@ const FormBuilder = ({
               className={classes.textField}
               // inputProps={{ "aria-label": "Without label" }}
             >
-              {obj.dependent
+              {obj.list
+                ? obj.list.map((li) => (
+                    <MenuItem className={classes.items} key={li} value={li}>
+                      {obj.currency ? `₦ ${li.toLocaleString()}` : li}
+                    </MenuItem>
+                  ))
+                : obj.dependent
                 ? state[obj.dependent]
                   ? dataBucket[obj.data][state[obj.dependent]] &&
                     dataBucket[obj.data][state[obj.dependent]].map((li) => (
@@ -591,12 +604,6 @@ const FormBuilder = ({
                       value={li.value}
                     >
                       {li.value}
-                    </MenuItem>
-                  ))
-                : list
-                ? list.map((li) => (
-                    <MenuItem className={classes.items} key={li} value={li}>
-                      {obj.currency ? `₦ ${li.toLocaleString()}` : li}
                     </MenuItem>
                   ))
                 : null}

@@ -464,6 +464,7 @@ const products = {
       label: 'Vehicle value',
       validate: {
         required: 'required',
+        min: [1000000, 'Must be at least ₦1,000,000'],
       },
       type: 'currency',
       setterKeys: ['tracking'],
@@ -485,6 +486,19 @@ const products = {
       },
       type: 'select',
       list: ['yes', 'no'],
+    },
+    {
+      name: 'excessBuyBack',
+      label: 'Excess Buy Back',
+      validate: {
+        required: 'required',
+      },
+      type: 'select',
+      list: ['yes', 'no'],
+      dependent: {
+        key: 'vehicleValue',
+        gtValue: 5000000,
+      },
     },
     {
       name: 'tracking',
@@ -564,6 +578,7 @@ const products = {
       label: 'Vehicle value',
       validate: {
         required: 'required',
+        min: [1000000, 'Must be at least ₦1,000,000'],
       },
       type: 'currency',
       setterKeys: ['tracking'],
@@ -594,6 +609,10 @@ const products = {
       },
       type: 'select',
       list: ['yes', 'no'],
+      dependent: {
+        key: 'vehicleValue',
+        gtValue: 5000000,
+      },
     },
     {
       name: 'riot',
@@ -682,6 +701,7 @@ const products = {
       label: 'Vehicle value',
       validate: {
         required: 'required',
+        min: [1000000, 'Must be at least ₦1,000,000'],
       },
       type: 'currency',
       setterKeys: ['tracking'],
@@ -711,7 +731,11 @@ const products = {
         required: 'required',
       },
       type: 'select',
-      list: ['yes'],
+      list: ['yes', 'no'],
+      dependent: {
+        key: 'vehicleValue',
+        gtValue: 5000000,
+      },
     },
     {
       name: 'riot',
@@ -800,6 +824,7 @@ const products = {
       label: 'Vehicle value',
       validate: {
         required: 'required',
+        min: [1000000, 'Must be at least ₦1,000,000'],
       },
       type: 'currency',
       setterKeys: ['tracking'],
@@ -830,6 +855,19 @@ const products = {
       },
       type: 'select',
       list: ['yes', 'no'],
+    },
+    {
+      name: 'excessBuyBack',
+      label: 'Excess Buy Back',
+      validate: {
+        required: 'required',
+      },
+      type: 'select',
+      list: ['yes', 'no'],
+      dependent: {
+        key: 'vehicleValue',
+        gtValue: 5000000,
+      },
     },
     {
       name: 'tracking',
@@ -969,6 +1007,19 @@ const products = {
       },
       type: 'select',
       list: ['yes', 'no'],
+    },
+    {
+      name: 'excessBuyBack',
+      label: 'Excess Buy Back',
+      validate: {
+        required: 'required',
+      },
+      type: 'select',
+      list: ['yes', 'no'],
+      dependent: {
+        key: 'vehicleValue',
+        gtValue: 5000000,
+      },
     },
     {
       name: 'tracking',
