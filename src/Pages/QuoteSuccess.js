@@ -55,6 +55,7 @@ const QuoteSuccess = (props) => {
           floodExt,
           riot,
           tracking,
+          excessBuyBack,
         } = props.location.state;
 
         return setQuoteDetails({
@@ -70,6 +71,7 @@ const QuoteSuccess = (props) => {
           floodExt: floodExt,
           riot: riot,
           tracking: tracking,
+          excessBuyBack: excessBuyBack,
         });
       }
       if (
@@ -157,6 +159,14 @@ const QuoteSuccess = (props) => {
                   <h4>Flood Extension</h4>
                   <h2 style={{ textTransform: 'capitalize' }}>
                     {quoteDetails.floodExt}
+                  </h2>
+                </div>
+              )}
+              {quoteDetails.excessBuyBack && (
+                <div className='group2'>
+                  <h4>Excess Buy Back</h4>
+                  <h2 style={{ textTransform: 'capitalize' }}>
+                    {quoteDetails.excessBuyBack}
                   </h2>
                 </div>
               )}

@@ -1182,6 +1182,7 @@ const Insurances = ({ history, location }) => {
                   floodExt: values.floodExt,
                   riot: values.riot,
                   tracking: values.tracking,
+                  excessBuyBack: values.excessBuyBack,
                 }
               );
               console.log(data);
