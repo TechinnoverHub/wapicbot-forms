@@ -41,6 +41,7 @@ const productmap = {
   'e-term': 'E-Term',
   'smart-scholars-plan': 'Smart Scholars Plan',
   'smart-life': 'Smart Life',
+  'ssmart-life-plus': 'Smart Life Plus',
   'smart-senior-plan': 'Smart Senior Plan',
 };
 const vehicleClassMap = {
