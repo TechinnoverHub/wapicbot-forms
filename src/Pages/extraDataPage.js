@@ -69,6 +69,17 @@ const pickExtraData = (type, action) => {
         type: 'image',
       },
       {
+        section: 'Vehicle Licence/Proof of Ownership',
+      },
+      {
+        name: 'vehicleLicence',
+        label: 'Vehicle Licence',
+        validate: {
+          required: 'required',
+        },
+        type: 'image',
+      },
+      {
         section: 'Vehicle Information',
       },
       {
@@ -303,6 +314,28 @@ const ExtraDataPage = (props) => {
         } else {
           setLoading(false);
           return setError('Vehicle Right Side Image is required');
+        }
+        if (values.vehicleLicence) {
+          const data = {
+            file: values.vehicleLicence,
+            folder: `${userId}/`,
+            upload_preset: 'pb9zgwxy',
+          };
+          const r = await fetch(CLOUDINARY_URL, {
+            body: JSON.stringify(data),
+            headers: {
+              'content-type': 'application/json',
+            },
+            method: 'POST',
+          });
+          const result = await r.json();
+          console.log(result);
+          values.vehicleLicence = result.secure_url;
+        } else {
+          setLoading(false);
+          return setError(
+            'Vehicle Vehicle Licence/Proof of Ownership is required'
+          );
         }
       }
       if (lifeTypes.includes(props.location.state.productType)) {

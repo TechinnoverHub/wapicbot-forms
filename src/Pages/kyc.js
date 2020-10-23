@@ -78,6 +78,7 @@ const KYC = (props) => {
           'vehicleBackImage',
           'vehicleLeftImage',
           'vehicleRightImage',
+          'vehicleLicence'
         ]);
 
         console.log(isValid, props, states);
@@ -106,6 +107,7 @@ const KYC = (props) => {
           vehicleBackImage,
           vehicleLeftImage,
           vehicleRightImage,
+          vehicleLicence
         } = props.location.state;
 
         return setQuoteDetails({
@@ -129,6 +131,7 @@ const KYC = (props) => {
           vehicleBackImage,
           vehicleLeftImage,
           vehicleRightImage,
+          vehicleLicence
         });
       }
       if (lifeTypes.includes(props.location.state.productType)) {

@@ -61,8 +61,8 @@ const optinFormData = [
     type: 'email',
   },
   {
-    name: 'claim',
-    label: 'Claim Number',
+    name: 'policyNumber',
+    label: 'Policy Number',
     validate: {
       required: 'required',
     },

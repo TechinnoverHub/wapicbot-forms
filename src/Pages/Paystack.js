@@ -50,6 +50,7 @@ const Paystack = (props) => {
             'vehicleBackImage',
             'vehicleLeftImage',
             'vehicleRightImage',
+            'vehicleLicence',
           ]
         : []),
       ...(lifeTypes.includes(props.location.state.productType)
@@ -90,6 +91,7 @@ const Paystack = (props) => {
       vehicleLeftImage,
       vehicleRightImage,
       coverStartDate,
+      vehicleLicence,
     } = props.location.state;
 
     setQuoteDetails({
@@ -121,6 +123,7 @@ const Paystack = (props) => {
             vehicleBackImage,
             vehicleLeftImage,
             vehicleRightImage,
+            vehicleLicence,
           }
         : {}),
       ...(lifeTypes.includes(props.location.state.productType)
@@ -170,6 +173,7 @@ const Paystack = (props) => {
                     vehicleBackImage: quoteDetails.vehicleBackImage,
                     vehicleLeftImage: quoteDetails.vehicleLeftImage,
                     VehicleRightImage: quoteDetails.VehicleRightImage,
+                    vehicleLicence: quoteDetails.vehicleLicence,
                   },
                 }
               : {}),
