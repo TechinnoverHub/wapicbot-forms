@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import OptIn from './Pages/OptIn';
 import Insurances from './Pages/Insurances';
-import logo from './assets/logo.jpeg';
+import logo from './assets/logo.png';
 import KYC from './Pages/kyc';
 import QuoteSuccess from './Pages/QuoteSuccess';
 import Paystack from './Pages/Paystack';

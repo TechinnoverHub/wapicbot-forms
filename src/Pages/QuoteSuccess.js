@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Container from '../components/Container';
-import logo from '../assets/logo.jpeg';
+import logo from '../assets/logo.png';
 import { useParams } from 'react-router-dom';
 // import includesAll from "../utils/includesAll";
 import formatNum from '../utils/formatNum';

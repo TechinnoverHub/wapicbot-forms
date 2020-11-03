@@ -75,7 +75,7 @@ const optinFormData = [
   {
     name: 'wapicPolicy',
     label:
-      'I accept wapic policy, terms and conditions and also I accept to receive messages on whatsapp',
+      'I accept coronation insurance policy, terms and conditions and also I accept to receive messages on whatsapp',
     validate: {
       required: 'required',
     },

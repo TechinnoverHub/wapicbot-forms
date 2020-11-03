@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Button } from '@material-ui/core';
 import Container from '../components/Container';
-import logo from '../assets/logo.jpeg';
+import logo from '../assets/logo.png';
 import loader from '../assets/loader.gif';
 import {
   manufacturers as mfc,
@@ -21,7 +21,7 @@ const toBase64 = (file) =>
 const VehicleCheck = ({ history }) => {
   const [retrivedValues, setRetrievedValues] = useState({
     manufacturer: null,
-    model: null,  
+    model: null,
   });
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);

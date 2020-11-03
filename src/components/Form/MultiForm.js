@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 // import { useFormik } from "formik";
 // import * as Yup from "yup";
 import styles from './styles.module.css';
-import logo from '../../assets/logo.jpeg';
+import logo from '../../assets/logo.png';
 import NumberFormat from 'react-number-format';
 import loader from '../../assets/loader.gif';
 

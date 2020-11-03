@@ -2,7 +2,7 @@
 import 'moment';
 import React, { useState, useEffect } from 'react';
 import styles from './styles.module.css';
-import logo from '../../assets/logo.jpeg';
+import logo from '../../assets/logo.png';
 import loader from '../../assets/loader.gif';
 import isEmail from 'validator/es/lib/isEmail';
 import NumberFormat from 'react-number-format';

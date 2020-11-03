@@ -140,7 +140,9 @@ a:hover {
   align-self: center;
   align-items: flex-start;
 }
-
+.main img {
+  width: 300px;
+}
 .oneCard {
   padding: 10px 5px;
 }

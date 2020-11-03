@@ -3,7 +3,7 @@ import axios from 'axios';
 import Container from '../components/Container';
 import { useParams } from 'react-router-dom';
 import { PaystackButton } from 'react-paystack';
-import logo from '../assets/logo.jpeg';
+import logo from '../assets/logo.png';
 import loader from '../assets/loader.gif';
 import includesAll from '../utils/includesAll';
 import formatNum from '../utils/formatNum';

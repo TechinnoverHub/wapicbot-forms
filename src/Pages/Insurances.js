@@ -146,7 +146,7 @@ const lifeinsurance = [
       // min: [3, 'Must be at least 3 years'],
     },
     type: 'select',
-    list: ['Year', 'Bi-Annual'],
+    list: ['Monthly', 'Quarterly', 'Year', 'Bi-Annual'],
   },
   {
     name: 'annualPremium',
@@ -203,7 +203,7 @@ const smartLifeInsurance = [
       // min: [3, 'Must be at least 3 years'],
     },
     type: 'select',
-    list: ['Year', 'Bi-Annual'],
+    list: ['Monthly', 'Quarterly', 'Year', 'Bi-Annual'],
   },
   {
     name: 'annualPremium',
@@ -261,7 +261,7 @@ const smartLifePlusInsurance = [
       // min: [3, 'Must be at least 3 years'],
     },
     type: 'select',
-    list: ['Year', 'Bi-Annual'],
+    list: ['Monthly', 'Quarterly', 'Year', 'Bi-Annual'],
   },
   {
     name: 'annualPremium',
@@ -307,7 +307,7 @@ const smartScholarInsurance = [
     label: 'Duration (in terms of frequency)',
     validate: {
       required: 'required',
-      min: [3, 'Must be at least 3 years'],
+      min: [5, 'Must be at least 5 years'],
     },
     type: 'number',
   },
@@ -319,14 +319,14 @@ const smartScholarInsurance = [
       // min: [3, 'Must be at least 3 years'],
     },
     type: 'select',
-    list: ['Year', 'Bi-Annual'],
+    list: ['Monthly', 'Quarterly', 'Year', 'Bi-Annual'],
   },
   {
     name: 'annualPremium',
     label: 'Annual Contribution',
     validate: {
       required: 'required',
-      min: [120000, 'Must be at least ₦120,000'],
+      min: [60000, 'Must be at least ₦60,000'],
     },
     type: 'currency',
   },
@@ -479,15 +479,7 @@ const products = {
         }
       },
     },
-    {
-      name: 'riot',
-      label: 'Riot strike and civil commotion cover',
-      validate: {
-        required: 'required',
-      },
-      type: 'select',
-      list: ['yes', 'no'],
-    },
+
     {
       name: 'excessBuyBack',
       label: 'Excess Buy Back',
@@ -1218,6 +1210,8 @@ const Insurances = ({ history, location }) => {
             const frequencyMap = {
               Year: 'Y',
               'Bi-Annual': 'B',
+              Monthly: 'M',
+              Quarterly: 'Q',
             };
             try {
               const { data } = await axios.post(
