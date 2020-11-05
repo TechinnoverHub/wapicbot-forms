@@ -5,10 +5,12 @@
   flex-direction: column;
   max-width: 300px;
 }
+.form .logo {
+  width: 300px;
+}
 .form img {
   align-self: center;
   margin: 30px 0;
-  width: 300px;
 }
 
 .form h2 {

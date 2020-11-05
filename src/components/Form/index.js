@@ -632,9 +632,12 @@ const FormBuilder = ({
                   }
                 />
               }
-              label={`${obj.label}${
-                obj.validate && obj.validate.required ? '*' : ''
-              }`}
+              label={
+                <>
+                  {obj.label}
+                  {`${obj.validate && obj.validate.required ? '*' : ''}`}
+                </>
+              }
             />
           </div>
         );
@@ -865,7 +868,7 @@ const FormBuilder = ({
   };
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <img src={logo} alt='logo' />
+      <img className={styles.logo} src={logo} alt='logo' />
       <h2>{title}</h2>
 
       {instruction && <p>{instruction}</p>}

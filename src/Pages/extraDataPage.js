@@ -33,41 +33,45 @@ const pickExtraData = (type, action) => {
   ];
   if (vehicleType.includes(type)) {
     return [
-      {
-        section: 'Vehicle images',
-      },
-      {
-        name: 'vehicleFrontImage',
-        label: 'Vehicle Front Image',
-        validate: {
-          required: 'required',
-        },
-        type: 'image',
-      },
-      {
-        name: 'vehicleBackImage',
-        label: 'Vehicle Back Image',
-        validate: {
-          required: 'required',
-        },
-        type: 'image',
-      },
-      {
-        name: 'vehicleLeftImage',
-        label: 'Vehicle Left Side Image',
-        validate: {
-          required: 'required',
-        },
-        type: 'image',
-      },
-      {
-        name: 'vehicleRightImage',
-        label: 'Vehicle Right Side Image',
-        validate: {
-          required: 'required',
-        },
-        type: 'image',
-      },
+      ...(type !== 'moov-third-party'
+        ? [
+            {
+              section: 'Vehicle images',
+            },
+            {
+              name: 'vehicleFrontImage',
+              label: 'Vehicle Front Image',
+              validate: {
+                required: 'required',
+              },
+              type: 'image',
+            },
+            {
+              name: 'vehicleBackImage',
+              label: 'Vehicle Back Image',
+              validate: {
+                required: 'required',
+              },
+              type: 'image',
+            },
+            {
+              name: 'vehicleLeftImage',
+              label: 'Vehicle Left Side Image',
+              validate: {
+                required: 'required',
+              },
+              type: 'image',
+            },
+            {
+              name: 'vehicleRightImage',
+              label: 'Vehicle Right Side Image',
+              validate: {
+                required: 'required',
+              },
+              type: 'image',
+            },
+          ]
+        : []),
       {
         section: 'Vehicle Licence/Proof of Ownership',
       },
@@ -235,6 +239,8 @@ const ExtraDataPage = (props) => {
     setError(null);
     try {
       if (vehicleType.includes(props.location.state.productType)) {
+        const isNotThirdparty =
+          props.location.state.productType !== 'moov-third-party';
         if (values.vehicleFrontImage) {
           const data = {
             file: values.vehicleFrontImage,
@@ -252,8 +258,10 @@ const ExtraDataPage = (props) => {
           console.log(result);
           values.vehicleFrontImage = result.secure_url;
         } else {
-          setLoading(false);
-          return setError('Vehicle Front Image is required');
+          if (isNotThirdparty) {
+            setLoading(false);
+            return setError('Vehicle Front Image is required');
+          }
         }
         if (values.vehicleBackImage) {
           const data = {
@@ -272,8 +280,10 @@ const ExtraDataPage = (props) => {
           console.log(result);
           values.vehicleBackImage = result.secure_url;
         } else {
-          setLoading(false);
-          return setError('Vehicle Back Image is required');
+          if (isNotThirdparty) {
+            setLoading(false);
+            return setError('Vehicle Back Image is required');
+          }
         }
         if (values.vehicleLeftImage) {
           const data = {
@@ -292,8 +302,10 @@ const ExtraDataPage = (props) => {
           console.log(result);
           values.vehicleLeftImage = result.secure_url;
         } else {
-          setLoading(false);
-          return setError('Vehicle Left Side Image is required');
+          if (isNotThirdparty) {
+            setLoading(false);
+            return setError('Vehicle Left Side Image is required');
+          }
         }
         if (values.vehicleRightImage) {
           const data = {
@@ -312,8 +324,10 @@ const ExtraDataPage = (props) => {
           console.log(result);
           values.vehicleRightImage = result.secure_url;
         } else {
-          setLoading(false);
-          return setError('Vehicle Right Side Image is required');
+          if (isNotThirdparty) {
+            setLoading(false);
+            return setError('Vehicle Right Side Image is required');
+          }
         }
         if (values.vehicleLicence) {
           const data = {

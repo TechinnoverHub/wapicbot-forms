@@ -27,8 +27,9 @@ const Paystack = (props) => {
   const [paid, setPaid] = useState(false);
   const { userId } = useParams();
   useEffect(() => {
-    console.log(props.location.state);
     const states = Object.keys(props.location.state || {});
+    const isNotThirdparty =
+      props.location.state.productType !== 'moov-third-party';
     const isValid = includesAll(states, [
       'product',
       'quote',
@@ -46,10 +47,14 @@ const Paystack = (props) => {
             'regNumber',
             'color',
             'yearOfModel',
-            'vehicleFrontImage',
-            'vehicleBackImage',
-            'vehicleLeftImage',
-            'vehicleRightImage',
+            ...(isNotThirdparty
+              ? [
+                  'vehicleFrontImage',
+                  'vehicleBackImage',
+                  'vehicleLeftImage',
+                  'vehicleRightImage',
+                ]
+              : []),
             'vehicleLicence',
           ]
         : []),
@@ -58,7 +63,6 @@ const Paystack = (props) => {
         : []),
     ]);
 
-    console.log(isValid, props, states);
     if (!isValid) {
       window.location = 'https://wa.me/+2348111228899';
       return;

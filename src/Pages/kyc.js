@@ -59,6 +59,8 @@ const KYC = (props) => {
   useEffect(() => {
     const states = Object.keys(props.location.state || {});
     if (props.location.state) {
+      const isNotThirdparty =
+        props.location.state.productType !== 'moov-third-party';
       if (vehicleType.includes(props.location.state.productType)) {
         const isValid = includesAll(states, [
           'vehicleClass',
@@ -74,14 +76,17 @@ const KYC = (props) => {
           'color',
           'yearOfModel',
           'regNumber',
-          'vehicleFrontImage',
-          'vehicleBackImage',
-          'vehicleLeftImage',
-          'vehicleRightImage',
-          'vehicleLicence'
+          ...(isNotThirdparty
+            ? [
+                'vehicleFrontImage',
+                'vehicleBackImage',
+                'vehicleLeftImage',
+                'vehicleRightImage',
+              ]
+            : []),
+          'vehicleLicence',
         ]);
 
-        console.log(isValid, props, states);
         if (!isValid) {
           window.location = 'https://wa.me/+2348111228899';
           return;
@@ -107,7 +112,7 @@ const KYC = (props) => {
           vehicleBackImage,
           vehicleLeftImage,
           vehicleRightImage,
-          vehicleLicence
+          vehicleLicence,
         } = props.location.state;
 
         return setQuoteDetails({
@@ -131,7 +136,7 @@ const KYC = (props) => {
           vehicleBackImage,
           vehicleLeftImage,
           vehicleRightImage,
-          vehicleLicence
+          vehicleLicence,
         });
       }
       if (lifeTypes.includes(props.location.state.productType)) {
