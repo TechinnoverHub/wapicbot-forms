@@ -131,7 +131,7 @@ const lifeinsurance = [
   // },
   {
     name: 'duration',
-    label: 'Duration (in terms of frequency)',
+    label: 'Duration (in years)',
     validate: {
       required: 'required',
       min: [3, 'Must be at least 3 years'],
@@ -188,7 +188,7 @@ const smartLifeInsurance = [
 
   {
     name: 'duration',
-    label: 'Duration (in terms of frequency)',
+    label: 'Duration (in years)',
     validate: {
       required: 'required',
       min: [3, 'Must be at least 3 years'],
@@ -246,7 +246,7 @@ const smartLifePlusInsurance = [
 
   {
     name: 'duration',
-    label: 'Duration (in terms of frequency)',
+    label: 'Duration (in years)',
     validate: {
       required: 'required',
       min: [3, 'Must be at least 3 years'],
@@ -304,7 +304,7 @@ const smartScholarInsurance = [
 
   {
     name: 'duration',
-    label: 'Duration (in terms of frequency)',
+    label: 'Duration (in years)',
     validate: {
       required: 'required',
       min: [5, 'Must be at least 5 years'],
