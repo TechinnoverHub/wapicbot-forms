@@ -21,6 +21,7 @@ const lifeTypes = [
   'e-term',
   'smart-scholars-plan',
   'smart-life',
+  'smart-life-plus',
   'smart-senior-plan',
 ];
 const pickExtraData = (type, action) => {
@@ -31,6 +32,7 @@ const pickExtraData = (type, action) => {
     'moov-prestige-(private-comprehensive)',
     'commercial-vehicle-(comprehensive)',
   ];
+
   if (vehicleType.includes(type)) {
     return [
       ...(type !== 'moov-third-party'
@@ -195,7 +197,9 @@ const ExtraDataPage = (props) => {
   const [quoteDetails, setQuoteDetails] = useState({});
   const { userId } = useParams();
   useEffect(() => {
+    console.log(props.location.state);
     const states = Object.keys(props.location.state || {});
+
     if (props.location.state) {
       if (vehicleType.includes(props.location.state.productType)) {
         const isValid = includesAll(states, [

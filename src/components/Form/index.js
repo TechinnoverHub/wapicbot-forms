@@ -288,6 +288,7 @@ const FormBuilder = ({
       case 'number':
         return (
           <NumberFormat
+            key={name}
             id={name}
             name={name}
             customInput={TextField}
@@ -311,6 +312,7 @@ const FormBuilder = ({
       case 'phone':
         return (
           <NumberFormat
+            key={name}
             id={name}
             name={name}
             customInput={TextField}
