@@ -1215,8 +1215,8 @@ const Insurances = ({ history, location }) => {
             };
             try {
               const { data } = await axios.post(
-                // 'https://wapicbot-api.herokuapp.com/api/products/get-quote',
-                'https://2002004cab36.ngrok.io/api/products/get-quote',
+                'https://wapicbot-api.herokuapp.com/api/products/get-quote',
+                // 'https://2002004cab36.ngrok.io/api/products/get-quote',
                 {
                   contribution: values.annualPremium,
                   pd: values.medicalBenefit,
