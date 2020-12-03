@@ -111,9 +111,13 @@ const MultiForm = ({
       if (!st.value) {
         newError[`value${i}`] = 'is Required';
       }
+      if (!st.image) {
+        newError[`image${i}`] = 'is Required';
+      }
     });
     setErrorState(newError);
   }, [state]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!Object.keys(errorState).length) return action(state);
@@ -135,6 +139,7 @@ const MultiForm = ({
 
     setState(newState);
   };
+
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <img src={logo} alt='logo' />
@@ -152,8 +157,7 @@ const MultiForm = ({
         <Card className={classes.card}>
           <FormControl
             className={classes.formControl}
-            error={errorState[`name${i}`]}
-          >
+            error={errorState[`name${i}`]}>
             <InputLabel id='demo-simple-select-label' className={classes.label}>
               Item to cover
             </InputLabel>
@@ -164,8 +168,7 @@ const MultiForm = ({
               //   {...formik.getFieldProps(name)}
               displayEmpty
               className={classes.selectEmpty}
-              inputProps={{ 'aria-label': 'Without label' }}
-            >
+              inputProps={{ 'aria-label': 'Without label' }}>
               {/* <MenuItem className={classes.items} value="" disabled>
                 Select One
               </MenuItem> */}
@@ -203,13 +206,15 @@ const MultiForm = ({
               disabled={loading}
               onDone={(file) => handleChange('image', i, file.base64)}
             />
+            {errorState[`name${i}`] && (
+              <FormHelperText error>{errorState[`image${i}`]}</FormHelperText>
+            )}
           </div>
           {i > 0 && (
             <IconButton
               onClick={() => removeOne(i)}
               aria-label='delete'
-              className={classes.btn}
-            >
+              className={classes.btn}>
               <DeleteIcon fontSize='small' color='secondary' />
             </IconButton>
           )}
@@ -220,8 +225,7 @@ const MultiForm = ({
           onClick={addMore}
           variant='contained'
           size='small'
-          className={classes.items}
-        >
+          className={classes.items}>
           add
         </Button>
       </div>
@@ -232,8 +236,7 @@ const MultiForm = ({
         <button
           disabled={Object.keys(errorState).length}
           className={styles.button}
-          type='submit'
-        >
+          type='submit'>
           &#8594;
         </button>
       )}
