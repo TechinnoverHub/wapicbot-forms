@@ -157,14 +157,10 @@ const MultiForm = ({
         <Card className={classes.card}>
           <FormControl
             className={classes.formControl}
-<<<<<<< HEAD
             error={errorState[`name${i}`]}
-          >
             <InputLabel id="demo-simple-select-label" className={classes.label}>
-=======
             error={errorState[`name${i}`]}>
             <InputLabel id='demo-simple-select-label' className={classes.label}>
->>>>>>> b0af565997a281ea3b89152b852575cff66ce43f
               Item to cover
             </InputLabel>
             <Select
@@ -174,12 +170,9 @@ const MultiForm = ({
               //   {...formik.getFieldProps(name)}
               displayEmpty
               className={classes.selectEmpty}
-<<<<<<< HEAD
               inputProps={{ "aria-label": "Without label" }}
             >
-=======
               inputProps={{ 'aria-label': 'Without label' }}>
->>>>>>> b0af565997a281ea3b89152b852575cff66ce43f
               {/* <MenuItem className={classes.items} value="" disabled>
                 Select One
               </MenuItem> */}
@@ -224,16 +217,13 @@ const MultiForm = ({
           {i > 0 && (
             <IconButton
               onClick={() => removeOne(i)}
-<<<<<<< HEAD
               aria-label="delete"
               className={classes.btn}
             >
               <DeleteIcon fontSize="small" color="secondary" />
-=======
               aria-label='delete'
               className={classes.btn}>
               <DeleteIcon fontSize='small' color='secondary' />
->>>>>>> b0af565997a281ea3b89152b852575cff66ce43f
             </IconButton>
           )}
         </Card>
@@ -241,16 +231,13 @@ const MultiForm = ({
       <div>
         <Button
           onClick={addMore}
-<<<<<<< HEAD
           variant="contained"
           size="small"
           className={classes.items}
         >
-=======
           variant='contained'
           size='small'
           className={classes.items}>
->>>>>>> b0af565997a281ea3b89152b852575cff66ce43f
           add
         </Button>
       </div>
@@ -261,12 +248,9 @@ const MultiForm = ({
         <button
           disabled={Object.keys(errorState).length}
           className={styles.button}
-<<<<<<< HEAD
           type="submit"
         >
-=======
           type='submit'>
->>>>>>> b0af565997a281ea3b89152b852575cff66ce43f
           &#8594;
         </button>
       )}
