@@ -4,6 +4,7 @@ import Container from '../components/Container';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import swal from 'sweetalert';
+import { useParams } from "react-router-dom";
 const optinFormData = [
   {
     name: 'customerType',
@@ -59,6 +60,16 @@ const optinFormData = [
       email: 'Invalid email address',
     },
     type: 'email',
+  },
+  {
+    name: 'AccountType',
+    label: 'Select Your Account Type',
+    validate: {
+      required: 'required',
+    },
+    type: 'select',
+    selectLabel: 'select one',
+    list: ['AGENT', 'CUSTOMER'],
   },
   {
     name: 'policyNumber',
@@ -118,6 +129,7 @@ const optinFormData = [
 ];
 const OptIn = () => {
   const location = useLocation();
+  let { referee } = useParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -142,6 +154,8 @@ const OptIn = () => {
           email: values.email,
           whatsappNo: `+${whatsappNo.trim()}`,
           conversationId,
+          accountType: values.accountType
+          referee: referee !== undefined ? referee : undefined
         }
       );
       window.location = 'https://wa.me/+2348111228899';

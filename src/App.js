@@ -73,6 +73,7 @@ function App() {
           )}
         />
         <Route path='/optin' component={OptIn} />
+        <Route path="/optin/:referee" component={Optin} />
         <Route path='/check-vehicle/:type/:userId' component={VehicleCheck} />
         <Route path='/product/:type/:userId' component={Insurances} />
         <Route path='/kyc/:userId' component={KYC} />

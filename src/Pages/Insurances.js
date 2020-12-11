@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import FormBuilder from '../components/Form';
-import MultiForm from '../components/Form/MultiForm';
-import Container from '../components/Container';
-import { useParams } from 'react-router-dom';
+import React, { useState } from "react";
+import FormBuilder from "../components/Form";
+import MultiForm from "../components/Form/MultiForm";
+import Container from "../components/Container";
+import { useParams } from "react-router-dom";
 // import includesAll from '../utils/includesAll';
-import axios from 'axios';
-const isDev = process.env.NODE_ENV === 'development';
+import axios from "axios";
+const isDev = process.env.NODE_ENV === "development";
 // import cloudinary from 'cloudinary/lib/cloudinary';
-const CLOUDINARY_URL = `http${isDev ? '' : 's'}://api.cloudinary.com/v1_1/${
+const CLOUDINARY_URL = `http${isDev ? "" : "s"}://api.cloudinary.com/v1_1/${
   process.env.REACT_APP_CL_NAME
 }/upload`;
 
@@ -28,67 +28,67 @@ const medicalBenefitMap = {
   100000: 250000,
 };
 const productmap = {
-  'moov-third-party': 'Motor Insurance (3rd Party)',
-  'moov-plus-(fire-and-theft)': 'Motor Insurance (Third Party Fire & Theft)',
-  'moov-luxury-(extented-comprehensive)':
-    'Motor Insurance Luxury (Comprehensive)',
-  'moov-prestige-(private-comprehensive)':
-    'Comprehensive Vehicle Insurance (Private Motor)',
-  'commercial-vehicle-(comprehensive)':
-    'Comprehensive Vehicle Insurance (Commercial Motor)',
-  'house-holders-insurance': 'House Holders Insurance',
-  'house-owners-insurance': 'House Owners Insurance',
-  'e-term': 'E-Term',
-  'smart-scholars-plan': 'Smart Scholars Plan',
-  'smart-life': 'Smart Life',
-  'smart-life-plus': 'Smart Life Plus',
-  'smart-senior-plan': 'Smart Senior Plan',
+  "moov-third-party": "Motor Insurance (3rd Party)",
+  "moov-plus-(fire-and-theft)": "Motor Insurance (Third Party Fire & Theft)",
+  "moov-luxury-(extented-comprehensive)":
+    "Motor Insurance Luxury (Comprehensive)",
+  "moov-prestige-(private-comprehensive)":
+    "Comprehensive Vehicle Insurance (Private Motor)",
+  "commercial-vehicle-(comprehensive)":
+    "Comprehensive Vehicle Insurance (Commercial Motor)",
+  "house-holders-insurance": "House Holders Insurance",
+  "house-owners-insurance": "House Owners Insurance",
+  "e-term": "E-Term",
+  "smart-scholars-plan": "Smart Scholars Plan",
+  "smart-life": "Smart Life",
+  "smart-life-plus": "Smart Life Plus",
+  "smart-senior-plan": "Smart Senior Plan",
 };
 const vehicleClassMap = {
-  'private Cars': 'PRIVATE',
-  'Commercial Buses & Vehicle': 'COMMERCIAL',
-  'commercial Buses & Vehicle': 'BUSES',
-  'trucks & General Cartage': 'TRUCKS',
-  uber: 'UBER',
-  'motor cycle': 'MOTORCYCLE',
+  "private Cars": "PRIVATE",
+  "Commercial Buses & Vehicle": "COMMERCIAL",
+  "commercial Buses & Vehicle": "BUSES",
+  "trucks & General Cartage": "TRUCKS",
+  uber: "UBER",
+  "motor cycle": "MOTORCYCLE",
 };
-const houseTypes = ['house-holders-insurance', 'house-owners-insurance'];
+const houseTypes = ["house-holders-insurance", "house-owners-insurance"];
 const lifeTypes = [
-  'e-term',
-  'smart-scholars-plan',
-  'smart-life',
-  'smart-life-plus',
-  'smart-senior-plan',
+  "e-term",
+  "smart-scholars-plan",
+  "smart-life",
+  "smart-life-plus",
+  "smart-senior-plan",
 ];
 const vehicleType = [
-  'moov-third-party',
-  'moov-plus-(fire-and-theft)',
-  'moov-luxury-(extented-comprehensive)',
-  'moov-prestige-(private-comprehensive)',
-  'commercial-vehicle-(comprehensive)',
+  "moov-third-party",
+  "moov-plus-(fire-and-theft)",
+  "moov-luxury-(extented-comprehensive)",
+  "moov-prestige-(private-comprehensive)",
+  "commercial-vehicle-(comprehensive)",
 ];
 const vehicleTypeDefault = [
-  'moov-plus-(fire-and-theft)',
-  'moov-luxury-(extented-comprehensive)',
-  'moov-prestige-(private-comprehensive)',
+  "moov-plus-(fire-and-theft)",
+  "moov-luxury-(extented-comprehensive)",
+  "moov-prestige-(private-comprehensive)",
 ];
 
 const lifeinsurance = [
   {
-    name: 'firstName',
-    label: 'First Name',
+    name: "firstName",
+    label: "First Name",
     validate: {
-      required: 'required',
+      required: "required",
     },
-    type: 'text',
+    type: "text",
   },
   {
-    name: 'lastName',
-    label: 'Last Name',
+    name: "lastName",
+    label: "Last Name",
     validate: {
-      required: 'required',
+      required: "required",
     },
-    type: 'text',
+    type: "text",
   },
 
   // {
@@ -102,13 +102,13 @@ const lifeinsurance = [
   //   type: 'text',
   // },
   {
-    name: 'age',
-    label: 'Age',
+    name: "age",
+    label: "Age",
     validate: {
-      required: 'required',
+      required: "required",
     },
 
-    type: 'select',
+    type: "select",
     list: [...new Array(45)].map((num, i) => i + 18),
   },
   // {
@@ -130,243 +130,243 @@ const lifeinsurance = [
   //   type: 'currency',
   // },
   {
-    name: 'duration',
-    label: 'Duration (in years)',
+    name: "duration",
+    label: "Duration (in years)",
     validate: {
-      required: 'required',
-      min: [3, 'Must be at least 3 years'],
+      required: "required",
+      min: [3, "Must be at least 3 years"],
     },
-    type: 'number',
+    type: "number",
   },
   {
-    name: 'frequency',
-    label: 'Frequency',
+    name: "frequency",
+    label: "Frequency",
     validate: {
-      required: 'required',
+      required: "required",
       // min: [3, 'Must be at least 3 years'],
     },
-    type: 'select',
-    list: ['Monthly', 'Quarterly', 'Year', 'Bi-Annual'],
+    type: "select",
+    list: ["Monthly", "Quarterly", "Year", "Bi-Annual"],
   },
   {
-    name: 'annualPremium',
-    label: 'Annual Contribution',
+    name: "annualPremium",
+    label: "Annual Contribution",
     validate: {
-      required: 'required',
-      min: [120000, 'Must be at least ₦120,000'],
+      required: "required",
+      min: [120000, "Must be at least ₦120,000"],
     },
-    type: 'currency',
+    type: "currency",
   },
 ];
 const smartLifeInsurance = [
   {
-    name: 'firstName',
-    label: 'First Name',
+    name: "firstName",
+    label: "First Name",
     validate: {
-      required: 'required',
+      required: "required",
     },
-    type: 'text',
+    type: "text",
   },
   {
-    name: 'lastName',
-    label: 'Last Name',
+    name: "lastName",
+    label: "Last Name",
     validate: {
-      required: 'required',
+      required: "required",
     },
-    type: 'text',
+    type: "text",
   },
   {
-    name: 'age',
-    label: 'Age',
+    name: "age",
+    label: "Age",
     validate: {
-      required: 'required',
+      required: "required",
     },
 
-    type: 'select',
+    type: "select",
     list: [...new Array(45)].map((num, i) => i + 18),
   },
 
   {
-    name: 'duration',
-    label: 'Duration (in years)',
+    name: "duration",
+    label: "Duration (in years)",
     validate: {
-      required: 'required',
-      min: [3, 'Must be at least 3 years'],
+      required: "required",
+      min: [3, "Must be at least 3 years"],
     },
-    type: 'number',
+    type: "number",
   },
   {
-    name: 'frequency',
-    label: 'Frequency',
+    name: "frequency",
+    label: "Frequency",
     validate: {
-      required: 'required',
+      required: "required",
       // min: [3, 'Must be at least 3 years'],
     },
-    type: 'select',
-    list: ['Monthly', 'Quarterly', 'Year', 'Bi-Annual'],
+    type: "select",
+    list: ["Monthly", "Quarterly", "Year", "Bi-Annual"],
   },
   {
-    name: 'annualPremium',
-    label: 'Annual Contribution',
+    name: "annualPremium",
+    label: "Annual Contribution",
     validate: {
-      required: 'required',
-      min: [120000, 'Must be at least ₦120,000'],
+      required: "required",
+      min: [120000, "Must be at least ₦120,000"],
     },
-    type: 'currency',
+    type: "currency",
   },
 ];
 const smartLifePlusInsurance = [
   {
-    name: 'firstName',
-    label: 'First Name',
+    name: "firstName",
+    label: "First Name",
     validate: {
-      required: 'required',
+      required: "required",
     },
-    type: 'text',
+    type: "text",
   },
   {
-    name: 'lastName',
-    label: 'Last Name',
+    name: "lastName",
+    label: "Last Name",
     validate: {
-      required: 'required',
+      required: "required",
     },
-    type: 'text',
+    type: "text",
   },
 
   {
-    name: 'age',
-    label: 'Age',
+    name: "age",
+    label: "Age",
     validate: {
-      required: 'required',
+      required: "required",
     },
 
-    type: 'select',
+    type: "select",
     list: [...new Array(37)].map((num, i) => i + 18),
   },
 
   {
-    name: 'duration',
-    label: 'Duration (in years)',
+    name: "duration",
+    label: "Duration (in years)",
     validate: {
-      required: 'required',
-      min: [3, 'Must be at least 3 years'],
+      required: "required",
+      min: [3, "Must be at least 3 years"],
     },
-    type: 'number',
+    type: "number",
   },
   {
-    name: 'frequency',
-    label: 'Frequency',
+    name: "frequency",
+    label: "Frequency",
     validate: {
-      required: 'required',
+      required: "required",
       // min: [3, 'Must be at least 3 years'],
     },
-    type: 'select',
-    list: ['Monthly', 'Quarterly', 'Year', 'Bi-Annual'],
+    type: "select",
+    list: ["Monthly", "Quarterly", "Year", "Bi-Annual"],
   },
   {
-    name: 'annualPremium',
-    label: 'Annual Contribution',
+    name: "annualPremium",
+    label: "Annual Contribution",
     validate: {
-      required: 'required',
-      min: [120000, 'Must be at least ₦120,000'],
+      required: "required",
+      min: [120000, "Must be at least ₦120,000"],
     },
-    type: 'currency',
+    type: "currency",
   },
 ];
 const smartScholarInsurance = [
   {
-    name: 'firstName',
-    label: 'First Name',
+    name: "firstName",
+    label: "First Name",
     validate: {
-      required: 'required',
+      required: "required",
     },
-    type: 'text',
+    type: "text",
   },
   {
-    name: 'lastName',
-    label: 'Last Name',
+    name: "lastName",
+    label: "Last Name",
     validate: {
-      required: 'required',
+      required: "required",
     },
-    type: 'text',
+    type: "text",
   },
 
   {
-    name: 'age',
-    label: 'Age',
+    name: "age",
+    label: "Age",
     validate: {
-      required: 'required',
+      required: "required",
     },
 
-    type: 'select',
+    type: "select",
     list: [...new Array(48)].map((num, i) => i + 18),
   },
 
   {
-    name: 'duration',
-    label: 'Duration (in years)',
+    name: "duration",
+    label: "Duration (in years)",
     validate: {
-      required: 'required',
-      min: [5, 'Must be at least 5 years'],
+      required: "required",
+      min: [5, "Must be at least 5 years"],
     },
-    type: 'number',
+    type: "number",
   },
   {
-    name: 'frequency',
-    label: 'Frequency',
+    name: "frequency",
+    label: "Frequency",
     validate: {
-      required: 'required',
+      required: "required",
       // min: [3, 'Must be at least 3 years'],
     },
-    type: 'select',
-    list: ['Monthly', 'Quarterly', 'Year', 'Bi-Annual'],
+    type: "select",
+    list: ["Monthly", "Quarterly", "Year", "Bi-Annual"],
   },
   {
-    name: 'annualPremium',
-    label: 'Annual Contribution',
+    name: "annualPremium",
+    label: "Annual Contribution",
     validate: {
-      required: 'required',
-      min: [60000, 'Must be at least ₦60,000'],
+      required: "required",
+      min: [60000, "Must be at least ₦60,000"],
     },
-    type: 'currency',
+    type: "currency",
   },
 ];
 
 const eTermInsurance = [
   {
-    name: 'firstName',
-    label: 'First Name',
+    name: "firstName",
+    label: "First Name",
     validate: {
-      required: 'required',
+      required: "required",
     },
-    type: 'text',
+    type: "text",
   },
   {
-    name: 'lastName',
-    label: 'Last Name',
+    name: "lastName",
+    label: "Last Name",
     validate: {
-      required: 'required',
+      required: "required",
     },
-    type: 'text',
+    type: "text",
   },
   {
-    name: 'age',
-    label: 'Age',
+    name: "age",
+    label: "Age",
     validate: {
-      required: 'required',
+      required: "required",
     },
 
-    type: 'select',
+    type: "select",
     list: [...new Array(43)].map((num, i) => i + 18),
   },
   {
-    name: 'annualPremium',
-    label: 'Annual Premium',
+    name: "annualPremium",
+    label: "Annual Premium",
     validate: {
-      required: 'required',
+      required: "required",
     },
-    type: 'select',
-    setterKeys: ['sumAssured', 'medicalBenefit'],
+    type: "select",
+    setterKeys: ["sumAssured", "medicalBenefit"],
     currency: true,
     action: (val, setter) => {
       setter(val * 100, medicalBenefitMap[val]);
@@ -380,13 +380,13 @@ const eTermInsurance = [
     ],
   },
   {
-    name: 'sumAssured',
-    label: 'Sum Assured',
+    name: "sumAssured",
+    label: "Sum Assured",
     validate: {
-      required: 'required',
+      required: "required",
     },
-    type: 'select',
-    setterKeys: ['annualPremium', 'medicalBenefit'],
+    type: "select",
+    setterKeys: ["annualPremium", "medicalBenefit"],
     action: (val, setter) => {
       setter(val / 100, medicalBenefitMap[val / 100]);
     },
@@ -400,80 +400,80 @@ const eTermInsurance = [
     currency: true,
   },
   {
-    name: 'medicalBenefit',
-    label: 'Medical Benefit',
+    name: "medicalBenefit",
+    label: "Medical Benefit",
     validate: {
-      required: 'required',
+      required: "required",
     },
     disabled: true,
-    type: 'currency',
+    type: "currency",
   },
   {
-    name: 'duration',
-    label: 'Duration (in years)',
+    name: "duration",
+    label: "Duration (in years)",
     validate: {
-      required: 'required',
+      required: "required",
     },
-    type: 'number',
+    type: "number",
   },
 ];
 const products = {
-  'moov-third-party': [
+  "moov-third-party": [
     {
-      name: 'vehicleClass',
-      label: 'Vehicle Class',
+      name: "vehicleClass",
+      label: "Vehicle Class",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
+      type: "select",
       list: [
-        'private Cars',
-        'Commercial Buses & Vehicle',
-        'trucks & General Cartage',
+        "private Cars",
+        "Commercial Buses & Vehicle",
+        "trucks & General Cartage",
       ],
     },
     {
-      name: 'manufacturer',
-      data: 'manufacturers',
-      label: 'select Manufacturer ',
+      name: "manufacturer",
+      data: "manufacturers",
+      label: "select Manufacturer ",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
+      type: "select",
     },
     {
-      name: 'model',
-      label: 'Select Vehicle Model',
+      name: "model",
+      label: "Select Vehicle Model",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      dependent: 'manufacturer',
-      data: 'carModels',
+      type: "select",
+      dependent: "manufacturer",
+      data: "carModels",
     },
     {
-      name: 'regNumber',
-      label: 'Registration Number',
+      name: "regNumber",
+      label: "Registration Number",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'text',
+      type: "text",
     },
 
     {
-      name: 'vehicleValue',
-      label: 'Vehicle value',
+      name: "vehicleValue",
+      label: "Vehicle value",
       validate: {
-        required: 'required',
-        min: [1000000, 'Must be at least ₦1,000,000'],
+        required: "required",
+        min: [1000000, "Must be at least ₦1,000,000"],
       },
-      type: 'currency',
-      setterKeys: ['tracking'],
+      type: "currency",
+      setterKeys: ["tracking"],
       action: (val, setter) => {
         console.log(val);
         if (Number(val) >= 5000000) {
-          console.log('set', val);
-          setter('yes');
+          console.log("set", val);
+          setter("yes");
         } else {
           setter(null);
         }
@@ -481,69 +481,69 @@ const products = {
     },
 
     {
-      name: 'excessBuyBack',
-      label: 'Excess Buy Back',
+      name: "excessBuyBack",
+      label: "Excess Buy Back",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      list: ['yes', 'no'],
+      type: "select",
+      list: ["yes", "no"],
       dependent: {
-        key: 'vehicleValue',
+        key: "vehicleValue",
         gtValue: 5000000,
       },
     },
     {
-      name: 'tracking',
-      label: 'Vehicle Tracker',
+      name: "tracking",
+      label: "Vehicle Tracker",
       validate: {
         // required: "required",
       },
-      type: 'text',
+      type: "text",
       disabled: true,
       dependent: {
-        key: 'vehicleValue',
+        key: "vehicleValue",
         gtValue: 5000000,
       },
     },
   ],
-  'moov-plus-(fire-and-theft)': [
+  "moov-plus-(fire-and-theft)": [
     {
-      name: 'vehicleClass',
-      label: 'Select Vehicle Class',
+      name: "vehicleClass",
+      label: "Select Vehicle Class",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
+      type: "select",
       disabled: true,
-      list: ['private Cars'],
+      list: ["private Cars"],
     },
     {
-      name: 'manufacturer',
-      data: 'manufacturers',
-      label: 'select Manufacturer ',
+      name: "manufacturer",
+      data: "manufacturers",
+      label: "select Manufacturer ",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
+      type: "select",
     },
     {
-      name: 'model',
-      label: 'Select Vehicle Model',
+      name: "model",
+      label: "Select Vehicle Model",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      dependent: 'manufacturer',
-      data: 'carModels',
+      type: "select",
+      dependent: "manufacturer",
+      data: "carModels",
     },
     {
-      name: 'regNumber',
-      label: 'Registration Number',
+      name: "regNumber",
+      label: "Registration Number",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'text',
+      type: "text",
     },
     // {
     //   name: "policyholder",
@@ -567,106 +567,106 @@ const products = {
     //   type: "text",
     // },
     {
-      name: 'vehicleValue',
-      label: 'Vehicle value',
+      name: "vehicleValue",
+      label: "Vehicle value",
       validate: {
-        required: 'required',
-        min: [1000000, 'Must be at least ₦1,000,000'],
+        required: "required",
+        min: [1000000, "Must be at least ₦1,000,000"],
       },
-      type: 'currency',
-      setterKeys: ['tracking'],
+      type: "currency",
+      setterKeys: ["tracking"],
       action: (val, setter) => {
         console.log(val);
         if (Number(val) >= 5000000) {
-          console.log('set', val);
-          setter('yes');
+          console.log("set", val);
+          setter("yes");
         } else {
           setter(null);
         }
       },
     },
     {
-      name: 'floodExt',
-      label: 'Flood Extension',
+      name: "floodExt",
+      label: "Flood Extension",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      list: ['yes', 'no'],
+      type: "select",
+      list: ["yes", "no"],
     },
     {
-      name: 'excessBuyBack',
-      label: 'Excess Buy Back',
+      name: "excessBuyBack",
+      label: "Excess Buy Back",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      list: ['yes', 'no'],
+      type: "select",
+      list: ["yes", "no"],
       dependent: {
-        key: 'vehicleValue',
+        key: "vehicleValue",
         gtValue: 5000000,
       },
     },
     {
-      name: 'riot',
-      label: 'Riot strike and civil commotion cover',
+      name: "riot",
+      label: "Riot strike and civil commotion cover",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      list: ['yes', 'no'],
+      type: "select",
+      list: ["yes", "no"],
     },
     {
-      name: 'tracking',
-      label: 'Vehicle Tracker',
+      name: "tracking",
+      label: "Vehicle Tracker",
       validate: {
         // required: "required",
       },
-      type: 'text',
+      type: "text",
       disabled: true,
       dependent: {
-        key: 'vehicleValue',
+        key: "vehicleValue",
         gtValue: 5000000,
       },
     },
   ],
-  'moov-luxury-(extented-comprehensive)': [
+  "moov-luxury-(extented-comprehensive)": [
     {
-      name: 'vehicleClass',
-      label: 'Select Vehicle Class',
+      name: "vehicleClass",
+      label: "Select Vehicle Class",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
+      type: "select",
       disabled: true,
-      list: ['private Cars'],
+      list: ["private Cars"],
     },
     {
-      name: 'manufacturer',
-      data: 'manufacturers',
-      label: 'select Manufacturer ',
+      name: "manufacturer",
+      data: "manufacturers",
+      label: "select Manufacturer ",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
+      type: "select",
     },
     {
-      name: 'model',
-      label: 'Select Vehicle Model',
+      name: "model",
+      label: "Select Vehicle Model",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      dependent: 'manufacturer',
-      data: 'carModels',
+      type: "select",
+      dependent: "manufacturer",
+      data: "carModels",
     },
     {
-      name: 'regNumber',
-      label: 'Registration Number',
+      name: "regNumber",
+      label: "Registration Number",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'text',
+      type: "text",
     },
     // {
     //   name: "policyholder",
@@ -690,106 +690,106 @@ const products = {
     //   type: "text",
     // },
     {
-      name: 'vehicleValue',
-      label: 'Vehicle value',
+      name: "vehicleValue",
+      label: "Vehicle value",
       validate: {
-        required: 'required',
-        min: [1000000, 'Must be at least ₦1,000,000'],
+        required: "required",
+        min: [1000000, "Must be at least ₦1,000,000"],
       },
-      type: 'currency',
-      setterKeys: ['tracking'],
+      type: "currency",
+      setterKeys: ["tracking"],
       action: (val, setter) => {
         console.log(val);
         if (Number(val) >= 5000000) {
-          console.log('set', val);
-          setter('yes');
+          console.log("set", val);
+          setter("yes");
         } else {
           setter(null);
         }
       },
     },
     {
-      name: 'floodExt',
-      label: 'Flood Extension',
+      name: "floodExt",
+      label: "Flood Extension",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      list: ['yes'],
+      type: "select",
+      list: ["yes"],
     },
     {
-      name: 'excessBuyBack',
-      label: 'Excess Buy Back',
+      name: "excessBuyBack",
+      label: "Excess Buy Back",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      list: ['yes', 'no'],
+      type: "select",
+      list: ["yes", "no"],
       dependent: {
-        key: 'vehicleValue',
+        key: "vehicleValue",
         gtValue: 5000000,
       },
     },
     {
-      name: 'riot',
-      label: 'Riot strike and civil commotion cover',
+      name: "riot",
+      label: "Riot strike and civil commotion cover",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      list: ['yes', 'no'],
+      type: "select",
+      list: ["yes", "no"],
     },
     {
-      name: 'tracking',
-      label: 'Vehicle Tracker',
+      name: "tracking",
+      label: "Vehicle Tracker",
       validate: {
         // required: "required",
       },
-      type: 'text',
+      type: "text",
       disabled: true,
       dependent: {
-        key: 'vehicleValue',
+        key: "vehicleValue",
         gtValue: 5000000,
       },
     },
   ],
-  'moov-prestige-(private-comprehensive)': [
+  "moov-prestige-(private-comprehensive)": [
     {
-      name: 'vehicleClass',
-      label: 'Select Vehicle Class',
+      name: "vehicleClass",
+      label: "Select Vehicle Class",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
+      type: "select",
       disabled: true,
-      list: ['private Cars'],
+      list: ["private Cars"],
     },
     {
-      name: 'manufacturer',
-      data: 'manufacturers',
-      label: 'select Manufacturer ',
+      name: "manufacturer",
+      data: "manufacturers",
+      label: "select Manufacturer ",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
+      type: "select",
     },
     {
-      name: 'model',
-      label: 'Select Vehicle Model',
+      name: "model",
+      label: "Select Vehicle Model",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      dependent: 'manufacturer',
-      data: 'carModels',
+      type: "select",
+      dependent: "manufacturer",
+      data: "carModels",
     },
     {
-      name: 'regNumber',
-      label: 'Registration Number',
+      name: "regNumber",
+      label: "Registration Number",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'text',
+      type: "text",
     },
     // {
     //   name: "policyholder",
@@ -813,143 +813,143 @@ const products = {
     //   type: "text",
     // },
     {
-      name: 'vehicleValue',
-      label: 'Vehicle value',
+      name: "vehicleValue",
+      label: "Vehicle value",
       validate: {
-        required: 'required',
-        min: [1000000, 'Must be at least ₦1,000,000'],
+        required: "required",
+        min: [1000000, "Must be at least ₦1,000,000"],
       },
-      type: 'currency',
-      setterKeys: ['tracking'],
+      type: "currency",
+      setterKeys: ["tracking"],
       action: (val, setter) => {
         console.log(val);
         if (Number(val) >= 5000000) {
-          console.log('set', val);
-          setter('yes');
+          console.log("set", val);
+          setter("yes");
         } else {
           setter(null);
         }
       },
     },
     {
-      name: 'floodExt',
-      label: 'Flood Extension',
+      name: "floodExt",
+      label: "Flood Extension",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      list: ['yes', 'no'],
+      type: "select",
+      list: ["yes", "no"],
     },
     {
-      name: 'riot',
-      label: 'Riot strike and civil commotion cover',
+      name: "riot",
+      label: "Riot strike and civil commotion cover",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      list: ['yes', 'no'],
+      type: "select",
+      list: ["yes", "no"],
     },
     {
-      name: 'excessBuyBack',
-      label: 'Excess Buy Back',
+      name: "excessBuyBack",
+      label: "Excess Buy Back",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      list: ['yes', 'no'],
+      type: "select",
+      list: ["yes", "no"],
       dependent: {
-        key: 'vehicleValue',
+        key: "vehicleValue",
         gtValue: 5000000,
       },
     },
     {
-      name: 'tracking',
-      label: 'Vehicle Tracker',
+      name: "tracking",
+      label: "Vehicle Tracker",
       validate: {
         // required: "required",
       },
-      type: 'text',
+      type: "text",
       disabled: true,
       dependent: {
-        key: 'vehicleValue',
+        key: "vehicleValue",
         gtValue: 5000000,
       },
     },
   ],
-  'commercial-vehicle-(comprehensive)': [
+  "commercial-vehicle-(comprehensive)": [
     {
-      name: 'vehicleClass',
-      label: 'Select Vehicle Class',
+      name: "vehicleClass",
+      label: "Select Vehicle Class",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
+      type: "select",
       list: [
-        'commercial Buses & Vehicle',
-        'trucks & General Cartage',
-        'uber',
-        'motor cycle',
+        "commercial Buses & Vehicle",
+        "trucks & General Cartage",
+        "uber",
+        "motor cycle",
       ],
     },
     {
-      name: 'manufacturer',
-      data: 'manufacturers',
-      label: 'select Manufacturer ',
+      name: "manufacturer",
+      data: "manufacturers",
+      label: "select Manufacturer ",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
+      type: "select",
       notShow: {
-        key: 'vehicleClass',
-        value: 'motor cycle',
+        key: "vehicleClass",
+        value: "motor cycle",
       },
     },
     {
-      name: 'model',
-      label: 'Select Vehicle Model',
+      name: "model",
+      label: "Select Vehicle Model",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      dependent: 'manufacturer',
-      data: 'carModels',
+      type: "select",
+      dependent: "manufacturer",
+      data: "carModels",
       notShow: {
-        key: 'vehicleClass',
-        value: 'motor cycle',
+        key: "vehicleClass",
+        value: "motor cycle",
       },
     },
     {
-      name: 'manufacturer',
-      label: 'Enter Manufacturer ',
+      name: "manufacturer",
+      label: "Enter Manufacturer ",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'text',
+      type: "text",
       dependent: {
-        key: 'vehicleClass',
-        value: 'motor cycle',
+        key: "vehicleClass",
+        value: "motor cycle",
       },
     },
     {
-      name: 'model',
-      label: 'Enter Vehicle Model',
+      name: "model",
+      label: "Enter Vehicle Model",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'text',
+      type: "text",
       dependent: {
-        key: 'vehicleClass',
-        value: 'motor cycle',
+        key: "vehicleClass",
+        value: "motor cycle",
       },
     },
 
     {
-      name: 'regNumber',
-      label: 'Registration Number',
+      name: "regNumber",
+      label: "Registration Number",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'text',
+      type: "text",
     },
     // {
     //   name: "policyholder",
@@ -973,66 +973,66 @@ const products = {
     //   type: "text",
     // },
     {
-      name: 'vehicleValue',
-      label: 'Vehicle value',
+      name: "vehicleValue",
+      label: "Vehicle value",
       validate: {
-        required: 'required',
-        min: [1000000, 'Must be at least ₦1,000,000', true],
+        required: "required",
+        min: [1000000, "Must be at least ₦1,000,000", true],
       },
-      type: 'currency',
-      setterKeys: ['tracking'],
-      keyState: { key: 'vehicleClass', value: 'motor cycle' },
+      type: "currency",
+      setterKeys: ["tracking"],
+      keyState: { key: "vehicleClass", value: "motor cycle" },
       action: (val, setter, keyState) => {
         console.log(val);
         if (Number(val) >= 5000000 && !keyState) {
-          console.log('set', val);
-          setter('yes');
+          console.log("set", val);
+          setter("yes");
         } else {
           setter(null);
         }
       },
     },
     {
-      name: 'riot',
-      label: 'Riot strike and civil commotion cover',
+      name: "riot",
+      label: "Riot strike and civil commotion cover",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      list: ['yes', 'no'],
+      type: "select",
+      list: ["yes", "no"],
     },
     {
-      name: 'excessBuyBack',
-      label: 'Excess Buy Back',
+      name: "excessBuyBack",
+      label: "Excess Buy Back",
       validate: {
-        required: 'required',
+        required: "required",
       },
-      type: 'select',
-      list: ['yes', 'no'],
+      type: "select",
+      list: ["yes", "no"],
       dependent: {
-        key: 'vehicleValue',
+        key: "vehicleValue",
         gtValue: 5000000,
       },
     },
     {
-      name: 'tracking',
-      label: 'Vehicle Tracker',
+      name: "tracking",
+      label: "Vehicle Tracker",
       validate: {
         // required: "required",
       },
-      type: 'text',
+      type: "text",
       disabled: true,
       dependent: {
-        key: 'vehicleValue',
+        key: "vehicleValue",
         gtValue: 5000000,
       },
     },
   ],
-  'e-term': eTermInsurance,
-  'smart-scholars-plan': smartScholarInsurance,
-  'smart-life': smartLifeInsurance,
-  'smart-life-plus': smartLifePlusInsurance,
-  'smart-senior-plan': lifeinsurance,
+  "e-term": eTermInsurance,
+  "smart-scholars-plan": smartScholarInsurance,
+  "smart-life": smartLifeInsurance,
+  "smart-life-plus": smartLifePlusInsurance,
+  "smart-senior-plan": lifeinsurance,
 };
 const Insurances = ({ history, location }) => {
   const [loading, setLoading] = useState(false);
@@ -1060,7 +1060,7 @@ const Insurances = ({ history, location }) => {
       {houseTypes.includes(type) && (
         <MultiForm
           title={productmap[type]}
-          instruction='Fill Details'
+          instruction="Fill Details"
           error={error}
           loading={loading}
           action={async (values) => {
@@ -1076,14 +1076,14 @@ const Insurances = ({ history, location }) => {
                     const data = {
                       file: newVal.image,
                       folder: `${userId}/`,
-                      upload_preset: 'pb9zgwxy',
+                      upload_preset: "pb9zgwxy",
                     };
                     const r = await fetch(CLOUDINARY_URL, {
                       body: JSON.stringify(data),
                       headers: {
-                        'content-type': 'application/json',
+                        "content-type": "application/json",
                       },
-                      method: 'POST',
+                      method: "POST",
                     });
                     const result = await r.json();
                     console.log(result);
@@ -1117,7 +1117,7 @@ const Insurances = ({ history, location }) => {
               console.log(valuesToUpload);
 
               const { data } = await axios.post(
-                'https://wapicbot-api.herokuapp.com/api/products/get-quote',
+                "https://wapicbot-api.herokuapp.com/api/products/get-quote",
                 // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
                 {
                   items: valuesToUpload,
@@ -1135,11 +1135,11 @@ const Insurances = ({ history, location }) => {
               if (error.response) {
                 setError(error.response.data.message);
               }
-              console.log(error.response, error, 'errores');
+              console.log(error.response, error, "errores");
             }
           }}
           template={{
-            name: '',
+            name: "",
             value: null,
           }}
         />
@@ -1151,10 +1151,10 @@ const Insurances = ({ history, location }) => {
           title={productmap[type]}
           defaultValues={
             vehicleTypeDefault.includes(type)
-              ? { vehicleClass: 'private Cars' }
+              ? { vehicleClass: "private Cars" }
               : {}
           }
-          instruction='Fill Details'
+          instruction="Fill Details"
           data={products[type] || []}
           action={async (values) => {
             setLoading(true);
@@ -1162,7 +1162,7 @@ const Insurances = ({ history, location }) => {
             console.log(values);
             try {
               const { data } = await axios.post(
-                'https://wapicbot-api.herokuapp.com/api/products/get-quote',
+                "https://wapicbot-api.herokuapp.com/api/products/get-quote",
                 // "https://940dde6e0c61.ngrok.io/api/products/get-quote",
                 {
                   vehicleClass: vehicleClassMap[values.vehicleClass],
@@ -1201,21 +1201,21 @@ const Insurances = ({ history, location }) => {
           error={error}
           loading={loading}
           title={productmap[type]}
-          instruction='Fill Details'
+          instruction="Fill Details"
           data={products[type] || []}
           action={async (values) => {
             setLoading(true);
             setError(null);
             console.log(values);
             const frequencyMap = {
-              Year: 'Y',
-              'Bi-Annual': 'H',
-              Monthly: 'M',
-              Quarterly: 'Q',
+              Year: "Y",
+              "Bi-Annual": "H",
+              Monthly: "M",
+              Quarterly: "Q",
             };
             try {
               const { data } = await axios.post(
-                'https://wapicbot-api.herokuapp.com/api/products/get-quote',
+                "https://wapicbot-api.herokuapp.com/api/products/get-quote",
                 // 'https://2002004cab36.ngrok.io/api/products/get-quote',
                 {
                   contribution: values.annualPremium,
