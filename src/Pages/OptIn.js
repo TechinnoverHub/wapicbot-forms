@@ -77,10 +77,10 @@ const optinFormData = [
     validate: {
       required: "required",
     },
-    type: "number",
+    type: "text",
     dependent: {
-      key: "AccountType",
-      value: "CUSTOMER",
+      key: "customerType",
+      value: "returning customer",
     },
   },
   {
@@ -91,8 +91,8 @@ const optinFormData = [
     },
     type: "number",
     dependent: {
-      key: "AccountType",
-      value: "AGENT",
+      key: "customerType",
+      value: "returning customer",
     },
   },
   {
@@ -101,7 +101,11 @@ const optinFormData = [
     validate: {
       required: false,
     },
-    type: "number",
+    dependent: {
+      key: "customerType",
+      value: "new customer",
+    },
+    type: "text",
   },
   {
     name: "wapicPolicy",
@@ -177,7 +181,7 @@ const OptIn = () => {
           accountType: values.accountType,
           policyNumber: values.policyNumber,
           SACode: values.SACode,
-          refferal: values.refferal,
+          referralId: values.refferal,
           referee: referee !== undefined ? referee : undefined,
         }
       );
