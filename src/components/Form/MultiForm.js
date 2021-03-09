@@ -157,8 +157,8 @@ const MultiForm = ({
         <Card className={classes.card}>
           <FormControl
             className={classes.formControl}
-            error={errorState[`name${i}`]}
-            <InputLabel id="demo-simple-select-label" className={classes.label}>
+            // error={errorState[`name${i}`]}
+            // <InputLabel id="demo-simple-select-label" className={classes.label}>
             error={errorState[`name${i}`]}>
             <InputLabel id='demo-simple-select-label' className={classes.label}>
               Item to cover
@@ -173,9 +173,9 @@ const MultiForm = ({
               inputProps={{ "aria-label": "Without label" }}
             >
               inputProps={{ 'aria-label': 'Without label' }}>
-              {/* <MenuItem className={classes.items} value="" disabled>
+              <MenuItem className={classes.items} value="" disabled>
                 Select One
-              </MenuItem> */}
+              </MenuItem>
 
               {selectData.map((li) => (
                 <MenuItem className={classes.items} key={li} value={li}>

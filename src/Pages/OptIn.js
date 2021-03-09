@@ -53,15 +53,6 @@ const optinFormData = [
     },
   },
   {
-    name: "email",
-    label: "Email",
-    validate: {
-      required: "required",
-      email: "Invalid email address",
-    },
-    type: "email",
-  },
-  {
     name: "AccountType",
     label: "Select Your Account Type",
     validate: {
@@ -72,6 +63,15 @@ const optinFormData = [
     list: ["AGENT", "CUSTOMER"],
   },
   {
+    name: "email",
+    label: "Email",
+    validate: {
+      required: "required",
+      email: "Invalid email address",
+    },
+    type: "email",
+  },
+  {
     name: "policyNumber",
     label: "Policy Number",
     validate: {
@@ -79,9 +79,29 @@ const optinFormData = [
     },
     type: "number",
     dependent: {
-      key: "customerType",
-      value: "returning customer",
+      key: "AccountType",
+      value: "CUSTOMER",
     },
+  },
+  {
+    name: "SACode",
+    label: "SA Code",
+    validate: {
+      required: "required",
+    },
+    type: "number",
+    dependent: {
+      key: "AccountType",
+      value: "AGENT",
+    },
+  },
+  {
+    name: "refferal",
+    label: "Referral ID",
+    validate: {
+      required: false,
+    },
+    type: "number",
   },
   {
     name: "wapicPolicy",
@@ -155,6 +175,9 @@ const OptIn = () => {
           whatsappNo: `+${whatsappNo.trim()}`,
           conversationId,
           accountType: values.accountType,
+          policyNumber: values.policyNumber,
+          SACode: values.SACode,
+          refferal: values.refferal,
           referee: referee !== undefined ? referee : undefined,
         }
       );
