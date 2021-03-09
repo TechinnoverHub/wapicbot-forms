@@ -1122,6 +1122,7 @@ const Insurances = ({ history, location }) => {
                 {
                   items: valuesToUpload,
                   productCode: type,
+                  userId,
                 }
               );
               console.log(data);
@@ -1176,6 +1177,7 @@ const Insurances = ({ history, location }) => {
                   riot: values.riot,
                   tracking: values.tracking,
                   excessBuyBack: values.excessBuyBack,
+                  userId,
                 }
               );
               console.log(data);
@@ -1225,6 +1227,7 @@ const Insurances = ({ history, location }) => {
                   duration: values.duration,
                   age: values.age,
                   productCode: type,
+                  userId,
                   // idCard: values.idCard,
                   // passport: values.passport,
                   // beneficiaries: values.beneficiaries || [],
