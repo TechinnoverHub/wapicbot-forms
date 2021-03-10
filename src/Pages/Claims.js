@@ -116,7 +116,6 @@ function Claims() {
         data={claimsFormData}
         action={(values) => submitForm(values)}
       />
-      <input onChange={handleClaimsUpload} type="file" />
     </Container>
   );
 }
