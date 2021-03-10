@@ -10,6 +10,7 @@ const isDev = process.env.NODE_ENV === 'development';
 const CLOUDINARY_URL = `http${isDev ? '' : 's'}://api.cloudinary.com/v1_1/${
   process.env.REACT_APP_CL_NAME
 }/upload`;
+
 const vehicleType = [
   'moov-third-party',
   'moov-plus-(fire-and-theft)',
