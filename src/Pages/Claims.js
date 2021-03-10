@@ -28,7 +28,7 @@ const claimsFormData = [
   },
   {
     name: "file_url",
-    label: "an image",
+    label: "an image for proof of claim",
     validate: {
       required: "required",
     },
@@ -48,23 +48,23 @@ function Claims() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  async function handleClaimsUpload(event) {
-    console.log("loading...");
-    var formdata = new FormData();
-    // formdata.append("file", event.target.files[0]);
-    formdata.append("file", event);
+//   async function handleClaimsUpload(event) {
+//     console.log("loading...");
+//     var formdata = new FormData();
+//     // formdata.append("file", event.target.files[0]);
+//     formdata.append("file", event);
 
-    var requestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow",
-    };
+//     var requestOptions = {
+//       method: "POST",
+//       body: formdata,
+//       redirect: "follow",
+//     };
 
-    fetch("https://wapicbot-api.herokuapp.com/api/media/create", requestOptions)
-      .then((response) => response.json())
-      .then(result => result.fileURL)
-      .catch((error) => console.log("error", error));
-  }
+//     fetch("https://wapicbot-api.herokuapp.com/api/media/create", requestOptions)
+//       .then((response) => response.json())
+//       .then(result => result.fileURL)
+//       .catch((error) => console.log("error", error));
+//   }
 
   const submitForm = async (values) => {
     setError(null);
