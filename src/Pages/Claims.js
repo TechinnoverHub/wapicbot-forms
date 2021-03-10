@@ -102,6 +102,7 @@ function Claims() {
     } catch (error) {
       setLoading(false);
       if (error.response) setError(error.response.data.message);
+      setError(error.response.data)
       console.log(error.response);
     }
   };
