@@ -78,10 +78,16 @@ const optinFormData = [
       required: "required",
     },
     type: "text",
-    dependent: {
-      key: "customerType",
-      value: "returning customer",
-    },
+    dependent: [
+      {
+        key: "customerType",
+        value: "returning customer",
+      },
+      {
+        key: "AccountType",
+        value: "CUSTOMER",
+      },
+    ],
   },
   {
     name: "SACode",
@@ -90,10 +96,16 @@ const optinFormData = [
       required: "required",
     },
     type: "number",
-    dependent: {
-      key: "customerType",
-      value: "returning customer",
-    },
+    dependent: [
+      {
+        key: "customerType",
+        value: "returning customer",
+      },
+      {
+        key: "AccountType",
+        value: "AGENT",
+      },
+    ],
   },
   {
     name: "refferal",

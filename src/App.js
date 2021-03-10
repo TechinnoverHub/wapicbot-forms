@@ -9,6 +9,7 @@ import QuoteSuccess from './Pages/QuoteSuccess';
 import Paystack from './Pages/Paystack';
 import VehicleCheck from './Pages/VehicleCheck';
 import ExtraDataPage from './Pages/extraDataPage';
+import Claims from './Pages/Claims';
 
 function App() {
   return (
@@ -68,11 +69,15 @@ function App() {
                 <Link to='/check-vehicle/moov-third-party/5f6200d513833f0017840b4f'>
                   Vehicle Check
                 </Link>
+                <Link to='/claims'>
+                  FNOL
+                </Link>
               </div>
             </div>
           )}
         />
         <Route path='/optin' component={OptIn} />
+        <Route path='/claims' component={Claims} />
         <Route path="/optin/:referee" component={OptIn} />
         <Route path='/check-vehicle/:type/:userId' component={VehicleCheck} />
         <Route path='/product/:type/:userId' component={Insurances} />
