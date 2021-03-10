@@ -68,6 +68,7 @@ function Claims() {
 
   const submitForm = async (values) => {
     setError(null);
+    setLoading(true);
     if (values.file_url) {
         const data = {
           file: values.file_url,
@@ -86,7 +87,6 @@ function Claims() {
         values.file_url = result.secure_url;
       } 
     try {
-      setLoading(true);
       const { data } = await axios.post(
         "https://wapicbot-api.herokuapp.com/api/claims/create",
         {
