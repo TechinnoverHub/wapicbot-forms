@@ -1039,7 +1039,7 @@ const Insurances = ({ history, location }) => {
   const [loading, setLoading] = useState(false);
   // const [defaultValues, setDefaultValues] = useState({});
   let [payloadContext, setPayloadContext] = useContext(PolicyIDContext)
-
+console.log(payloadContext)
   const [error, setError] = useState(null);
 
   const { type, userId } = useParams();
@@ -1131,7 +1131,7 @@ const Insurances = ({ history, location }) => {
               );
               console.log('policyPurchasedId', data);
               // let policy_id = data.policyPurchasedId;
-              setPayloadContext('policy_id')
+              // setPayloadContext()
               console.log('payloadContext', payloadContext)
               setLoading(false);
               history.push(`/quote-success/${userId}`, {
