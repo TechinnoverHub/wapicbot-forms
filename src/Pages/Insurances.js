@@ -1129,6 +1129,9 @@ const Insurances = ({ history, location }) => {
                 }
               );
               setLoading(false);
+              console.log(data);
+              setPayloadContext(data.data?.policyPurchasedId)
+              // localStorage.setItem('new', JSON.stringify(data.data.policyPurchasedId));
 
               history.push(`/quote-success/${userId}`, {
                 productType: type,
@@ -1184,6 +1187,9 @@ const Insurances = ({ history, location }) => {
                 }
               );
               console.log(data);
+              console.log(data);
+              setPayloadContext(data.data?.policyPurchasedId)
+              // localStorage.setItem('new', JSON.stringify(data.data.policyPurchasedId));
               setLoading(false);
               history.push(`/quote-success/${userId}`, {
                 ...values,
@@ -1238,7 +1244,7 @@ const Insurances = ({ history, location }) => {
               );
               console.log(data);
               setPayloadContext(data.data?.policyPurchasedId)
-              localStorage.setItem('new', JSON.stringify(data.data.policyPurchasedId));
+              // localStorage.setItem('new', JSON.stringify(data.data.policyPurchasedId));
               setLoading(false);
               history.push(`/quote-success/${userId}`, {
                 ...values,
