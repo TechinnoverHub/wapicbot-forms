@@ -1038,16 +1038,11 @@ const products = {
 const Insurances = ({ history, location }) => {
   const [loading, setLoading] = useState(false);
   // const [defaultValues, setDefaultValues] = useState({});
-  let [payloadContext, setPayloadContext] = useContext(PolicyIDContext)
-  const [policyID, setPolicyID] = useState('')
-  React.useEffect(() => {
-    setPayloadContext(policyID)
-  })
+  const [, setPayloadContext] = useContext(PolicyIDContext)
 
   const [error, setError] = useState(null);
 
   const { type, userId } = useParams();
-
 
   // useEffect(() => {
   //   const states = Object.keys(location.state || {});
@@ -1122,7 +1117,7 @@ const Insurances = ({ history, location }) => {
                   return newVal;
                 })
               );
-              console.log(valuesToUpload);
+              // console.log(valuesToUpload);
 
               const { data } = await axios.post(
                 "https://wapicbot-api.herokuapp.com/api/products/get-quote",
@@ -1133,14 +1128,8 @@ const Insurances = ({ history, location }) => {
                   userId,
                 }
               );
-              console.log('policyPurchasedId', data);
-              let policy_id = data.policyPurchasedId;
-              setPolicyID(policy_id)
-              // if (data) {
-              //   setPayloadContext(data?.policyPurchasedId)
-              // }
-              console.log('payloadContext', payloadContext)
               setLoading(false);
+              setPayloadContext(data?.policyPurchasedId)
               history.push(`/quote-success/${userId}`, {
                 productType: type,
                 quote: data.data.quote,
