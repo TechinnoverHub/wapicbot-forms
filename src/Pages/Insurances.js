@@ -1129,7 +1129,7 @@ const Insurances = ({ history, location }) => {
                 }
               );
               setLoading(false);
-              setPayloadContext(data?.policyPurchasedId)
+
               history.push(`/quote-success/${userId}`, {
                 productType: type,
                 quote: data.data.quote,
@@ -1237,6 +1237,8 @@ const Insurances = ({ history, location }) => {
                 }
               );
               console.log(data);
+              setPayloadContext(data.data?.policyPurchasedId)
+              localStorage.setItem('new', JSON.stringify(data.data.policyPurchasedId));
               setLoading(false);
               history.push(`/quote-success/${userId}`, {
                 ...values,
