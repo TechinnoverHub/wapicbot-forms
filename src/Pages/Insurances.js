@@ -1130,7 +1130,8 @@ const Insurances = ({ history, location }) => {
                 }
               );
               console.log('policyPurchasedId', data);
-              setPayloadContext(data.policyPurchasedId)
+              // let policy_id = data.policyPurchasedId;
+              setPayloadContext('policy_id')
               console.log('payloadContext', payloadContext)
               setLoading(false);
               history.push(`/quote-success/${userId}`, {
