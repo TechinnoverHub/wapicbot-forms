@@ -1039,7 +1039,11 @@ const Insurances = ({ history, location }) => {
   const [loading, setLoading] = useState(false);
   // const [defaultValues, setDefaultValues] = useState({});
   let [payloadContext, setPayloadContext] = useContext(PolicyIDContext)
-console.log(payloadContext)
+  const [policyID, setPolicyID] = useState('')
+  React.useEffect(() => {
+    setPayloadContext(policyID)
+  })
+
   const [error, setError] = useState(null);
 
   const { type, userId } = useParams();
@@ -1130,8 +1134,11 @@ console.log(payloadContext)
                 }
               );
               console.log('policyPurchasedId', data);
-              // let policy_id = data.policyPurchasedId;
-              // setPayloadContext()
+              let policy_id = data.policyPurchasedId;
+              setPolicyID(policy_id)
+              // if (data) {
+              //   setPayloadContext(data?.policyPurchasedId)
+              // }
               console.log('payloadContext', payloadContext)
               setLoading(false);
               history.push(`/quote-success/${userId}`, {
