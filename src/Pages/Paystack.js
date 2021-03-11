@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Container from '../components/Container';
 import { useParams } from 'react-router-dom';
@@ -7,6 +7,7 @@ import logo from '../assets/logo.png';
 import loader from '../assets/loader.gif';
 import includesAll from '../utils/includesAll';
 import formatNum from '../utils/formatNum';
+import { PolicyIDContext } from '../context/policyPurchased';
 const vehicleType = [
   'moov-third-party',
   'moov-plus-(fire-and-theft)',
@@ -22,6 +23,9 @@ const lifeTypes = [
 ];
 const publicKey = process.env.REACT_APP_PAYSTACK;
 const Paystack = (props) => {
+  let [payloadContext, ] = useContext(PolicyIDContext)
+  console.log(payloadContext)
+
   const [quoteDetails, setQuoteDetails] = useState({});
   const [loading, setLoading] = useState(false);
   const [paid, setPaid] = useState(false);
@@ -149,6 +153,7 @@ const Paystack = (props) => {
     onSuccess: (data) => {
       setLoading(true);
       console.log(data);
+
       axios
         .post(
           'https://wapicbot-api.herokuapp.com/api/products/buy-policy',
@@ -156,6 +161,7 @@ const Paystack = (props) => {
           {
             txRef: data.trxref,
             user: userId,
+            policyPurchasedId: payloadContext,
             // productCode: quoteDetails.productType,
             policyInfo: {
               productCode: quoteDetails.productType,

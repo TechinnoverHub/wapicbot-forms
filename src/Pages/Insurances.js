@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import FormBuilder from "../components/Form";
 import MultiForm from "../components/Form/MultiForm";
 import Container from "../components/Container";
 import { useParams } from "react-router-dom";
 // import includesAll from '../utils/includesAll';
 import axios from "axios";
+import { PolicyIDContext } from "../context/policyPurchased";
 const isDev = process.env.NODE_ENV === "development";
 // import cloudinary from 'cloudinary/lib/cloudinary';
 const CLOUDINARY_URL = `http${isDev ? "" : "s"}://api.cloudinary.com/v1_1/${
@@ -1037,9 +1038,12 @@ const products = {
 const Insurances = ({ history, location }) => {
   const [loading, setLoading] = useState(false);
   // const [defaultValues, setDefaultValues] = useState({});
+  let [, setPayloadContext] = useContext(PolicyIDContext)
+
   const [error, setError] = useState(null);
 
   const { type, userId } = useParams();
+
 
   // useEffect(() => {
   //   const states = Object.keys(location.state || {});
@@ -1126,6 +1130,7 @@ const Insurances = ({ history, location }) => {
                 }
               );
               console.log(data);
+              setPayloadContext(data.policyPurchasedId)
               setLoading(false);
               history.push(`/quote-success/${userId}`, {
                 productType: type,
