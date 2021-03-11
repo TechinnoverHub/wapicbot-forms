@@ -23,7 +23,7 @@ const lifeTypes = [
 ];
 const publicKey = process.env.REACT_APP_PAYSTACK;
 const Paystack = (props) => {
-  let [payloadContext, ] = useContext(PolicyIDContext)
+  let [payloadContext ] = useContext(PolicyIDContext)
   console.log(payloadContext)
 
   const [quoteDetails, setQuoteDetails] = useState({});
@@ -152,7 +152,7 @@ const Paystack = (props) => {
     text: 'Pay Now',
     onSuccess: (data) => {
       setLoading(true);
-      console.log(data);
+      // console.log(data);
 
       axios
         .post(
@@ -196,6 +196,7 @@ const Paystack = (props) => {
         )
         .then(({ data }) => {
           setLoading(false);
+          console.log('pstaData', data)
           setPaid(true);
           window.location = 'https://wa.me/+2348111228899';
         })
