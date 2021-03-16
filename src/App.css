@@ -85,6 +85,8 @@ a:hover {
 }
 .mobileCenter img {
   width: 90%;
+  width: 15em;
+  margin: 0 auto;
 }
 .vehicle-form {
   padding: 20px 0;
@@ -92,6 +94,11 @@ a:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.vehicle-form img {
+  width: 15em;
+  margin: 0 auto;
+
 }
 .vehicle-form button {
   background-color: #883395;
@@ -144,6 +151,8 @@ a:hover {
 }
 .main img {
   width: 90%;
+  width: 15em;
+  margin: 0 auto;
 }
 .oneCard {
   padding: 10px 5px;

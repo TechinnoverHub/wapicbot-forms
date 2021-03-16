@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import FormBuilder from "../components/Form";
-import MultiForm from "../components/Form/MultiForm";
+// import MultiForm from "../components/Form/MultiForm";
 import Container from "../components/Container";
 import { useParams } from "react-router-dom";
 // import includesAll from '../utils/includesAll';
@@ -418,6 +418,92 @@ const eTermInsurance = [
     type: "number",
   },
 ];
+const houseOwnersInsurance = [
+  // {
+  //   name: "firstName",
+  //   label: "First Name",
+  //   validate: {
+  //     required: "required",
+  //   },
+  //   type: "text",
+  // },
+  // {
+  //   name: "lastName",
+  //   label: "Last Name",
+  //   validate: {
+  //     required: "required",
+  //   },
+  //   type: "text",
+  // },
+  // {
+  //   name: "age",
+  //   label: "Age",
+  //   validate: {
+  //     required: "required",
+  //   },
+
+  //   type: "select",
+  //   list: [...new Array(43)].map((num, i) => i + 18),
+  // },
+  // {
+  //   name: "annualPremium",
+  //   label: "Annual Premium",
+  //   validate: {
+  //     required: "required",
+  //   },
+  //   type: "select",
+  //   setterKeys: ["sumAssured", "medicalBenefit"],
+  //   currency: true,
+  //   action: (val, setter) => {
+  //     setter(val * 100, medicalBenefitMap[val]);
+  //   },
+  //   list: [
+  //     ...[...new Array(10)].map((num, i) => (i + 1) * 1000),
+  //     20000,
+  //     50000,
+  //     75000,
+  //     100000,
+  //   ],
+  // },
+  // {
+  //   name: "sumAssured",
+  //   label: "Sum Assured",
+  //   validate: {
+  //     required: "required",
+  //   },
+  //   type: "select",
+  //   setterKeys: ["annualPremium", "medicalBenefit"],
+  //   action: (val, setter) => {
+  //     setter(val / 100, medicalBenefitMap[val / 100]);
+  //   },
+  //   list: [
+  //     ...[...new Array(10)].map((num, i) => (i + 1) * 100000),
+  //     2000000,
+  //     5000000,
+  //     7500000,
+  //     10000000,
+  //   ],
+  //   currency: true,
+  // },
+  // {
+  //   name: "medicalBenefit",
+  //   label: "Medical Benefit",
+  //   validate: {
+  //     required: "required",
+  //   },
+  //   disabled: true,
+  //   type: "currency",
+  // },
+  // {
+  //   name: "duration",
+  //   label: "Duration (in years)",
+  //   validate: {
+  //     required: "required",
+  //   },
+  //   type: "number",
+  // },
+];
+
 const products = {
   "moov-third-party": [
     {
@@ -1034,6 +1120,7 @@ const products = {
   "smart-life": smartLifeInsurance,
   "smart-life-plus": smartLifePlusInsurance,
   "smart-senior-plan": lifeinsurance,
+  "house-owners-insurance": houseOwnersInsurance,
 };
 const Insurances = ({ history, location }) => {
   const [loading, setLoading] = useState(false);
@@ -1061,8 +1148,9 @@ const Insurances = ({ history, location }) => {
   return (
     <Container>
       {houseTypes.includes(type) && (
-        <MultiForm
+        <FormBuilder
           title={productmap[type]}
+          data={products[type] || []}
           instruction="Fill Details"
           error={error}
           loading={loading}
