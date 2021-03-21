@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 // import includesAll from '../utils/includesAll';
 import axios from "axios";
 import { PolicyIDContext } from "../context/policyPurchased";
-import { QuoteContext } from '../context/quoteData'
+
 const isDev = process.env.NODE_ENV === "development";
 // import cloudinary from 'cloudinary/lib/cloudinary';
 const CLOUDINARY_URL = `http${isDev ? "" : "s"}://api.cloudinary.com/v1_1/${
@@ -1127,7 +1127,6 @@ const Insurances = ({ history, location }) => {
   const [loading, setLoading] = useState(false);
   // const [defaultValues, setDefaultValues] = useState({});
   const [, setPayloadContext] = useContext(PolicyIDContext)
-  const [, setQuoteContext] = useContext(QuoteContext)
 
   const [error, setError] = useState(null);
 
@@ -1219,7 +1218,6 @@ const Insurances = ({ history, location }) => {
                 }
               );
               setLoading(false);
-              setQuoteContext(data?.data)
               setPayloadContext(data.data?.policyPurchasedId)
               // localStorage.setItem('new', JSON.stringify(data.data.policyPurchasedId));
 
@@ -1276,7 +1274,6 @@ const Insurances = ({ history, location }) => {
                   userId,
                 }
               );
-              setQuoteContext(data?.data)
               setPayloadContext(data.data?.policyPurchasedId)
               // localStorage.setItem('new', JSON.stringify(data.data.policyPurchasedId));
               setLoading(false);
@@ -1331,7 +1328,6 @@ const Insurances = ({ history, location }) => {
                   // beneficiaries: values.beneficiaries || [],
                 }
               );
-              setQuoteContext(data?.data)
               setPayloadContext(data.data?.policyPurchasedId)
               // localStorage.setItem('new', JSON.stringify(data.data.policyPurchasedId));
               setLoading(false);

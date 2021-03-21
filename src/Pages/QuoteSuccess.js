@@ -4,6 +4,7 @@ import logo from '../assets/logo.png';
 import { useParams } from 'react-router-dom';
 // import includesAll from "../utils/includesAll";
 import formatNum from '../utils/formatNum';
+import { QuoteContext } from '../context/quoteData';
 const vehicleType = [
   'moov-third-party',
   'moov-plus-(fire-and-theft)',
@@ -38,9 +39,14 @@ const productmap = {
 const QuoteSuccess = (props) => {
   const [quoteDetails, setQuoteDetails] = useState({});
   const { userId } = useParams();
+  const [quoteData, setQuoteContext] = React.useContext(QuoteContext)
+
+  setQuoteContext(props.location.state)
+  console.log('quoteData', quoteData)
+
   useEffect(() => {
     // const states = Object.keys(props.location.state || {});
-    console.log(props.location.state);
+    // console.log(props.location.state);
     if (props.location.state) {
       if (vehicleType.includes(props.location.state.productType)) {
         const {
@@ -111,7 +117,7 @@ const QuoteSuccess = (props) => {
       // }
     }
   }, [props]);
-  console.log(quoteDetails);
+  console.log('realData', quoteDetails);
   return (
     <Container>
       <div className='mobileCenter'>
