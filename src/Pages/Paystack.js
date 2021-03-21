@@ -8,6 +8,7 @@ import loader from '../assets/loader.gif';
 import includesAll from '../utils/includesAll';
 import formatNum from '../utils/formatNum';
 import { PolicyIDContext } from '../context/policyPurchased';
+import { QuoteContext } from '../context/quoteData';
 const vehicleType = [
   'moov-third-party',
   'moov-plus-(fire-and-theft)',
@@ -24,8 +25,8 @@ const lifeTypes = [
 const publicKey = process.env.REACT_APP_PAYSTACK;
 const Paystack = (props) => {
   let [payloadContext ] = useContext(PolicyIDContext)
-  console.log(payloadContext)
-
+  let [quoteContext ] = useContext(QuoteContext)
+  console.log('quoteContext', quoteContext)
   const [quoteDetails, setQuoteDetails] = useState({});
   const [loading, setLoading] = useState(false);
   const [paid, setPaid] = useState(false);
@@ -68,7 +69,7 @@ const Paystack = (props) => {
     ]);
 
     if (!isValid) {
-      window.location = 'https://wa.me/+2348111228899';
+      // window.location = 'https://wa.me/+2348111228899';
       return;
     }
     const {
@@ -198,13 +199,13 @@ const Paystack = (props) => {
           setLoading(false);
           console.log('pstaData', data)
           setPaid(true);
-          window.location = 'https://wa.me/+2348111228899';
+          // window.location = 'https://wa.me/+2348111228899';
         })
         .catch((err) => {
           console.log(err);
           setPaid(true);
           setLoading(false);
-          window.location = 'https://wa.me/+2348111228899';
+          // window.location = 'https://wa.me/+2348111228899';
         });
     },
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),

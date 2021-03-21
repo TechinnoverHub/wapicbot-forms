@@ -11,10 +11,12 @@ import VehicleCheck from "./Pages/VehicleCheck";
 import ExtraDataPage from "./Pages/extraDataPage";
 import Claims from "./Pages/Claims";
 import { PolicyIDProvider } from "./context/policyPurchased";
+import { QuoteProvider } from "./context/quoteData";
 function App() {
   return (
     <BrowserRouter>
       <Switch>
+        <QuoteProvider>
         <PolicyIDProvider>
           <Route
             exact
@@ -89,6 +91,7 @@ function App() {
           <Route path="/pay/:userId" component={Paystack} />
           {/* <Route component={() => <h1>Lost</h1>} /> */}
         </PolicyIDProvider>
+        </QuoteProvider>
       </Switch>
     </BrowserRouter>
   );
