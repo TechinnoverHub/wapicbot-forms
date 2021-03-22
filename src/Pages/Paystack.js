@@ -154,6 +154,21 @@ const Paystack = (props) => {
     onSuccess: (data) => {
       setLoading(true);
       // console.log(data);
+      console.log('last-data', {
+        age: quoteData.age,
+        annualPremium: quoteData.annualPremium,
+        duration: quoteData.duration,
+        firstName: quoteData.firstName,
+        frequency: quoteData.frequency,
+        lastName: quoteData.lastName,
+        txRef: data.trxref,
+        user: userId,
+        policyPurchasedId: payloadContext,
+        policyInfo: {
+          productCode: quoteDetails.productType,
+          startDate: quoteDetails.coverStartDate,
+          premiumLC: quoteDetails.quote,
+        }})
 
       axios
         .post("https://wapicbot-api.herokuapp.com/api/products/buy-policy", {
@@ -201,7 +216,7 @@ const Paystack = (props) => {
           setLoading(false);
           console.log("pstaData", data);
           setPaid(true);
-          window.location = "https://wa.me/+2348111228899";
+          // window.location = "https://wa.me/+2348111228899";
         })
         .catch((err) => {
           console.log(err);
