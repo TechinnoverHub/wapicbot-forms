@@ -71,7 +71,7 @@ const Paystack = (props) => {
     ]);
 
     if (!isValid) {
-      window.location = "https://wa.me/+2348111228899";
+      // window.location = "https://wa.me/+2348111228899";
       return;
     }
     const {
@@ -215,17 +215,17 @@ const Paystack = (props) => {
             : {}),
         })
         .then(({ data }) => {
-          localStorage.removeItem('policyPurchasedId')
           setLoading(false);
           console.log("pstaData", data);
           setPaid(true);
-          window.location = "https://wa.me/+2348111228899";
+          localStorage.removeItem('policyPurchasedId')
+          // window.location = "https://wa.me/+2348111228899";
         })
         .catch((err) => {
           console.log(err);
           setPaid(true);
           setLoading(false);
-          window.location = "https://wa.me/+2348111228899";
+          // window.location = "https://wa.me/+2348111228899";
         });
     },
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),
