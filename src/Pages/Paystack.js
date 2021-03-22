@@ -174,12 +174,13 @@ const Paystack = (props) => {
 
       axios
         .post("https://wapicbot-api.herokuapp.com/api/products/buy-policy", {
-          // age: quoteData.age,
-          // annualPremium: quoteData.annualPremium,
-          // duration: quoteData.duration,
-          // firstName: quoteData.firstName,
-          // frequency: quoteData.frequency,
-          // lastName: quoteData.lastName,
+          age: quoteData.age,
+          annualPremium: quoteData.annualPremium,
+          duration: quoteData.duration,
+          firstName: quoteData.firstName,
+          frequency: quoteData.frequency,
+          lastName: quoteData.lastName,
+          // ...(quoteData.lastName && {lastName: quoteData.lastName}),
           txRef: data.trxref,
           user: userId,
           policyPurchasedId,
