@@ -216,7 +216,7 @@ const Paystack = (props) => {
           setLoading(false);
           console.log("pstaData", data);
           setPaid(true);
-          // window.location = "https://wa.me/+2348111228899";
+          window.location = "https://wa.me/+2348111228899";
         })
         .catch((err) => {
           console.log(err);
