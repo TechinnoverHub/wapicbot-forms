@@ -69,6 +69,10 @@ const optinFormData = [
       required: "required",
       email: "Invalid email address",
     },
+    dependent: {
+      key: "customerType",
+      value: "new customer",
+    },
     type: "email",
   },
   {
@@ -95,7 +99,7 @@ const optinFormData = [
     validate: {
       required: "required",
     },
-    type: "number",
+    type: "text",
     dependent: [
       {
         key: "customerType",
@@ -206,6 +210,73 @@ const OptIn = () => {
       console.log(error.response);
     }
   };
+
+  const submitFormReturning = async (values) => {
+    setError(null);
+    try {
+      setLoading(true);
+      const searchParams = new URLSearchParams(location.search);
+
+      if (!values.wapicPolicy) {
+        setError("Please accept the policies");
+        return setLoading(false);
+      }
+      const whatsappNo = searchParams.get("whatsapp");
+      const conversationId = searchParams.get("conversationId");
+      if (!whatsappNo) return setLoading(false);
+      let customerData, agentData;
+      if (values.policyNumber) {
+        const data = await axios.post(
+          "https://wapicbot-api.herokuapp.com/api/users/verify/policy-no",
+          { policyNumber: values.policyNumber }
+        );
+        if (data === "Invalid Policy Number")
+          return setError("Invalid Policy Number");
+        customerData = data?.data;
+        console.log(data?.data);
+      }
+      if (values.SACode) {
+        const {
+          data,
+        } = await axios.post(
+          "https://wapicbot-api.herokuapp.com/api/users/verify/sa-code",
+          { saCode: values.SACode }
+        );
+        if (data === "Invalid SA Code / User not found")
+          return setError("Invalid SA Code / User not found");
+        agentData = data;
+        console.log(data);
+      }
+      const { data } = await axios.post(
+        "https://wapicbot-api.herokuapp.com/api/auth/optin",
+        {
+          firstname: agentData.firstname || customerData.firstname,
+          lastname: agentData.lastname || customerData.lastname,
+          email: agentData.email || customerData.email,
+          whatsappNo: agentData.phoneNo || customerData.phoneNo,
+          conversationId,
+          accountType: values.accountType,
+          policyNumber: values.policyNumber,
+          SACode: values.SACode,
+          referralId: values.refferal,
+          referee: referee !== undefined ? referee : undefined,
+        }
+      );
+      window.location = "https://wa.me/+2348111228899";
+      console.log(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      if (error.response)
+        setError(
+          error?.response?.data?.data ||
+            error?.response?.data?.message ||
+            error?.response?.data
+        );
+      // console.log(error.response.data.message);
+    }
+  };
+
   return (
     <Container>
       <FormBuilder
@@ -216,7 +287,8 @@ const OptIn = () => {
         data={optinFormData}
         action={(values) => {
           if (values.customerType === "new customer") submitForm(values);
-          if (values.customerType === "returning customer") submitForm(values);
+          if (values.customerType === "returning customer")
+            submitFormReturning(values);
           //alert("submitted data \n" + JSON.stringify(values, null, 2));
         }}
       />
