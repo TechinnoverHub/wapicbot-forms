@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import FormBuilder from "../components/Form";
-// import MultiForm from "../components/Form/MultiForm";
+import MultiForm from "../components/Form/MultiForm";
 import Container from "../components/Container";
 import { useParams } from "react-router-dom";
 // import includesAll from '../utils/includesAll';
@@ -1149,7 +1149,7 @@ const Insurances = ({ history, location }) => {
   return (
     <Container>
       {houseTypes.includes(type) && (
-        <FormBuilder
+        <MultiForm
           title={productmap[type]}
           data={products[type] || []}
           instruction="Fill Details"

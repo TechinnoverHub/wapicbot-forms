@@ -202,7 +202,7 @@ const OptIn = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      if (error.response) setError(error.response.data.message);
+      if (error.response) setError(error.response.data);
       console.log(error.response);
     }
   };
@@ -216,6 +216,7 @@ const OptIn = () => {
         data={optinFormData}
         action={(values) => {
           if (values.customerType === "new customer") submitForm(values);
+          if (values.customerType === "returning customer") submitForm(values);
           //alert("submitted data \n" + JSON.stringify(values, null, 2));
         }}
       />

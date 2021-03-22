@@ -7,9 +7,10 @@
 }
 .form .logo {
   /* width: 90%; */
-  width: 15em;
+  width: 80%;
   margin: 0 auto;
-
+  margin-bottom: 2rem;
+  margin-top: 1rem;
 }
 .form img {
   align-self: center;

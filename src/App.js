@@ -23,7 +23,7 @@ function App() {
             path="/"
             component={() => (
               <div className="main">
-                <img src={logo} alt="logo" />
+                <img style={{width: "80%", marginBottom: '2rem', marginTop: '1rem'}} src={logo} alt="logo" />
                 <h1>Select a form to view</h1>
                 <div
                   style={{
