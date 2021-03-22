@@ -26,8 +26,18 @@ const publicKey = process.env.REACT_APP_PAYSTACK;
 const Paystack = (props) => {
   // let [payloadContext] = useContext(PolicyIDContext);
   const policyPurchasedId = localStorage.getItem("policyPurchasedId");
-  console.log(policyPurchasedId);
   let [quoteData] = useContext(QuoteContext);
+
+  if (quoteData.frequency === "Monthly") {
+    quoteData.frequency = "M"
+  } else if (quoteData.frequency === "Quarterly") {
+    quoteData.frequency = "Q"
+  } else if (quoteData.frequency === "Year") {
+    quoteData.frequency = "Y"
+  } else if (quoteData.frequency === "Bi-Annual") {
+    quoteData.frequency = "B"
+  }
+  console.log(quoteData);
 
   const [quoteDetails, setQuoteDetails] = useState({});
   const [loading, setLoading] = useState(false);
