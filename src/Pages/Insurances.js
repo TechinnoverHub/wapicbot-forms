@@ -1,11 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import FormBuilder from "../components/Form";
 import MultiForm from "../components/Form/MultiForm";
 import Container from "../components/Container";
 import { useParams } from "react-router-dom";
 // import includesAll from '../utils/includesAll';
 import axios from "axios";
-import { PolicyIDContext } from "../context/policyPurchased";
+// import { PolicyIDContext } from "../context/policyPurchased";
 
 const isDev = process.env.NODE_ENV === "development";
 // import cloudinary from 'cloudinary/lib/cloudinary';
@@ -1125,8 +1125,8 @@ const products = {
 };
 const Insurances = ({ history, location }) => {
   const [loading, setLoading] = useState(false);
+  // const [payloadContext, setPayloadContext] = useContext(PolicyIDContext)
   // const [defaultValues, setDefaultValues] = useState({});
-  const [, setPayloadContext] = useContext(PolicyIDContext)
 
   const [error, setError] = useState(null);
 
@@ -1146,6 +1146,12 @@ const Insurances = ({ history, location }) => {
   //     });
   //   }
   // }, [history, location.state, type, userId]);
+
+  // React.useEffect(() => {
+  //   setPayloadContext('data?.data?.policyPurchasedId')
+  //   console.log('tddddID', payloadContext)
+  // }, [houseTypes])
+
   return (
     <Container>
       {houseTypes.includes(type) && (
@@ -1159,7 +1165,6 @@ const Insurances = ({ history, location }) => {
             try {
               setLoading(true);
               setError(null);
-              console.log(values);
               const valuesToUpload = await Promise.all(
                 values.map(async (val) => {
                   const newVal = { ...val };
@@ -1180,34 +1185,11 @@ const Insurances = ({ history, location }) => {
                     const result = await r.json();
                     console.log(result);
                     newVal.image = result.secure_url;
-                    // await cloudinary.v2.uploader.upload(
-                    //   newVal.image,
-                    //   {
-                    //     folder: `${userId}/`,
-                    //     agent: {
-                    //       headers: {
-                    //         'Access-Control-Allow-Origin': '*',
-                    //         'Access-Control-Allow-Methods':
-                    //           'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                    //         'Access-Control-Allow-Headers':
-                    //           'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-                    //       },
-                    //     },
-                    //   },
-                    //   (error, result) => {
-                    //     if (error) {
-                    //       setLoading(false);
-                    //     } else {
-                    //       newVal.image = result.secure_url;
-                    //     }
-                    //   }
-                    // );
                   }
                   return newVal;
                 })
               );
               // console.log(valuesToUpload);
-
               const { data } = await axios.post(
                 "https://wapicbot-api.herokuapp.com/api/products/get-quote",
                 // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
@@ -1217,8 +1199,9 @@ const Insurances = ({ history, location }) => {
                   userId,
                 }
               );
+
+              localStorage.setItem('policyPurchasedId', data?.data?.policyPurchasedId)
               setLoading(false);
-              setPayloadContext(data.data?.policyPurchasedId)
               history.push(`/quote-success/${userId}`, {
                 productType: type,
                 quote: data.data.quote,
@@ -1252,7 +1235,7 @@ const Insurances = ({ history, location }) => {
           action={async (values) => {
             setLoading(true);
             setError(null);
-            console.log(values);
+            // console.log(values);
             try {
               const { data } = await axios.post(
                 "https://wapicbot-api.herokuapp.com/api/products/get-quote",
@@ -1272,7 +1255,7 @@ const Insurances = ({ history, location }) => {
                   userId,
                 }
               );
-              setPayloadContext(data.data?.policyPurchasedId)
+              localStorage.setItem('policyPurchasedId', data?.data?.policyPurchasedId)
               setLoading(false);
               history.push(`/quote-success/${userId}`, {
                 ...values,
@@ -1325,7 +1308,7 @@ const Insurances = ({ history, location }) => {
                   // beneficiaries: values.beneficiaries || [],
                 }
               );
-              setPayloadContext(data.data?.policyPurchasedId)
+              localStorage.setItem('policyPurchasedId', data?.data?.policyPurchasedId)
               setLoading(false);
               history.push(`/quote-success/${userId}`, {
                 ...values,

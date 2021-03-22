@@ -17,13 +17,20 @@ function App() {
     <BrowserRouter>
       <Switch>
         <QuoteProvider>
-        <PolicyIDProvider>
           <Route
             exact
             path="/"
             component={() => (
               <div className="main">
-                <img style={{width: "80%", marginBottom: '2rem', marginTop: '1rem'}} src={logo} alt="logo" />
+                <img
+                  style={{
+                    width: "80%",
+                    marginBottom: "2rem",
+                    marginTop: "1rem",
+                  }}
+                  src={logo}
+                  alt="logo"
+                />
                 <h1>Select a form to view</h1>
                 <div
                   style={{
@@ -84,13 +91,13 @@ function App() {
             path="/check-vehicle/:type/:userId"
             component={VehicleCheck}
           />{" "}
-          <Route path="/product/:type/:userId" component={Insurances} />
-          <Route path="/kyc/:userId" component={KYC} />
-          <Route path="/extra/:userId" component={ExtraDataPage} />
-          <Route path="/quote-success/:userId" component={QuoteSuccess} />
-          <Route path="/pay/:userId" component={Paystack} />
-          {/* <Route component={() => <h1>Lost</h1>} /> */}
-        </PolicyIDProvider>
+          <PolicyIDProvider>
+            <Route path="/product/:type/:userId" component={Insurances} />
+            <Route path="/kyc/:userId" component={KYC} />
+            <Route path="/extra/:userId" component={ExtraDataPage} />
+            <Route path="/quote-success/:userId" component={QuoteSuccess} />
+            <Route path="/pay/:userId" component={Paystack} />
+          </PolicyIDProvider>
         </QuoteProvider>
       </Switch>
     </BrowserRouter>

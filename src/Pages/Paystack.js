@@ -25,6 +25,8 @@ const lifeTypes = [
 const publicKey = process.env.REACT_APP_PAYSTACK;
 const Paystack = (props) => {
   let [payloadContext] = useContext(PolicyIDContext);
+  const policyPurchasedId = localStorage.getItem("policyPurchasedId")
+  console.log(policyPurchasedId)
   let [quoteData] = useContext(QuoteContext);
 
   const [quoteDetails, setQuoteDetails] = useState({});
@@ -213,6 +215,7 @@ const Paystack = (props) => {
             : {}),
         })
         .then(({ data }) => {
+          localStorage.removeItem('policyPurchasedId')
           setLoading(false);
           console.log("pstaData", data);
           setPaid(true);
