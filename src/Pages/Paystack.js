@@ -71,7 +71,7 @@ const Paystack = (props) => {
     ]);
 
     if (!isValid) {
-      // window.location = "https://wa.me/+2348111228899";
+      window.location = "https://wa.me/+2348111228899";
       return;
     }
     const {
@@ -174,15 +174,15 @@ const Paystack = (props) => {
 
       axios
         .post("https://wapicbot-api.herokuapp.com/api/products/buy-policy", {
-          age: quoteData.age,
-          annualPremium: quoteData.annualPremium,
-          duration: quoteData.duration,
-          firstName: quoteData.firstName,
-          frequency: quoteData.frequency,
-          lastName: quoteData.lastName,
+          // age: quoteData.age,
+          // annualPremium: quoteData.annualPremium,
+          // duration: quoteData.duration,
+          // firstName: quoteData.firstName,
+          // frequency: quoteData.frequency,
+          // lastName: quoteData.lastName,
           txRef: data.trxref,
           user: userId,
-          policyPurchasedId: policyPurchasedId,
+          policyPurchasedId,
           // productCode: quoteDetails.productType,
           policyInfo: {
             productCode: quoteDetails.productType,
@@ -219,10 +219,11 @@ const Paystack = (props) => {
           console.log("pstaData", data);
           setPaid(true);
           localStorage.removeItem('policyPurchasedId')
-          // window.location = "https://wa.me/+2348111228899";
+          window.location = "https://wa.me/+2348111228899";
         })
         .catch((err) => {
           console.log(err);
+          console.log(err.response);
           setPaid(true);
           setLoading(false);
           // window.location = "https://wa.me/+2348111228899";
