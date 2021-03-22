@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Container from "../components/Container";
 import { useParams } from "react-router-dom";
@@ -8,7 +8,7 @@ import loader from "../assets/loader.gif";
 import includesAll from "../utils/includesAll";
 import formatNum from "../utils/formatNum";
 // import { PolicyIDContext } from "../context/policyPurchased";
-// import { QuoteContext } from "../context/quoteData";
+import { QuoteContext } from "../context/quoteData";
 const vehicleType = [
   "moov-third-party",
   "moov-plus-(fire-and-theft)",
@@ -27,7 +27,7 @@ const Paystack = (props) => {
   // let [payloadContext] = useContext(PolicyIDContext);
   const policyPurchasedId = localStorage.getItem("policyPurchasedId");
   console.log(policyPurchasedId);
-  // let [quoteData] = useContext(QuoteContext);
+  let [quoteData] = useContext(QuoteContext);
 
   const [quoteDetails, setQuoteDetails] = useState({});
   const [loading, setLoading] = useState(false);
@@ -158,15 +158,8 @@ const Paystack = (props) => {
      
       axios
         .post("https://wapicbot-api.herokuapp.com/api/products/buy-policy", {
-          // age: quoteData.age,
-          // annualPremium: quoteData.annualPremium,
-          // duration: quoteData.duration,
-          // firstName: quoteData.firstName,
-          // frequency: quoteData.frequency,
-          // lastName: quoteData.lastName,
-          // ...(quoteData.lastName && {lastName: quoteData.lastName}),
-          frequency: "Q",
-          duration: "4",
+          frequency: quoteData.frequency || "Q",
+          duration: quoteData.duration || "4",
           txRef: data.trxref,
           user: userId,
           policyPurchasedId,
