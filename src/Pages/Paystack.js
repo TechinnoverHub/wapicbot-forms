@@ -7,7 +7,7 @@ import logo from "../assets/logo.png";
 import loader from "../assets/loader.gif";
 import includesAll from "../utils/includesAll";
 import formatNum from "../utils/formatNum";
-import { PolicyIDContext } from "../context/policyPurchased";
+// import { PolicyIDContext } from "../context/policyPurchased";
 import { QuoteContext } from "../context/quoteData";
 const vehicleType = [
   "moov-third-party",
@@ -24,7 +24,7 @@ const lifeTypes = [
 ];
 const publicKey = process.env.REACT_APP_PAYSTACK;
 const Paystack = (props) => {
-  let [payloadContext] = useContext(PolicyIDContext);
+  // let [payloadContext] = useContext(PolicyIDContext);
   const policyPurchasedId = localStorage.getItem("policyPurchasedId")
   console.log(policyPurchasedId)
   let [quoteData] = useContext(QuoteContext);
@@ -165,7 +165,7 @@ const Paystack = (props) => {
         lastName: quoteData.lastName,
         txRef: data.trxref,
         user: userId,
-        policyPurchasedId: payloadContext,
+        policyPurchasedId: policyPurchasedId,
         policyInfo: {
           productCode: quoteDetails.productType,
           startDate: quoteDetails.coverStartDate,
@@ -182,7 +182,7 @@ const Paystack = (props) => {
           lastName: quoteData.lastName,
           txRef: data.trxref,
           user: userId,
-          policyPurchasedId: payloadContext,
+          policyPurchasedId: policyPurchasedId,
           // productCode: quoteDetails.productType,
           policyInfo: {
             productCode: quoteDetails.productType,
