@@ -168,8 +168,8 @@ const Paystack = (props) => {
      
       axios
         .post("https://wapicbot-api.herokuapp.com/api/products/buy-policy", {
-          frequency: quoteData.frequency || "Q",
-          duration: quoteData.duration || "4",
+          frequency: quoteData.frequency || "Y",
+          duration: quoteData.duration || "1",
           txRef: data.trxref,
           user: userId,
           policyPurchasedId,
