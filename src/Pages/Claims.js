@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import FormBuilder from "../components/Form";
 import Container from "../components/Container";
 import axios from "axios";
+import logo from "../assets/logo.png";
+
 
 const isDev = process.env.NODE_ENV === "development";
 
 // const CLOUDINARY_URL = `http${
 //   isDev ? "" : "s"
 // }://api.cloudinary.com/v1_1/wapic/upload`;
-const CLOUDINARY_URL = `http${isDev ? '' : 's'}://api.cloudinary.com/v1_1/${
+const CLOUDINARY_URL = `http${isDev ? "" : "s"}://api.cloudinary.com/v1_1/${
   process.env.REACT_APP_CL_NAME
 }/upload`;
 
@@ -50,6 +52,7 @@ const claimsFormData = [
 function Claims() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [displayMessage, setDisplayMessage] = useState(false);
 
   const submitForm = async (values) => {
     setError(null);
@@ -72,10 +75,10 @@ function Claims() {
       values.file_url = result.secure_url;
     }
     function parseDate(date) {
-        let newDate = date.replaceAll("-", "/").split("/");
-        let result = `${newDate[1]}/${newDate[2]}/${newDate[0]}`;
-        return result;
-      }
+      let newDate = date.replaceAll("-", "/").split("/");
+      let result = `${newDate[1]}/${newDate[2]}/${newDate[0]}`;
+      return result;
+    }
 
     const payload = {
       policyNumber: values.policyNumber,
@@ -83,7 +86,7 @@ function Claims() {
       file_attachment: [values.file_url],
       description: values.description,
     };
-    
+
     try {
       if (payload.file_attachment) {
         const { data } = await axios.post(
@@ -91,8 +94,8 @@ function Claims() {
           payload
         );
         console.log(data);
+        setDisplayMessage(data);
         setLoading(false);
-        console.log("fetched");
       }
     } catch (error) {
       setLoading(false);
@@ -102,14 +105,24 @@ function Claims() {
   };
   return (
     <Container>
-      <FormBuilder
-        error={error}
-        loading={loading}
-        title="FNOL Claims Form "
-        instruction="Please fill required fields to proceed"
-        data={claimsFormData}
-        action={(values) => submitForm(values)}
-      />
+      {displayMessage === false ? (
+        <FormBuilder
+          error={error}
+          loading={loading}
+          title="FNOL Claims Form "
+          instruction="Please fill required fields to proceed"
+          data={claimsFormData}
+          action={(values) => submitForm(values)}
+        />
+      ) : (
+        <div className="mobileCenter">
+          <img src={logo} alt="logo" />
+          <div className="group2">
+            <br/>
+            <h3 style={{backgroundColor: '#0fb100', padding: '2rem', color: "white", lineHeight: '1.5em', fontWeight: 'bold'}}>{displayMessage}</h3>
+          </div>
+        </div>
+      )}
     </Container>
   );
 }

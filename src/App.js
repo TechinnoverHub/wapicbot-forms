@@ -39,7 +39,8 @@ function App() {
                     flexDirection: "column",
                   }}
                 >
-                  <Link to="/optin?whatsapp=+2349069787848">Optin</Link>
+                  <Link to="/optin">Optin</Link>
+                  {/* <Link to="/optin?whatsapp=+2349069787848">Optin</Link> */}
                   <Link to="/product/moov-third-party/5f6200d513833f0017840b4f">
                     Motor Insurance (3rd Party)
                   </Link>
