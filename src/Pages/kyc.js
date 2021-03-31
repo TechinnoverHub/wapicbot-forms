@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import loader from '../assets/loader.gif';
 // import { useLocation } from "react-router-dom";
 import includesAll from '../utils/includesAll';
+import { QuoteContext } from "../context/quoteData";
 // import formatNum from "../utils/formatNum";
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -33,6 +34,10 @@ const KYC = (props) => {
   const [defaultValues, setdefaultValues] = useState({});
   const { userId } = useParams();
   const [fetching, setFetching] = useState(true);
+  const [quoteData] = React.useContext(QuoteContext);
+  const utilityRequired = quoteData?.quote > 500000
+
+
 
   const fetchUser = useCallback(async () => {
     try {
@@ -235,6 +240,23 @@ const KYC = (props) => {
         console.log(result);
         values.idCard = result.secure_url;
       }
+      if (values.utilityBill && !values.utilityBill.includes('https://')) {
+        const data = {
+          file: values.utilityBill,
+          folder: `${userId}/`,
+          upload_preset: 'pb9zgwxy',
+        };
+        const r = await fetch(CLOUDINARY_URL, {
+          body: JSON.stringify(data),
+          headers: {
+            'content-type': 'application/json',
+          },
+          method: 'POST',
+        });
+        const result = await r.json();
+        console.log(result);
+        values.utilityBill = result.secure_url;
+      }
       // const searchParams = new URLSearchParams(location.search);
       // const whatsappNo = searchParams.get("whatsapp");/
       // if (!whatsappNo) setLoading(false);
@@ -256,6 +278,7 @@ const KYC = (props) => {
             accountNumber: values.accountNumber,
             bvn: values.bvn,
             idCard: values.idCard,
+            ...(utilityRequired && {utilityBill: values.utilityBill}),
             passport: values.passport,
           },
           userId,
@@ -321,6 +344,17 @@ const KYC = (props) => {
             {
               name: 'idCard',
               label: 'Indentification Card',
+              validate: {
+                required: 'required',
+              },
+              type: 'image',
+            },
+            utilityRequired && {
+              section: 'Utility Bill',
+            },
+            utilityRequired && {
+              name: 'utilityBill',
+              label: 'Utility Bill',
               validate: {
                 required: 'required',
               },

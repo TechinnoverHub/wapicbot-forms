@@ -40,17 +40,6 @@ const QuoteSuccess = (props) => {
   const [quoteDetails, setQuoteDetails] = useState({});
   const { userId } = useParams();
   const [quoteData, setQuoteContext] = React.useContext(QuoteContext);
-  // let risk = localStorage.getItem("risk");
-  // risk = JSON.parse(risk);
-  // risk.forEach((element) => {
-  //   for (let key in element) {
-  //     if (key === "name") {
-  //       element["item"] = element[key]
-  //       delete element[key]
-  //     }
-  //   }
-  // });
-  // console.log(risk);
 
   setQuoteContext(props.location.state);
   console.log("quoteData", quoteData);
