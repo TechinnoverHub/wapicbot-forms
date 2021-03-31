@@ -22,10 +22,12 @@ const lifeTypes = [
   "smart-life",
   "smart-senior-plan",
 ];
+const houseTypes = ["house-holders-insurance", "house-owners-insurance"];
 const publicKey = process.env.REACT_APP_PAYSTACK;
 const Paystack = (props) => {
   // let [payloadContext] = useContext(PolicyIDContext);
   const policyPurchasedId = localStorage.getItem("policyPurchasedId");
+
   let [quoteData] = useContext(QuoteContext);
 
   if (quoteData.frequency === "Monthly") {
@@ -37,7 +39,19 @@ const Paystack = (props) => {
   } else if (quoteData.frequency === "Bi-Annual") {
     quoteData.frequency = "B"
   }
-  console.log(quoteData);
+  // console.log(quoteData);
+  let risk = localStorage.getItem("risk");
+  risk = JSON.parse(risk);
+  risk.forEach((element) => {
+    for (let key in element) {
+      if (key === "name") {
+        element["item"] = element[key]
+        delete element[key]
+      }
+    }
+  });
+  console.log(risk);
+
 
   const [quoteDetails, setQuoteDetails] = useState({});
   const [loading, setLoading] = useState(false);
@@ -165,7 +179,6 @@ const Paystack = (props) => {
     text: "Pay Now",
     onSuccess: (data) => {
       setLoading(true);
-     
       axios
         .post("https://wapicbot-api.herokuapp.com/api/products/buy-policy", {
           frequency: quoteData.frequency || "Y",
@@ -200,6 +213,11 @@ const Paystack = (props) => {
           ...(lifeTypes.includes(props.location.state.productType)
             ? {
                 beneficiaries: quoteDetails.beneficiaries,
+              }
+            : {}),
+          ...(houseTypes.includes(props.location.state.productType)
+            ? {
+                risk
               }
             : {}),
         })

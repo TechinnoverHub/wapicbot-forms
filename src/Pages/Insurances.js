@@ -152,7 +152,7 @@ const lifeinsurance = [
   },
   {
     name: "annualPremium",
-    label: "Annual Contribution",
+    label: "Contribution",
     validate: {
       required: "required",
       min: [120000, "Must be at least ₦120,000"],
@@ -209,7 +209,7 @@ const smartLifeInsurance = [
   },
   {
     name: "annualPremium",
-    label: "Annual Contribution",
+    label: "Contribution",
     validate: {
       required: "required",
       min: [120000, "Must be at least ₦120,000"],
@@ -267,7 +267,7 @@ const smartLifePlusInsurance = [
   },
   {
     name: "annualPremium",
-    label: "Annual Contribution",
+    label: "Contribution",
     validate: {
       required: "required",
       min: [120000, "Must be at least ₦120,000"],
@@ -325,7 +325,7 @@ const smartScholarInsurance = [
   },
   {
     name: "annualPremium",
-    label: "Annual Contribution",
+    label: "Contribution",
     validate: {
       required: "required",
       min: [60000, "Must be at least ₦60,000"],
@@ -1189,7 +1189,7 @@ const Insurances = ({ history, location }) => {
                   return newVal;
                 })
               );
-              // console.log(valuesToUpload);
+              localStorage.setItem('risk', JSON.stringify(valuesToUpload))
               const { data } = await axios.post(
                 "https://wapicbot-api.herokuapp.com/api/products/get-quote",
                 // "https://ec4174a4ecad.ngrok.io/api/products/get-quote",
@@ -1199,7 +1199,6 @@ const Insurances = ({ history, location }) => {
                   userId,
                 }
               );
-
               localStorage.setItem('policyPurchasedId', data?.data?.policyPurchasedId)
               setLoading(false);
               history.push(`/quote-success/${userId}`, {
