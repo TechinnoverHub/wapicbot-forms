@@ -31,27 +31,29 @@ const Paystack = (props) => {
   let [quoteData] = useContext(QuoteContext);
 
   if (quoteData.frequency === "Monthly") {
-    quoteData.frequency = "M"
+    quoteData.frequency = "M";
   } else if (quoteData.frequency === "Quarterly") {
-    quoteData.frequency = "Q"
+    quoteData.frequency = "Q";
   } else if (quoteData.frequency === "Year") {
-    quoteData.frequency = "Y"
+    quoteData.frequency = "Y";
   } else if (quoteData.frequency === "Bi-Annual") {
-    quoteData.frequency = "B"
+    quoteData.frequency = "B";
   }
   // console.log(quoteData);
   let risk = localStorage.getItem("risk");
   risk = JSON.parse(risk);
-  risk.forEach((element) => {
-    for (let key in element) {
-      if (key === "name") {
-        element["item"] = element[key]
-        delete element[key]
+  if (risk) {
+    risk.forEach((element) => {
+      for (let key in element) {
+        if (key === "name") {
+          element["item"] = element[key];
+          delete element[key];
+        }
       }
-    }
-  });
-  console.log(risk);
+    });
 
+    console.log(risk);
+  }
 
   const [quoteDetails, setQuoteDetails] = useState({});
   const [loading, setLoading] = useState(false);
@@ -217,7 +219,7 @@ const Paystack = (props) => {
             : {}),
           ...(houseTypes.includes(props.location.state.productType)
             ? {
-                risk
+                risk,
               }
             : {}),
         })
